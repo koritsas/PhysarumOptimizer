@@ -1,3 +1,5 @@
+package edu.koritsas.slimemold;
+
 import org.apache.commons.math3.linear.*;
 import org.geotools.graph.structure.*;
 import org.jfree.chart.ChartFactory;
@@ -27,38 +29,42 @@ public abstract class PhysarumPolycephalum {
     protected final int numberOfIterations;
     protected Node sinkNode;
     protected Node sourceNode;
+    private HashMap<Edge,Double> fluxMap ;
+    private HashMap<Edge,Double> conductivityMap;
+    private HashMap<Node,Double> pressureMap;
 
     protected static final Logger logger = Logger.getLogger(PhysarumPolycephalum.class.getName());
 
     protected int iteration=0;
 
-    public HashMap<Edge, XYSeries> getFlowMap() {
-        return flowMap;
+    private HashMap<Edge, XYSeries> flowSeriesMap = new HashMap<Edge, XYSeries>();
+    private HashMap<Edge, XYSeries> conductivitySeriesMap =new HashMap<Edge, XYSeries>();
+    private HashMap<Node, XYSeries> pressureSeriesMap =new HashMap<Node, XYSeries>();
+
+    public HashMap<Edge, XYSeries> getFlowSeriesMap() {
+        return flowSeriesMap;
     }
 
-    public void setFlowMap(HashMap<Edge, XYSeries> flowMap) {
-        this.flowMap = flowMap;
+    public void setFlowSeriesMap(HashMap<Edge, XYSeries> flowSeriesMap) {
+        this.flowSeriesMap = flowSeriesMap;
     }
 
-    public HashMap<Edge, XYSeries> getCondMap() {
-        return condMap;
+    public HashMap<Edge, XYSeries> getConductivitySeriesMap() {
+        return conductivitySeriesMap;
     }
 
-    public void setCondMap(HashMap<Edge, XYSeries> condMap) {
-        this.condMap = condMap;
+    public void setConductivitySeriesMap(HashMap<Edge, XYSeries> conductivitySeriesMap) {
+        this.conductivitySeriesMap = conductivitySeriesMap;
     }
 
-    public HashMap<Node, XYSeries> getPressMap() {
-        return pressMap;
+    public HashMap<Node, XYSeries> getPressureSeriesMap() {
+        return pressureSeriesMap;
     }
 
-    public void setPressMap(HashMap<Node, XYSeries> pressMap) {
-        this.pressMap = pressMap;
+    public void setPressureSeriesMap(HashMap<Node, XYSeries> pressureSeriesMap) {
+        this.pressureSeriesMap = pressureSeriesMap;
     }
 
-    private HashMap<Edge, XYSeries> flowMap = new HashMap<Edge, XYSeries>();
-    private HashMap<Edge, XYSeries> condMap=new HashMap<Edge, XYSeries>();
-    private HashMap<Node, XYSeries> pressMap=new HashMap<Node, XYSeries>();
 
     public PhysarumPolycephalum(Graph graph, List<Node> sourceNodes, List<Node> sinkNodes, double Io, double γ, int numberOfIterations) {
         this.graph = graph;
@@ -74,11 +80,14 @@ public abstract class PhysarumPolycephalum {
         return graph;
     }
 
+
+
     /**
      * Executes the algorithm
      */
     public void execute() {
 
+        initializeMaps(graph);
 
         logger.info("Starting iterations...");
 
@@ -154,6 +163,27 @@ public abstract class PhysarumPolycephalum {
         return new Array2DRowRealMatrix(matrix);
     }
 
+    private void initializeMaps(Graph graph){
+        Collection<Edge> edges =graph.getEdges();
+        fluxMap=new HashMap<Edge, Double>(graph.getEdges().size());
+        conductivityMap=new HashMap<Edge,Double>(graph.getEdges().size());
+        for (Edge e:edges){
+            fluxMap.putIfAbsent(e,0.0);
+            conductivityMap.putIfAbsent(e,1.0);
+        }
+
+        Collection<Node> nodes =graph.getNodes();
+        pressureMap=new HashMap<Node,Double>(nodes.size());
+        for (Node n:nodes){
+            pressureMap.putIfAbsent(n,0.0);
+
+        }
+
+
+
+
+    }
+
 
 
     /**
@@ -164,9 +194,9 @@ public abstract class PhysarumPolycephalum {
 
             Node n = allButSink.get(i);
             //noinspection Since15
-            pressMap.putIfAbsent(n,new XYSeries("("+n.getID()+")"));
-            setPressure(n,solution.getEntry(i));
-            pressMap.get(n).add(iteration,solution.getEntry(i));
+            pressureSeriesMap.putIfAbsent(n,new XYSeries("("+n.getID()+")"));
+           pressureMap.put(n,solution.getEntry(i));
+            pressureSeriesMap.get(n).add(iteration,solution.getEntry(i));
         }
 
 
@@ -181,10 +211,10 @@ public abstract class PhysarumPolycephalum {
     protected void redefineFlows(Graph graph){
         Collection<Edge> edges =graph.getEdges();
         for(Edge e:edges){
-            flowMap.putIfAbsent(e,new XYSeries(e.getID()+"("+e.getNodeA().getID()+","+e.getNodeB().getID()+")"));
-            double Q =calculateTubeFlow(e);
-            setFlow(e,Q);
-            flowMap.get(e).add(iteration,Q);
+            flowSeriesMap.putIfAbsent(e,new XYSeries(e.getID()+"("+e.getNodeA().getID()+","+e.getNodeB().getID()+")"));
+            double Q =calculateTubeFlux(e);
+            fluxMap.put(e,Q);
+            flowSeriesMap.get(e).add(iteration,Q);
         }
 
     }
@@ -199,11 +229,44 @@ public abstract class PhysarumPolycephalum {
         Collection<Edge> edges =graph.getEdges();
         for(Edge e:edges){
             //noinspection Since15
-            condMap.putIfAbsent(e, new XYSeries(e.getID()+"("+e.getNodeA().getID()+","+e.getNodeB().getID()+")"));
-            double D =calculateTubeDiameter(e);
-            setDiameter(e,D);
-            condMap.get(e).add(iteration,D);
+            conductivitySeriesMap.putIfAbsent(e, new XYSeries(e.getID()+"("+e.getNodeA().getID()+","+e.getNodeB().getID()+")"));
+            double D =calculateTubeConductivity(e);
+            conductivityMap.put(e,D);
+            conductivitySeriesMap.get(e).add(iteration,D);
         }
+
+    }
+
+    private double calculateTubeFlux(Edge e){
+
+        double p1 =pressureMap.get(e.getNodeA());
+        double p2 =pressureMap.get(e.getNodeB());
+
+        double D =conductivityMap.get(e);
+        double w =getEdgeWeight(e);
+
+        double Q=(D/w)*(p1-p2);
+
+        return Q;
+    }
+
+    private double calculateTubeConductivity(Edge e){
+        double D = conductivityMap.get(e);
+
+        double Q = fluxMap.get(e);
+
+
+        //double newD =(0.5)*((Q*(p1-p2))/(L*(ps-pe))+D);
+
+        double fQ = Math.pow(Math.abs(Q), γ) / (1 + Math.pow(Math.abs(Q), γ));
+        //double fQ=Math.abs(Q);
+
+        double newD = fQ - 0.4 * D;
+
+        //newD =new DiameterChoosingFunction().value(newD);
+
+        return newD;
+
 
     }
 
@@ -223,17 +286,17 @@ public abstract class PhysarumPolycephalum {
                 if (nToSink == null) {
                     constants[i] = Io;
                 } else {
-                    constants[i] = Io + calculateCoefficient(nToSink) * getPressure(sinkNode);
+                    constants[i] = Io + calculateCoefficient(nToSink) * pressureMap.get(sinkNode);
                 }
 
             } else if (n1.equals(sinkNode)) {
-                constants[i] = -Io - calculateSelfCoefficient(n1) * getPressure(sinkNode);
+                constants[i] = -Io - calculateSelfCoefficient(n1) *  pressureMap.get(sinkNode);
             } else {
                 Edge nToSink = n1.getEdge(sinkNode);
                 if (nToSink == null) {
                     constants[i] = 0;
                 } else {
-                    constants[i] = calculateCoefficient(nToSink) * getPressure(sinkNode);
+                    constants[i] = calculateCoefficient(nToSink) *  pressureMap.get(sinkNode);
                 }
 
             }
@@ -252,10 +315,10 @@ public abstract class PhysarumPolycephalum {
 /*
         Collection<Node> nodes =graph.getNodes();
         for(Node n:nodes){
-            dataset.addSeries(pressMap.get(n));
+            dataset.addSeries(pressureSeriesMap.get(n));
         }
     */
-        Iterator it= pressMap.entrySet().iterator();
+        Iterator it= pressureSeriesMap.entrySet().iterator();
         while(it.hasNext()){
             Map.Entry pair = (Map.Entry) it.next();
             dataset.addSeries((XYSeries) pair.getValue());
@@ -274,7 +337,7 @@ public abstract class PhysarumPolycephalum {
     }
     public void showConductivityMap(){
         final XYSeriesCollection dataset = new XYSeriesCollection( );
-        Iterator it= condMap.entrySet().iterator();
+        Iterator it= conductivitySeriesMap.entrySet().iterator();
         while(it.hasNext()){
             Map.Entry pair = (Map.Entry) it.next();
             dataset.addSeries((XYSeries) pair.getValue());
@@ -296,7 +359,7 @@ public abstract class PhysarumPolycephalum {
     public void showFlowDiagram(){
         final XYSeriesCollection dataset = new XYSeriesCollection( );
 
-        Iterator it= flowMap.entrySet().iterator();
+        Iterator it= flowSeriesMap.entrySet().iterator();
         while(it.hasNext()){
             Map.Entry pair = (Map.Entry) it.next();
             dataset.addSeries((XYSeries) pair.getValue());
@@ -376,69 +439,26 @@ public abstract class PhysarumPolycephalum {
         return selfC;
     }
 
+    private double calculateCoefficient(Edge e){
+        double D =conductivityMap.get(e);
+        double w =getEdgeWeight(e);
+
+        return D/w;
+    }
+
     /**
      *
      * @param e
-     * @return The flow of the edge
+     * @return the weight of the edge e
      */
-    public  abstract double getFlow(Edge e);
+    public abstract double getEdgeWeight(Edge e);
 
     /**
+     *
      * @param e
-     * @return double
-     * <p>
-     * Returns the tube length attribute of the edge
+     * @return the constraint value of the edge e
      */
-    public abstract double getLength(Edge e);
-
-    /**
-     * @param e
-     * @return Returns the tube diameter attribute of the edge e
-     */
-    public abstract double getDiameter(Edge e);
-
-    /**
-     * @param n
-     * @return Returns the pressure attribute of the node n
-     */
-
-    public abstract double getPressure(Node n);
-
-    /**
-     * @param e
-     * @return Calculates  the typical coefficient for the matrix of the system to be solved
-     */
-
-    public abstract double calculateCoefficient(Edge e);
-
-    /**
-     * @param e
-     * @return Recalculates the flow of the tube according to the formula used in the problem
-     */
+    public abstract double getEdgeConstraint(Edge e);
 
 
-    public abstract double calculateTubeFlow(Edge e);
-
-    /**
-     * @param e
-     * @return Recalculates the diameter of the tube according to the sigmoidal response
-     * of the diameter
-     */
-
-    public abstract double calculateTubeDiameter(Edge e);
-
-    /**
-     * @param n sets the pressure for the node
-     */
-    public abstract void setPressure(Node n, double p);
-
-    /**
-     * @param e sets the flow for the edge
-     */
-    public abstract void setFlow(Edge e, double Q);
-
-    /**
-     * @param e sets the diameter of the edge
-     */
-    public abstract void setDiameter(Edge e, double D);
 }

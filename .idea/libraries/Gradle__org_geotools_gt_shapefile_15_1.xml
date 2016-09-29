@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.geotools:gt-shapefile:15.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.geotools/gt-shapefile/15.1/5ab4fe82851fe68a01cbeeb894c8547dbb25362e/gt-shapefile-15.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.geotools/gt-shapefile/15.1/b9d2a96b0af7e2ceefc83defbdff9c6fa0cdac1d/gt-shapefile-15.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

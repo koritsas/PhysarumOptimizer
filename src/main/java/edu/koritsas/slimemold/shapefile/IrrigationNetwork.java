@@ -1,3 +1,5 @@
+package edu.koritsas.slimemold.shapefile;
+
 import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFinder;
@@ -39,6 +41,7 @@ public class IrrigationNetwork {
     private void createNetworkFromShp() throws IOException {
         File hydrantFile =new File(hydrantShapefilePath);
         boolean can =hydrantFile.canRead();
+        boolean exists=hydrantFile.exists();
         FileDataStore hydrantDataStore = FileDataStoreFinder.getDataStore(hydrantFile);
         SimpleFeatureSource hydrantFeatureSource =hydrantDataStore.getFeatureSource();
         SimpleFeatureCollection hydrants =hydrantFeatureSource.getFeatures();
