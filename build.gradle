@@ -29,6 +29,7 @@ dependencies {
 
     compile group: 'org.geotools', name: 'gt-graph', version: '15.1'
     compile group: 'org.geotools', name: 'gt-shapefile', version: '15.1'
+    compile group: 'org.geotools', name: 'gt-swing', version: '15.1'
 
     compile group: 'org.geotools', name: 'gt-main', version: '15.1'
 

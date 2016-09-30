@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.geotools:gt-coverage:15.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.geotools/gt-coverage/15.1/3d79eca37def4fd83def1d2b6621077f0519a807/gt-coverage-15.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.geotools/gt-coverage/15.1/aa669a4f94f417ae3e15840e97dd400ccbb83879/gt-coverage-15.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

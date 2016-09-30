@@ -1,6 +1,7 @@
 package edu.koritsas.slimemold;
 
 import org.apache.commons.math3.linear.*;
+import org.apache.commons.math3.util.FastMath;
 import org.geotools.graph.structure.*;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -12,6 +13,7 @@ import org.jfree.ui.ApplicationFrame;
 
 import java.util.*;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * Created by ilias on 20/8/2016.
@@ -94,13 +96,13 @@ public abstract class PhysarumPolycephalum {
         for (int i = 0; i <numberOfIterations ; i++) {
 
             logger.info("Current iteration: "+i);
-
-            sourceNode = chooseRandomNode(sourceNodes);
-            do {
-                sinkNode = chooseRandomNode(sinkNodes);
-            } while (sourceNode.equals(sinkNode));
-
             List<Node> allNodes = getAllNodes(graph);
+
+            chooseRandomNodes(allNodes);
+
+
+
+
             List<Node> allButSinkNodes = getAllButSink(graph);
 
 
@@ -124,8 +126,21 @@ public abstract class PhysarumPolycephalum {
 
             iteration++;
         }
+
+        eliminateEdges(graph);
     }
 
+    private void chooseRandomNodes(List<Node> allNodes) {
+       sourceNode = chooseRandomNode(sourceNodes);
+        do {
+            sinkNode = chooseRandomNode(sinkNodes);
+        } while (sourceNode.equals(sinkNode));
+
+
+
+
+
+    }
 
 
     /**
@@ -219,6 +234,19 @@ public abstract class PhysarumPolycephalum {
 
     }
 
+    public double getSolutionCost() {
+
+        Collection<Edge> edges = graph.getEdges();
+        double cost = edges.stream().collect(Collectors.summingDouble(value -> getEdgeCost(value)));
+        return  cost;
+    }
+    private void eliminateEdges(Graph graph){
+
+        graph.getEdges().removeIf(o -> FastMath.abs(conductivityMap.get(o))<0.0001);
+
+
+    }
+
 
     /**
      *
@@ -243,7 +271,7 @@ public abstract class PhysarumPolycephalum {
         double p2 =pressureMap.get(e.getNodeB());
 
         double D =conductivityMap.get(e);
-        double w =getEdgeWeight(e);
+        double w = getEdgeCost(e);
 
         double Q=(D/w)*(p1-p2);
 
@@ -254,16 +282,22 @@ public abstract class PhysarumPolycephalum {
         double D = conductivityMap.get(e);
 
         double Q = fluxMap.get(e);
+        double L=getEdgeCost(e);
 
+        double p1 =pressureMap.get(e.getNodeA());
+        double p2 =pressureMap.get(e.getNodeB());
 
-        //double newD =(0.5)*((Q*(p1-p2))/(L*(ps-pe))+D);
+        double ps=pressureMap.get(sourceNode);
+        double pe =pressureMap.get(sinkNode);
+
+       // double newD =(0.5)*((Q*(p1-p2))/(L*(ps-pe))+D);
 
         double fQ = Math.pow(Math.abs(Q), γ) / (1 + Math.pow(Math.abs(Q), γ));
         //double fQ=Math.abs(Q);
 
-        double newD = fQ - 0.4 * D;
+        double newD = fQ - 0.1 * D;
 
-        //newD =new DiameterChoosingFunction().value(newD);
+
 
         return newD;
 
@@ -441,7 +475,7 @@ public abstract class PhysarumPolycephalum {
 
     private double calculateCoefficient(Edge e){
         double D =conductivityMap.get(e);
-        double w =getEdgeWeight(e);
+        double w = getEdgeCost(e);
 
         return D/w;
     }
@@ -451,7 +485,7 @@ public abstract class PhysarumPolycephalum {
      * @param e
      * @return the weight of the edge e
      */
-    public abstract double getEdgeWeight(Edge e);
+    public abstract double getEdgeCost(Edge e);
 
     /**
      *
@@ -459,6 +493,9 @@ public abstract class PhysarumPolycephalum {
      * @return the constraint value of the edge e
      */
     public abstract double getEdgeConstraint(Edge e);
+
+
+    public abstract double getEuclideanDistance(Node n1,Node n2);
 
 
 }

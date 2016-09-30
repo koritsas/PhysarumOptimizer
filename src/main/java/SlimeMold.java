@@ -17,7 +17,7 @@ public class SlimeMold extends PhysarumPolycephalum {
     }
 
     @Override
-    public double getEdgeWeight(Edge e) {
+    public double getEdgeCost(Edge e) {
         SimpleFeature f = (SimpleFeature) e.getObject();
         Geometry geometry = (Geometry) f.getDefaultGeometry();
         return geometry.getLength();
@@ -26,5 +26,15 @@ public class SlimeMold extends PhysarumPolycephalum {
     @Override
     public double getEdgeConstraint(Edge e) {
         return 0;
+    }
+
+    @Override
+    public double getEuclideanDistance(Node n1, Node n2) {
+        SimpleFeature f1 = (SimpleFeature) n1.getObject();
+        SimpleFeature f2 = (SimpleFeature) n2.getObject();
+        Geometry g1 = (Geometry) f1.getDefaultGeometry();
+        Geometry g2 = (Geometry) f2.getDefaultGeometry();
+
+        return g1.distance(g2);
     }
 }
