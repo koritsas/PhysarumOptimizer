@@ -1,5 +1,6 @@
-package edu.koritsas.slimemold;
+package edu.koritsas.slimemold.shortestpath;
 
+import edu.koritsas.slimemold.AbstractPhysarumPolycephalum;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
@@ -8,13 +9,14 @@ import org.geotools.graph.structure.Node;
  * Created by ilias on 5/10/2016.
  */
 
-public abstract class PhysarumPolycephalumSP extends AbstractPhysarumPolycephalum{
-    public PhysarumPolycephalumSP(Graph graph, Node sourceNode,Node sinkNode,int numberOfIterations){
+public abstract class PhysarumPolycephalumSP extends AbstractPhysarumPolycephalum {
+    public PhysarumPolycephalumSP(Graph graph, Node sourceNode,Node sinkNode,double Io,double γ,int numberOfIterations){
         this.graph=graph;
         this.sourceNode=sourceNode;
         this.sinkNode=sinkNode;
         this.numberOfIterations=numberOfIterations;
-
+        this.γ=γ;
+        this.Io=Io;
     }
 
     @Override
