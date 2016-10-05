@@ -1,9 +1,9 @@
 package edu.koritsas.slimemold.minimumtree;
 
 import edu.koritsas.slimemold.AbstractPhysarumPolycephalum;
-import edu.koritsas.slimemold.PhysarumPolycephalum;
 import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.RealVector;
+import org.apache.commons.math3.util.FastMath;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
@@ -30,8 +30,8 @@ public abstract class PhysarumPolycephalumMST extends AbstractPhysarumPolycephal
         double Q = fluxMap.get(e);
 
 
-        double fQ = Math.pow(Math.abs(Q), γ) / (1 + Math.pow(Math.abs(Q), γ));
-
+        //double fQ = Math.pow(Math.abs(Q), γ) / (1 + Math.pow(Math.abs(Q), γ));
+        double fQ = FastMath.pow(FastMath.abs(Q),γ);
 
         double newD = fQ - 0.1 * D;
 
@@ -47,10 +47,8 @@ public abstract class PhysarumPolycephalumMST extends AbstractPhysarumPolycephal
             Node n=nodes.get(i);
             if (n.equals(sourceNode)) {
                 constants[i] = Io;
-            }else if(sinkNodesList.contains(n)){
-                constants[i]=Io/(sinkNodesList.size());
             }else{
-                constants[i]=0;
+                constants[i]=-Io/(sinkNodesList.size());
             }
 
         }

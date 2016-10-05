@@ -30,7 +30,7 @@ public abstract class AbstractPhysarumPolycephalum {
     protected HashMap<Edge,Double> conductivityMap;
     protected HashMap<Node,Double> pressureMap;
 
-    protected static final Logger logger = Logger.getLogger(PhysarumPolycephalum.class.getName());
+    protected static final Logger logger = Logger.getLogger(AbstractPhysarumPolycephalum.class.getName());
 
     protected int iteration=0;
 
@@ -53,8 +53,6 @@ public abstract class AbstractPhysarumPolycephalum {
     public void setConductivitySeriesMap(HashMap<Edge, XYSeries> conductivitySeriesMap) {
         this.conductivitySeriesMap = conductivitySeriesMap;
     }
-
-
 
     /**
      *
@@ -96,7 +94,7 @@ public abstract class AbstractPhysarumPolycephalum {
 
             // DecompositionSolver solver = new QRDecomposition(coefficients).getSolver();
 
-            DecompositionSolver solver = new QRDecomposition(coefficients).getSolver();
+            DecompositionSolver solver = new SingularValueDecomposition(coefficients).getSolver();
             RealVector solution = solver.solve(constants);
 
             redefinePressures(allButSinkNodes, solution);

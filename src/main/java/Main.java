@@ -1,4 +1,6 @@
 import com.vividsolutions.jts.geom.Geometry;
+import edu.koritsas.slimemold.SlimeMold;
+import edu.koritsas.slimemold.SlimeMoldSP;
 import edu.koritsas.slimemold.shapefile.GraphUtils;
 import edu.koritsas.slimemold.shapefile.IrrigationNetwork;
 import org.geotools.graph.build.GraphBuilder;
@@ -38,7 +40,11 @@ public class Main {
         List<Node> sinkNodes = network.getHydrants();
         //sinkNodes=sinkNodes.subList(7,8);
 
-        SlimeMold slimeMold = new SlimeMold(graph,sourceNodes,sinkNodes,2,1.8,50000);
+        Node source =sourceNodes.get(0);
+        Node sink =sinkNodes.get(7);
+
+        SlimeMoldSP slimeMold = new SlimeMoldSP(graph,source,sink,2,1.8,500);
+       // SlimeMold slimeMold = new SlimeMold(graph,sourceNodes.get(0),sinkNodes,2,1.8,5000);
         slimeMold.execute();
 
         slimeMold.showFlowDiagram();
@@ -52,7 +58,7 @@ public class Main {
 
         System.out.println(slimeMold.getSolutionCost());
 
-/*
+
         DijkstraIterator.EdgeWeighter weighter = new DijkstraIterator.EdgeWeighter() {
             @Override
             public double getWeight(Edge e) {
@@ -62,10 +68,10 @@ public class Main {
             }
         };
 
-        DijkstraShortestPathFinder pf = new DijkstraShortestPathFinder(graph,sourceNodes.get(0),weighter);
+        DijkstraShortestPathFinder pf = new DijkstraShortestPathFinder(graph,source,weighter);
         pf.calculate();
 
-        Path path=pf.getPath(sinkNodes.get(0));
+        Path path=pf.getPath(sink);
 
         BasicGraph g =new BasicGraph(null,path.getEdges());
 
@@ -75,7 +81,7 @@ public class Main {
             e.printStackTrace();
         }
 
-        System.out.println(pf.getCost(sinkNodes.get(0)));
-        */
+        System.out.println(pf.getCost(sink));
+
     }
 }
