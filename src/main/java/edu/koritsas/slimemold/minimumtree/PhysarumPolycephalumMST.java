@@ -2,6 +2,8 @@ package edu.koritsas.slimemold.minimumtree;
 
 import edu.koritsas.slimemold.AbstractPhysarumPolycephalum;
 import edu.koritsas.slimemold.PhysarumPolycephalum;
+import org.apache.commons.math3.linear.ArrayRealVector;
+import org.apache.commons.math3.linear.RealVector;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
@@ -23,6 +25,37 @@ public abstract class PhysarumPolycephalumMST extends AbstractPhysarumPolycephal
     }
     @Override
     public double calculateTubeConductivity(Edge e) {
-        return 0;
+        double D = conductivityMap.get(e);
+
+        double Q = fluxMap.get(e);
+
+
+        double fQ = Math.pow(Math.abs(Q), γ) / (1 + Math.pow(Math.abs(Q), γ));
+
+
+        double newD = fQ - 0.1 * D;
+
+       return newD;
+    }
+
+    @Override
+    protected RealVector createConstantsVector() {
+        List<Node> nodes = getAllNodes(graph);
+
+        double[] constants =new double[nodes.size()];
+        for (int i=0;i<nodes.size();i++){
+            Node n=nodes.get(i);
+            if (n.equals(sourceNode)) {
+                constants[i] = Io;
+            }else if(sinkNodesList.contains(n)){
+                constants[i]=Io/(sinkNodesList.size());
+            }else{
+                constants[i]=0;
+            }
+
+        }
+
+
+        return  new ArrayRealVector(constants);
     }
 }
