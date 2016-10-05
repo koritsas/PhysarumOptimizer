@@ -24,19 +24,19 @@ public abstract class AbstractPhysarumPolycephalum {
     protected Node sinkNode;
     protected List<Node> sinkNodesList;
     protected double Io;
-    public double γ;
+    protected double γ;
     protected  int numberOfIterations;
-    private HashMap<Edge,Double> fluxMap ;
-    private HashMap<Edge,Double> conductivityMap;
-    private HashMap<Node,Double> pressureMap;
+    protected HashMap<Edge,Double> fluxMap ;
+    protected HashMap<Edge,Double> conductivityMap;
+    protected HashMap<Node,Double> pressureMap;
 
     protected static final Logger logger = Logger.getLogger(PhysarumPolycephalum.class.getName());
 
     protected int iteration=0;
 
-    private HashMap<Edge, XYSeries> flowSeriesMap = new HashMap<Edge, XYSeries>();
-    private HashMap<Edge, XYSeries> conductivitySeriesMap =new HashMap<Edge, XYSeries>();
-    private HashMap<Node, XYSeries> pressureSeriesMap =new HashMap<Node, XYSeries>();
+    protected HashMap<Edge, XYSeries> flowSeriesMap = new HashMap<Edge, XYSeries>();
+    protected HashMap<Edge, XYSeries> conductivitySeriesMap =new HashMap<Edge, XYSeries>();
+    protected HashMap<Node, XYSeries> pressureSeriesMap =new HashMap<Node, XYSeries>();
 
     public HashMap<Edge, XYSeries> getFlowSeriesMap() {
         return flowSeriesMap;
