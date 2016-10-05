@@ -19,10 +19,10 @@ import java.util.stream.Collectors;
  * Created by ilias on 5/10/2016.
  */
 public abstract class AbstractPhysarumPolycephalum {
-    private Graph graph;
-    private Node sourceNode;
-    private Node sinkNode;
-    private List<Node> sinkNodesList;
+    protected Graph graph;
+    protected Node sourceNode;
+    protected Node sinkNode;
+    protected List<Node> sinkNodesList;
     protected double Io;
     public double γ;
     protected  int numberOfIterations;
@@ -438,15 +438,8 @@ public abstract class AbstractPhysarumPolycephalum {
      */
     public abstract double getEdgeCost(Edge e);
 
-    /**
-     *
-     * @param e
-     * @return the constraint value of the edge e
-     */
-    public abstract double getEdgeConstraint(Edge e);
 
 
-    public abstract double getEuclideanDistance(Node n1,Node n2);
 
 
 
