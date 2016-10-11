@@ -1,4 +1,4 @@
-package edu.koritsas.slimemold.shapefile;
+package edu.shortestpath.test;
 
 import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.data.FileDataStore;
@@ -104,16 +104,18 @@ public class IrrigationNetwork {
     public List<Node> getWaterSource(){
     GraphVisitor visitor =new GraphVisitor() {
         public int visit(Graphable component) {
-            if (component instanceof SimpleFeature) {
-                SimpleFeature f = (SimpleFeature) component.getObject();
-                if (f.getType().equals(waterSourceType)) {
-                    return 1;
-                } else {
-                    return -1;
-                }
-            }else{
-                return -1;
-            }
+           try {
+               SimpleFeature f = (SimpleFeature) component.getObject();
+               if (f.getType().equals(waterSourceType)) {
+                   return 1;
+               } else {
+                   return -1;
+               }
+           }catch (Exception e){
+               return -1;
+           }
+
+
         }
     };
 
@@ -123,14 +125,15 @@ public class IrrigationNetwork {
     public List<Node> getHydrants(){
         GraphVisitor visitor =new GraphVisitor() {
             public int visit(Graphable component) {
-                if(component instanceof SimpleFeature) {
+                Node n = (Node) component;
+               try {
                     SimpleFeature f = (SimpleFeature) component.getObject();
                     if (f.getType().equals(hydrantType)) {
                         return 1;
                     } else {
                         return -1;
                     }
-                }else{
+                }catch (Exception e){
                     return -1;
                 }
             }
