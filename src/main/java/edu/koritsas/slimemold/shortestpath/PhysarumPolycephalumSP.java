@@ -19,6 +19,8 @@ public abstract class PhysarumPolycephalumSP extends AbstractPhysarumPolycephalu
         this.Io=Io;
     }
 
+
+
     @Override
     public double calculateTubeConductivity(Edge e) {
         double D = conductivityMap.get(e);

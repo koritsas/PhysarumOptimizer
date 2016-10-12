@@ -262,7 +262,7 @@ public abstract class AbstractPhysarumPolycephalum {
      */
     private void eliminateEdges(Graph graph){
 
-        graph.getEdges().removeIf(o -> FastMath.abs(conductivityMap.get(o))<0.0001);
+        graph.getEdges().removeIf(o -> FastMath.abs(fluxMap.get(o))<0.0001);
 
 
     }

@@ -67,12 +67,13 @@ public class SlimeMoldSPTest {
 
         IrrigationNetwork network3 = new IrrigationNetwork("C:/Users/ilias/Desktop/ParametrizedTests/H3.shp", "C:/Users/ilias/Desktop/ParametrizedTests/W3.shp", "C:/Users/ilias/Desktop/ParametrizedTests/P3.shp");
 
+        IrrigationNetwork network4 = new IrrigationNetwork("C:/Users/ilias/Desktop/ParametrizedTests/H4.shp", "C:/Users/ilias/Desktop/ParametrizedTests/W4.shp", "C:/Users/ilias/Desktop/ParametrizedTests/P4.shp");
         ////Graph g1 = network1.getGraph();
        // Graph g2 = network2.getGraph();
        // Graph g3 = network3.getGraph();
 
 
-        return Arrays.asList(new IrrigationNetwork[]{network1, network2, network3});
+        return Arrays.asList(new IrrigationNetwork[]{network1, network2, network3,network4});
     };
 
 
@@ -119,12 +120,14 @@ public class SlimeMoldSPTest {
         System.out.println(pf.getCost(sink));
 
         slime.execute();
-        Graph slimeGraph=slime.getGraph();
+         Graph slimeGraph=slime.getGraph();
         System.out.println(slime.getSolutionCost());
         BasicGraph dg = new BasicGraph(null,path.getEdges());
 
+        Collection<Edge> pathEdges =path.getEdges();
 
-        Assert.assertTrue(path.getEdges().containsAll(slimeGraph.getEdges()));
+        Assert.assertTrue(pathEdges.containsAll(slimeGraph.getEdges()));
+        Assert.assertTrue(slimeGraph.getEdges().containsAll(pathEdges));
 
     }
 

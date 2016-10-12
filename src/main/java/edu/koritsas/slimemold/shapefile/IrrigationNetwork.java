@@ -7,12 +7,13 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.graph.build.feature.FeatureGraphGenerator;
+import org.geotools.graph.build.line.BasicDirectedLineGraphBuilder;
 import org.geotools.graph.build.line.BasicLineGraphBuilder;
+import org.geotools.graph.build.line.DirectedLineStringGraphGenerator;
 import org.geotools.graph.build.line.LineStringGraphGenerator;
-import org.geotools.graph.structure.Graph;
-import org.geotools.graph.structure.GraphVisitor;
-import org.geotools.graph.structure.Graphable;
-import org.geotools.graph.structure.Node;
+import org.geotools.graph.structure.*;
+import org.geotools.graph.structure.basic.BasicDirectedGraph;
+import org.geotools.graph.structure.basic.BasicGraph;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -31,7 +32,13 @@ public class IrrigationNetwork {
     private SimpleFeatureType hydrantType;
 
 
-    private Graph graph;
+    private BasicGraph basicGraph;
+
+    public DirectedGraph getDirectedGraph() {
+        return directedGraph;
+    }
+
+    private DirectedGraph directedGraph;
     public IrrigationNetwork(String hydrantShapefilePath, String waterSourceShapefilePath, String pipeShapefilePath){
         this.hydrantShapefilePath=hydrantShapefilePath;
         this.pipeShapefilePath=pipeShapefilePath;
@@ -70,10 +77,14 @@ public class IrrigationNetwork {
         FeatureGraphGenerator graphGenerator = new FeatureGraphGenerator(basicLineGraphGenerator);
         graphGenerator.setGraphBuilder(new BasicLineGraphBuilder());
 
+        DirectedLineStringGraphGenerator directedLineStringGraphGenerator = new DirectedLineStringGraphGenerator();
+        FeatureGraphGenerator directeGraphGenerator = new FeatureGraphGenerator(directedLineStringGraphGenerator);
+        directedLineStringGraphGenerator.setGraphBuilder(new BasicDirectedLineGraphBuilder());
 
         SimpleFeatureIterator pipeIt =pipeSimpleFeatureCollection.features();
         while (pipeIt.hasNext()){
             graphGenerator.add(pipeIt.next());
+            directedLineStringGraphGenerator.add(pipeIt.next());
         }
         pipeIt.close();
 
@@ -84,6 +95,7 @@ public class IrrigationNetwork {
             Geometry geom =(Geometry) f.getDefaultGeometry();
 
             basicLineGraphGenerator.getNode(geom.getCoordinate()).setObject(f);
+            directedLineStringGraphGenerator.getNode(geom.getCoordinate()).setObject(f);
 
         }
         hit.close();
@@ -93,57 +105,61 @@ public class IrrigationNetwork {
             Geometry geom =(Geometry) f.getDefaultGeometry();
 
            basicLineGraphGenerator.getNode(geom.getCoordinate()).setObject(f);
+            directedLineStringGraphGenerator.getNode(geom.getCoordinate()).setObject(f);
 
         }
         wsit.close();
 
-        graph=graphGenerator.getGraphBuilder().getGraph();
-
+        basicGraph = (BasicGraph) graphGenerator.getGraphBuilder().getGraph();
+        directedGraph= (DirectedGraph) directedLineStringGraphGenerator.getGraphBuilder().getGraph();
 
     }
     public List<Node> getWaterSource(){
     GraphVisitor visitor =new GraphVisitor() {
         public int visit(Graphable component) {
-            if (component instanceof SimpleFeature) {
-                SimpleFeature f = (SimpleFeature) component.getObject();
-                if (f.getType().equals(waterSourceType)) {
-                    return 1;
-                } else {
-                    return -1;
-                }
-            }else{
-                return -1;
-            }
+           try {
+               SimpleFeature f = (SimpleFeature) component.getObject();
+               if (f.getType().equals(waterSourceType)) {
+                   return 1;
+               } else {
+                   return -1;
+               }
+           }catch (Exception e){
+               return -1;
+           }
+
+
         }
     };
 
-    return graph.queryNodes(visitor);
+    return basicGraph.queryNodes(visitor);
 }
 
     public List<Node> getHydrants(){
         GraphVisitor visitor =new GraphVisitor() {
             public int visit(Graphable component) {
-                if(component instanceof SimpleFeature) {
+                Node n = (Node) component;
+               try {
                     SimpleFeature f = (SimpleFeature) component.getObject();
                     if (f.getType().equals(hydrantType)) {
                         return 1;
                     } else {
                         return -1;
                     }
-                }else{
+                }catch (Exception e){
                     return -1;
                 }
             }
         };
-        return graph.queryNodes(visitor);
+        return basicGraph.queryNodes(visitor);
     }
 
 
 
-    public Graph getGraph() throws IOException {
+    public Graph getBasicGraph() throws IOException {
         createNetworkFromShp();
 
-        return graph;
+        return basicGraph;
     }
 
 
