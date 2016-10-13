@@ -1,5 +1,6 @@
 import com.vividsolutions.jts.geom.Geometry;
 import edu.koritsas.slimemold.SlimeMoldSP;
+import edu.koritsas.slimemold.shapefile.DirectedIrrigationNetwork;
 import edu.koritsas.slimemold.shapefile.GraphUtils;
 import edu.koritsas.slimemold.shapefile.IrrigationNetwork;
 import org.geotools.graph.path.DijkstraShortestPathFinder;
@@ -29,6 +30,7 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
 
         List<Node> sourceNodes =network.getWaterSource();
         List<Node> sinkNodes = network.getHydrants();

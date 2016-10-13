@@ -7,12 +7,9 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.graph.build.feature.FeatureGraphGenerator;
-import org.geotools.graph.build.line.BasicDirectedLineGraphBuilder;
 import org.geotools.graph.build.line.BasicLineGraphBuilder;
-import org.geotools.graph.build.line.DirectedLineStringGraphGenerator;
 import org.geotools.graph.build.line.LineStringGraphGenerator;
 import org.geotools.graph.structure.*;
-import org.geotools.graph.structure.basic.BasicDirectedGraph;
 import org.geotools.graph.structure.basic.BasicGraph;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -30,7 +27,9 @@ public class IrrigationNetwork {
     private  String pipeShapefilePath;
     private SimpleFeatureType waterSourceType;
     private SimpleFeatureType hydrantType;
-
+    private SimpleFeatureCollection hydrantFeatureCollection;
+    private SimpleFeatureCollection waterSourceFeatureCollection;
+    private SimpleFeatureCollection pipeFeatureCollection;
 
     private BasicGraph basicGraph;
 
@@ -47,8 +46,6 @@ public class IrrigationNetwork {
     }
     private void createNetworkFromShp() throws IOException {
         File hydrantFile =new File(hydrantShapefilePath);
-        boolean can =hydrantFile.canRead();
-        boolean exists=hydrantFile.exists();
         FileDataStore hydrantDataStore = FileDataStoreFinder.getDataStore(hydrantFile);
         SimpleFeatureSource hydrantFeatureSource =hydrantDataStore.getFeatureSource();
         SimpleFeatureCollection hydrants =hydrantFeatureSource.getFeatures();
@@ -77,14 +74,12 @@ public class IrrigationNetwork {
         FeatureGraphGenerator graphGenerator = new FeatureGraphGenerator(basicLineGraphGenerator);
         graphGenerator.setGraphBuilder(new BasicLineGraphBuilder());
 
-        DirectedLineStringGraphGenerator directedLineStringGraphGenerator = new DirectedLineStringGraphGenerator();
-        FeatureGraphGenerator directeGraphGenerator = new FeatureGraphGenerator(directedLineStringGraphGenerator);
-        directedLineStringGraphGenerator.setGraphBuilder(new BasicDirectedLineGraphBuilder());
+
 
         SimpleFeatureIterator pipeIt =pipeSimpleFeatureCollection.features();
         while (pipeIt.hasNext()){
             graphGenerator.add(pipeIt.next());
-            directedLineStringGraphGenerator.add(pipeIt.next());
+
         }
         pipeIt.close();
 
@@ -95,7 +90,7 @@ public class IrrigationNetwork {
             Geometry geom =(Geometry) f.getDefaultGeometry();
 
             basicLineGraphGenerator.getNode(geom.getCoordinate()).setObject(f);
-            directedLineStringGraphGenerator.getNode(geom.getCoordinate()).setObject(f);
+
 
         }
         hit.close();
@@ -105,13 +100,13 @@ public class IrrigationNetwork {
             Geometry geom =(Geometry) f.getDefaultGeometry();
 
            basicLineGraphGenerator.getNode(geom.getCoordinate()).setObject(f);
-            directedLineStringGraphGenerator.getNode(geom.getCoordinate()).setObject(f);
+
 
         }
         wsit.close();
 
         basicGraph = (BasicGraph) graphGenerator.getGraphBuilder().getGraph();
-        directedGraph= (DirectedGraph) directedLineStringGraphGenerator.getGraphBuilder().getGraph();
+
 
     }
     public List<Node> getWaterSource(){
@@ -158,6 +153,7 @@ public class IrrigationNetwork {
 
     public Graph getBasicGraph() throws IOException {
         createNetworkFromShp();
+
 
         return basicGraph;
     }

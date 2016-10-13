@@ -424,7 +424,7 @@ public abstract class AbstractPhysarumPolycephalum {
         return selfC;
     }
 
-    private double calculateCoefficient(Edge e){
+    protected double calculateCoefficient(Edge e){
         double D =conductivityMap.get(e);
         double w = getEdgeCost(e);
 

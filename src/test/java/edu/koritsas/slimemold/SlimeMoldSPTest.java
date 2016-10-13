@@ -81,7 +81,7 @@ public class SlimeMoldSPTest {
     @Before
     public void setUp() throws Exception {
 
-        Graph graph=network.getGraph();
+        Graph graph=network.getBasicGraph();
         List<Node> v=network.getWaterSource();
        source=network.getWaterSource().get(0);;
        sink=network.getHydrants().get(random.nextInt(network.getHydrants().size()));

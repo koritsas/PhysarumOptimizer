@@ -1,9 +1,11 @@
-package edu.koritsas.slimemold.shortestpath;
+package edu.shortestpath.test;
 
-import edu.koritsas.slimemold.AbstractPhysarumPolycephalum;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.RealMatrix;
-import org.geotools.graph.structure.*;
+import org.geotools.graph.structure.DirectedGraph;
+import org.geotools.graph.structure.DirectedNode;
+import org.geotools.graph.structure.Edge;
+import org.geotools.graph.structure.Node;
 
 import java.util.List;
 
@@ -11,12 +13,8 @@ import java.util.List;
  * Created by ilias on 12/10/2016.
  */
 public abstract class DirecredPhysarumPolycephalumSP extends AbstractPhysarumPolycephalum {
-    private DirectedGraph graph;
 
-    private final double Io;
-    private final double γ;
-    private int numberOfIterations;
-    public DirecredPhysarumPolycephalumSP(DirectedGraph graph,Node source,Node sink,double Io,double γ,int numberOfIterations){
+    public DirecredPhysarumPolycephalumSP(DirectedGraph graph, Node source, Node sink, double Io, double γ, int numberOfIterations){
         this.graph=graph;
         this.sourceNode=source;
         this.sinkNode=sink;
@@ -40,12 +38,14 @@ public abstract class DirecredPhysarumPolycephalumSP extends AbstractPhysarumPol
                 if(n1.equals(n2)){
                     matrix[i][j]=calculateSelfCoefficient(n1);
                 }else{
-                    Edge n1Ton2 =n1.getOutEdge(n2);
-                    if(n1Ton2==null){
-                        matrix[i][j]=0;
+                    if(n1.getOutEdge(n2)!=null){
+                        matrix[i][j]=-calculateCoefficient(n1.getOutEdge(n2));
+                    }else if (n1.getInEdge(n2)!=null){
+                        matrix[i][j]=calculateCoefficient(n1.getInEdge(n2));
                     }else{
-                        matrix[i][j]=-calculateCoefficient(n1Ton2);
+                        matrix[i][j]=0;
                     }
+
                 }
 
 
