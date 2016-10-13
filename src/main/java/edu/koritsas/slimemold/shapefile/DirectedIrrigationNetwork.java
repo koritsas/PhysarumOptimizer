@@ -8,18 +8,16 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.graph.build.feature.FeatureGraphGenerator;
 import org.geotools.graph.build.line.BasicDirectedLineGraphBuilder;
-import org.geotools.graph.build.line.BasicLineGraphBuilder;
 import org.geotools.graph.build.line.DirectedLineStringGraphGenerator;
-import org.geotools.graph.build.line.LineStringGraphGenerator;
-import org.geotools.graph.structure.*;
-import org.geotools.graph.structure.basic.BasicDirectedGraph;
-import org.geotools.graph.structure.basic.BasicGraph;
+import org.geotools.graph.structure.DirectedGraph;
+import org.geotools.graph.structure.GraphVisitor;
+import org.geotools.graph.structure.Graphable;
+import org.geotools.graph.structure.Node;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -35,7 +33,7 @@ public class DirectedIrrigationNetwork {
     private SimpleFeatureCollection waterSourceFeatureCollection;
     private SimpleFeatureCollection pipeFeatureCollection;
 
-    private Graph graph;
+    private DirectedGraph graph;
     public DirectedIrrigationNetwork(String hydrantShapefilePath, String waterSourceShapefilePath, String pipeShapefilePath){
         this.hydrantShapefilePath=hydrantShapefilePath;
         this.pipeShapefilePath=pipeShapefilePath;
@@ -107,7 +105,7 @@ public class DirectedIrrigationNetwork {
         }
         wsit.close();
 
-        graph = (BasicGraph) graphGenerator.getGraphBuilder().getGraph();
+        graph = (DirectedGraph) graphGenerator.getGraphBuilder().getGraph();
 
 
     }
@@ -153,9 +151,8 @@ public class DirectedIrrigationNetwork {
 
 
 
-    public Graph getBasicGraph() throws IOException {
+    public DirectedGraph getBasicGraph() throws IOException {
         createNetworkFromShp();
-
 
         return graph;
     }

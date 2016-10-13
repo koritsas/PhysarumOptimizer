@@ -1,5 +1,6 @@
-package edu.shortestpath.test;
+package edu.koritsas.slimemold.shortestpath;
 
+import edu.koritsas.slimemold.AbstractPhysarumPolycephalum;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.geotools.graph.structure.DirectedGraph;
