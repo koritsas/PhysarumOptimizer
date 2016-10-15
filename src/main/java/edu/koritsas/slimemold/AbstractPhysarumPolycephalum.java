@@ -132,12 +132,7 @@ public abstract class AbstractPhysarumPolycephalum {
                 if(n1.equals(n2)){
                     matrix[i][j]=calculateSelfCoefficient(n1);
                 }else{
-                    Edge n1Ton2 =n1.getEdge(n2);
-                    if(n1Ton2==null){
-                        matrix[i][j]=0;
-                    }else{
-                        matrix[i][j]=-calculateCoefficient(n1Ton2);
-                    }
+                        matrix[i][j]=-calculateCoefficient(n1,n2);
                 }
 
 
@@ -160,22 +155,15 @@ public abstract class AbstractPhysarumPolycephalum {
 
             Node n1 = allNodes.get(i);
             if (n1.equals(sourceNode)) {
-                Edge nToSink = n1.getEdge(sinkNode);
-                if (nToSink == null) {
-                    constants[i] = Io;
-                } else {
-                    constants[i] = Io + calculateCoefficient(nToSink) * pressureMap.get(sinkNode);
-                }
+
+                    constants[i] = Io + calculateCoefficient(n1,sinkNode) * pressureMap.get(sinkNode);
 
             } else if (n1.equals(sinkNode)) {
                 constants[i] = -Io - calculateSelfCoefficient(n1) *  pressureMap.get(sinkNode);
             } else {
-                Edge nToSink = n1.getEdge(sinkNode);
-                if (nToSink == null) {
-                    constants[i] = 0;
-                } else {
-                    constants[i] = calculateCoefficient(nToSink) *  pressureMap.get(sinkNode);
-                }
+
+                    constants[i] = calculateCoefficient(n1,sinkNode) *  pressureMap.get(sinkNode);
+
 
             }
         }
@@ -408,25 +396,30 @@ public abstract class AbstractPhysarumPolycephalum {
      * @return Returns the self-coefficient
      */
 
-    protected double calculateSelfCoefficient(Node n) {
+    public double calculateSelfCoefficient(Node n) {
         double selfC = 0;
         List<Edge> edges = n.getEdges();
-        Iterator<Edge> iterator = edges.iterator();
-        while (iterator.hasNext()) {
-            Edge edge = iterator.next();
-            selfC = selfC + calculateCoefficient(edge);
 
+        Iterator<Node> it =n.getRelated();
+
+        while(it.hasNext()){
+            selfC = selfC + calculateCoefficient(n,it.next());
         }
 
 
         return selfC;
     }
 
-    protected double calculateCoefficient(Edge e){
-        double D =conductivityMap.get(e);
-        double w = getEdgeCost(e);
+    protected double calculateCoefficient(Node n1, Node n2){
+        Edge e=n1.getEdge(n2);
+        double coeff=0;
+        if (e!=null){
+            double D =conductivityMap.get(e);
+            double w = getEdgeCost(e);
+            coeff=D/w;
+        }
 
-        return D/w;
+        return coeff;
     }
 
     /**

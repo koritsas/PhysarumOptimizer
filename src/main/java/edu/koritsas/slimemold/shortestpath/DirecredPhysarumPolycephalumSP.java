@@ -2,7 +2,9 @@ package edu.koritsas.slimemold.shortestpath;
 
 import edu.koritsas.slimemold.AbstractPhysarumPolycephalum;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
+import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.linear.RealVector;
 import org.geotools.graph.structure.DirectedGraph;
 import org.geotools.graph.structure.DirectedNode;
 import org.geotools.graph.structure.Edge;
@@ -43,9 +45,9 @@ public abstract class DirecredPhysarumPolycephalumSP extends AbstractPhysarumPol
                     matrix[i][j]=calculateSelfCoefficient(n1);
                 }else{
                     if(n1.getOutEdge(n2)!=null){
-                        matrix[i][j]=-calculateCoefficient(n1.getOutEdge(n2));
+                        matrix[i][j]=-calculateCoefficient(, n1.getOutEdge(n2), );
                     }else if (n1.getInEdge(n2)!=null){
-                        matrix[i][j]=calculateCoefficient(n1.getInEdge(n2));
+                        matrix[i][j]=calculateCoefficient(, n1.getInEdge(n2), );
                     }else{
                         matrix[i][j]=0;
                     }
@@ -61,27 +63,56 @@ public abstract class DirecredPhysarumPolycephalumSP extends AbstractPhysarumPol
     }
 
     @Override
-    protected double calculateSelfCoefficient(Node n) {
+    protected RealVector createConstantsVector() {
+        List<Node> allNodes =getAllNodes(graph);
+        double[] constants = new double[allNodes.size()];
+        for (int i = 0; i < constants.length; i++) {
 
+            BasicDirectedNode n1 = (BasicDirectedNode) allNodes.get(i);
+            if (n1.equals(sourceNode)) {
+                Edge nToSink = n1.getEdge(sinkNode);
+                if (nToSink == null) {
+                    constants[i] = Io;
+                } else {
+
+                    constants[i] = Io + calculateCoefficient(, nToSink, ) * pressureMap.get(sinkNode);
+                }
+
+            } else if (n1.equals(sinkNode)) {
+                constants[i] = -Io - calculateSelfCoefficient(n1) *  pressureMap.get(sinkNode);
+            } else {
+                Edge nToSink = n1.getEdge(sinkNode);
+                if (nToSink == null) {
+                    constants[i] = 0;
+                } else {
+                    constants[i] = calculateCoefficient(, nToSink, ) *  pressureMap.get(sinkNode);
+                }
+
+            }
+        }
+
+
+        return new ArrayRealVector(constants);
+    }
+
+    @Override
+    public double calculateSelfCoefficient(Node n) {
         BasicDirectedNode node = (BasicDirectedNode) n;
-        List<Edge> out =node.getOutEdges();
-       double cOut= out.stream().collect(Collectors.summingDouble(new ToDoubleFunction<Edge>() {
+
+
+        ToDoubleFunction<Edge> function = new ToDoubleFunction<Edge>() {
             @Override
             public double applyAsDouble(Edge edge) {
 
-                return calculateCoefficient(edge);
+                return calculateCoefficient(, edge, );
             }
-        })).doubleValue();
+        };
 
-        List<Edge> in =node.getInEdges();
-       double cIn= in.stream().collect(Collectors.summingDouble(new ToDoubleFunction<Edge>() {
-            @Override
-            public double applyAsDouble(Edge edge) {
-                return calculateCoefficient(edge);
-            }
-        }));
+        List<Edge> inEdges =node.getInEdges();
+        List<Edge> outEdges =node.getOutEdges();
+      double  c=inEdges.stream().collect(Collectors.summingDouble(function)).doubleValue()-outEdges.stream().collect(Collectors.summingDouble(function)).doubleValue();
 
-        return cOut-cIn;
+        return c;
     }
 
     @Override
