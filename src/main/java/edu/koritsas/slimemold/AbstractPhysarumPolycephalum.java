@@ -276,7 +276,7 @@ public abstract class AbstractPhysarumPolycephalum {
      * @param e
      * @return the flux of the tube
      */
-    private double calculateTubeFlux(Edge e){
+    protected double calculateTubeFlux(Edge e){
 
         double p1 =pressureMap.get(e.getNodeA());
         double p2 =pressureMap.get(e.getNodeB());

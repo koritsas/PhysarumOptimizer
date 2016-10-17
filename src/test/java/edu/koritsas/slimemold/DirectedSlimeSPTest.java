@@ -46,7 +46,7 @@ public class DirectedSlimeSPTest {
 
     private final  double Io=2;
     private final double γ=1.8;
-    private final int numberOfIterations=300;
+    private final int numberOfIterations=500;
     private DirectedSlimeSP slime;
     private Graph graph;
     private DijkstraShortestPathFinder pf;
@@ -100,6 +100,7 @@ public class DirectedSlimeSPTest {
                 return geometry.getLength();
             }
         };
+
 
         pf = new DijkstraShortestPathFinder(graph,source,weighter);
 

@@ -1,10 +1,12 @@
 import com.vividsolutions.jts.geom.Geometry;
+import edu.koritsas.slimemold.DirectedSlimeSP;
 import edu.koritsas.slimemold.SlimeMoldSP;
 import edu.koritsas.slimemold.shapefile.DirectedIrrigationNetwork;
 import edu.koritsas.slimemold.shapefile.GraphUtils;
 import edu.koritsas.slimemold.shapefile.IrrigationNetwork;
 import org.geotools.graph.path.DijkstraShortestPathFinder;
 import org.geotools.graph.path.Path;
+import org.geotools.graph.structure.DirectedGraph;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
@@ -25,8 +27,8 @@ public class Main {
 
        // IrrigationNetwork network = new IrrigationNetwork("C:/Users/ilias/Desktop/SlimeTest/H.shp","C:/Users/ilias/Desktop/SlimeTest/WS.shp","C:/Users/ilias/Desktop/SlimeTest/P.shp");
        // IrrigationNetwork network = new IrrigationNetwork("C:/Users/ilias/Desktop/ParametrizedTests/H4.shp", "C:/Users/ilias/Desktop/ParametrizedTests/W4.shp", "C:/Users/ilias/Desktop/ParametrizedTests/P4.shp");
-        DirectedIrrigationNetwork network = new DirectedIrrigationNetwork("C:/Users/ilias/Desktop/ParametrizedTests/H3.shp", "C:/Users/ilias/Desktop/ParametrizedTests/W3.shp", "C:/Users/ilias/Desktop/ParametrizedTests/P3.shp");
-        Graph graph=null;
+        DirectedIrrigationNetwork network = new DirectedIrrigationNetwork("C:/Users/ilias/Desktop/ParametrizedTests/H5.shp", "C:/Users/ilias/Desktop/ParametrizedTests/W5.shp", "C:/Users/ilias/Desktop/ParametrizedTests/P5.shp");
+        DirectedGraph graph=null;
         try {
             graph =network.getBasicGraph();
         } catch (IOException e) {
@@ -43,7 +45,7 @@ public class Main {
         Random random = new Random();
         Node sink =sinkNodes.get(random.nextInt(sinkNodes.size()));
 
-        SlimeMoldSP slimeMold = new SlimeMoldSP(graph,source,sink,2,1.8,500);
+        DirectedSlimeSP slimeMold = new DirectedSlimeSP(graph,source,sink,2,1.8,3000);
        // SlimeMold slimeMold = new SlimeMold(graph,sourceNodes.get(0),sinkNodes,2,1.8,5000);
         slimeMold.execute();
 
