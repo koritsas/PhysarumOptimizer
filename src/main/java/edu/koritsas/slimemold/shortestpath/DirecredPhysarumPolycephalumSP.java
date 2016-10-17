@@ -79,7 +79,7 @@ public abstract class DirecredPhysarumPolycephalumSP extends AbstractPhysarumPol
         double p1 =pressureMap.get(edge.getInNode());
         double p2 =pressureMap.get(edge.getOutNode());
 
-        double D =conductivityMap.get(e);
+        double D =conductivityMap.get(edge);
         double w = getEdgeCost(e);
 
         double Q=(D/w)*(p1-p2);
@@ -114,7 +114,8 @@ public abstract class DirecredPhysarumPolycephalumSP extends AbstractPhysarumPol
     @Override
     public double calculateTubeConductivity(Edge e) {
         DirectedEdge edge= (DirectedEdge) e;
-        double D = conductivityMap.get(e);
+        double D = conductivityMap.get(edge);
+
 
         double Q = fluxMap.get(e);
         double newD;
@@ -127,7 +128,9 @@ public abstract class DirecredPhysarumPolycephalumSP extends AbstractPhysarumPol
             double ps = pressureMap.get(sourceNode);
             double pe = pressureMap.get(sinkNode);
 
-          newD = (0.5) * ((Q * (p1 - p2)) / (L * (ps - pe)) + D);
+
+
+            newD = (0.5) * ((Q * (p1 - p2)) / (L * (ps - pe)) + D);
 
 
 

@@ -16,11 +16,12 @@ import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.styling.SLD;
-import org.geotools.styling.Style;
+import org.geotools.styling.*;
+import org.geotools.styling.Font;
 import org.geotools.swing.JMapFrame;
 import org.opengis.feature.simple.SimpleFeature;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -108,9 +109,11 @@ public class GraphUtils {
 
         // Create a map content and add our shapefile to it
         MapContent map = new MapContent();
-        map.setTitle("Quickstart");
+        map.setTitle("Shortest Path");
 
-        Style style = SLD.createSimpleStyle(source.getSchema());
+
+       Style style= SLD.createLineStyle(Color.yellow,0.5f,"OBJECTID", null);
+
         Layer layer = new FeatureLayer(source, style);
         map.addLayer(layer);
 
