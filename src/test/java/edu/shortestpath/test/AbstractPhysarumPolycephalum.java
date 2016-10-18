@@ -134,7 +134,7 @@ public abstract class AbstractPhysarumPolycephalum {
                 if(n1.equals(n2)){
                     matrix[i][j]=calculateSelfCoefficient(n1);
                 }else{
-                        matrix[i][j]=-calculateCoefficient(n1,n2);
+                        matrix[i][j]=calculateCoefficient(n1,n2);
                 }
 
 
@@ -158,13 +158,13 @@ public abstract class AbstractPhysarumPolycephalum {
             Node n1 = allNodes.get(i);
             if (n1.equals(sourceNode)) {
 
-                    constants[i] = Io + calculateCoefficient(n1,sinkNode) * pressureMap.get(sinkNode);
+                    constants[i] = Io - calculateCoefficient(n1,sinkNode) * pressureMap.get(sinkNode);
 
             } else if (n1.equals(sinkNode)) {
                 constants[i] = -Io - calculateSelfCoefficient(n1) *  pressureMap.get(sinkNode);
             } else {
 
-                    constants[i] = calculateCoefficient(n1,sinkNode) *  pressureMap.get(sinkNode);
+                    constants[i] = -calculateCoefficient(n1,sinkNode) *  pressureMap.get(sinkNode);
 
 
             }
@@ -405,7 +405,7 @@ public abstract class AbstractPhysarumPolycephalum {
         Iterator<Node> it =n.getRelated();
 
         while(it.hasNext()){
-            selfC = selfC + calculateCoefficient(n,it.next());
+            selfC = selfC + FastMath.abs(calculateCoefficient(n,it.next()));
         }
 
 
@@ -418,7 +418,7 @@ public abstract class AbstractPhysarumPolycephalum {
         if (e!=null){
             double D =conductivityMap.get(e);
             double w = getEdgeCost(e);
-            coeff=D/w;
+            coeff=-D/w;
         }
 
         return coeff;

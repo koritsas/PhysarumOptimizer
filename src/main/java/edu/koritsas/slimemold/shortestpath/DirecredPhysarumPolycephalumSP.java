@@ -5,6 +5,7 @@ import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
+import org.apache.commons.math3.util.FastMath;
 import org.geotools.graph.structure.*;
 import org.geotools.graph.structure.basic.BasicDirectedNode;
 
@@ -63,7 +64,7 @@ public abstract class DirecredPhysarumPolycephalumSP extends AbstractPhysarumPol
 
             c=super.calculateCoefficient(node1,node2);
         }else if(node1.getInEdges().contains(edge)){
-            c=-super.calculateCoefficient(node1,node2);
+            c=-FastMath.abs(super.calculateCoefficient(node1,node2));
         }else{
             c=0;
         }

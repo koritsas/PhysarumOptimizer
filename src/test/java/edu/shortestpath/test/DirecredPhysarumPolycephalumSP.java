@@ -1,5 +1,6 @@
 package edu.shortestpath.test;
 
+import org.apache.commons.math3.util.FastMath;
 import org.geotools.graph.structure.DirectedEdge;
 import org.geotools.graph.structure.DirectedGraph;
 import org.geotools.graph.structure.Edge;
@@ -59,7 +60,7 @@ public abstract class DirecredPhysarumPolycephalumSP extends AbstractPhysarumPol
 
             c=super.calculateCoefficient(node1,node2);
         }else if(node1.getInEdges().contains(edge)){
-            c=-super.calculateCoefficient(node1,node2);
+            c=-FastMath.abs(super.calculateCoefficient(node1,node2));
         }else{
             c=0;
         }

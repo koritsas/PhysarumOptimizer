@@ -112,7 +112,7 @@ public class GraphUtils {
         map.setTitle("Shortest Path");
 
 
-       Style style= SLD.createLineStyle(Color.yellow,0.5f,"OBJECTID", null);
+       Style style= SLD.createLineStyle(Color.RED,0.5f,"OBJECTID", null);
 
         Layer layer = new FeatureLayer(source, style);
         map.addLayer(layer);
