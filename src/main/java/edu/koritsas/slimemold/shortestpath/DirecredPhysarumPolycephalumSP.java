@@ -84,7 +84,9 @@ public abstract class DirecredPhysarumPolycephalumSP extends AbstractPhysarumPol
         double w = getEdgeCost(e);
 
         double Q=(D/w)*(p1-p2);
-
+        if(Q<0){
+            Q=0;
+        }
 
 
         return Q;

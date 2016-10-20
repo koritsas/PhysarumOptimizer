@@ -1,5 +1,6 @@
 package edu.koritsas.slimemold.shapefile;
 
+import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFinder;
@@ -12,6 +13,7 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
+import org.geotools.graph.structure.Node;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
@@ -26,111 +28,52 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by ilias on 29/9/2016.
  */
 public class GraphUtils {
 
-    public static File createShpFromGraph(Graph graph,String path) throws IOException {
+    public static void visualizeGraph(Graph graph){
+        List<Edge> edges =new ArrayList<Edge>(graph.getEdges());
+        List<Node> nodes = new ArrayList<Node>(graph.getNodes());
 
-        List<Edge> edges = new ArrayList<Edge>(graph.getEdges());
-
-
-        List<SimpleFeature> features = new ArrayList<SimpleFeature>();
-        for (Edge e : edges) {
+     List<SimpleFeature> edgeFeatureList =new ArrayList<>();
+        for (Edge e:edges){
             SimpleFeature f = (SimpleFeature) e.getObject();
-            features.add(f);
+            Geometry geometry = (Geometry) f.getDefaultGeometry();
+            System.out.println(geometry);
+            edgeFeatureList.add(f);
         }
+    SimpleFeatureCollection edgeFeatureCollection = new ListFeatureCollection(edgeFeatureList.get(0).getFeatureType(),edgeFeatureList);
 
-        SimpleFeatureCollection featureCollection = new ListFeatureCollection(features.get(0).getFeatureType(), features);
+        Style edgeStyle =SLD.createLineStyle(Color.green,0.5f,"SHAPE_Leng",null);
+        FeatureLayer edgeLayer = new FeatureLayer(edgeFeatureCollection,edgeStyle);
 
-        ShapefileDataStoreFactory factory = new ShapefileDataStoreFactory();
-
-        File newFile = new File(path);
-
-        ShapefileDataStoreFactory dataStoreFactory = new ShapefileDataStoreFactory();
-
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
-        params.put("url", newFile.toURI().toURL());
-        params.put("create spatial index", Boolean.TRUE);
-
-        ShapefileDataStore newDataStore = (ShapefileDataStore) dataStoreFactory.createNewDataStore(params);
-
-
-        newDataStore.createSchema(features.get(0).getFeatureType());
-
-        /*
-         * You can comment out this line if you are using the createFeatureType method (at end of
-         * class file) rather than DataUtilities.createType
-         */
-        newDataStore.forceSchemaCRS(DefaultGeographicCRS.WGS84);
-
-        Transaction transaction = new DefaultTransaction("create");
-
-        String typeName = newDataStore.getTypeNames()[0];
-        SimpleFeatureSource featureSource = newDataStore.getFeatureSource(typeName);
-
-        if (featureSource instanceof SimpleFeatureStore) {
-            SimpleFeatureStore featureStore = (SimpleFeatureStore) featureSource;
-
-            featureStore.setTransaction(transaction);
-            try {
-                featureStore.addFeatures(featureCollection);
-                transaction.commit();
-
-            } catch (Exception problem) {
-                problem.printStackTrace();
-                transaction.rollback();
-
-            } finally {
-                transaction.close();
-            }
-
-        } else {
-            System.out.println(typeName + " does not support read/write access");
-            System.exit(1);
+   List<SimpleFeature> nodeFeature =new ArrayList<>();
+        for (Node n:nodes){
+            SimpleFeature feature = (SimpleFeature) n.getObject();
+            nodeFeature.add(feature);
         }
+      SimpleFeatureCollection nodeFeatureCollection =new ListFeatureCollection(nodeFeature.get(0).getFeatureType(),nodeFeature);
+        Style nodeStyle =SLD.createPointStyle("Circle",Color.black,Color.gray,0f,5f);
+        FeatureLayer nodeLayer = new FeatureLayer(nodeFeatureCollection,nodeStyle);
 
-        return newFile;
-    }
+        MapContent mapContent = new MapContent();
+        mapContent.addLayer(edgeLayer);
+       mapContent.addLayer(nodeLayer);
 
-    public static void readShapeFile(File file) throws IOException {
-
-
-
-
-        FileDataStore store = FileDataStoreFinder.getDataStore(file);
-        SimpleFeatureSource source = store.getFeatureSource();
-
-        // Create a map content and add our shapefile to it
-        MapContent map = new MapContent();
-        map.setTitle("Shortest Path");
+        JMapFrame mapFrame=new JMapFrame();
+        mapFrame.showMap(mapContent);
 
 
-       Style style= SLD.createLineStyle(Color.RED,0.5f,"OBJECTID", null);
-
-        Layer layer = new FeatureLayer(source, style);
-        map.addLayer(layer);
-
-        // Now display the map
-        JMapFrame.showMap(map);
 
     }
 
-    public static void visualizeGraph(Graph graph) throws IOException {
 
-        File file =File.createTempFile("Graph",".shp");
 
-        file =createShpFromGraph(graph,file.getAbsolutePath());
 
-        readShapeFile(file);
-
-        file.deleteOnExit();
-
-    }
 }
