@@ -2,6 +2,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import edu.koritsas.slimemold.DirectedSlimeSP;
 import edu.koritsas.slimemold.SlimeMoldSP;
 import edu.koritsas.slimemold.minimumtree.DijkstraMinimumTree;
+import edu.koritsas.slimemold.minimumtree.DirectedPhysarumPolycephalumMST;
 import edu.koritsas.slimemold.minimumtree.PhysarumPolycephalumMST;
 import edu.koritsas.slimemold.shapefile.DirectedIrrigationNetwork;
 import edu.koritsas.slimemold.shapefile.GraphUtils;
@@ -38,7 +39,7 @@ public class Main {
 
        // IrrigationNetwork network = new IrrigationNetwork("C:/Users/ilias/Desktop/SlimeTest/H.shp","C:/Users/ilias/Desktop/SlimeTest/WS.shp","C:/Users/ilias/Desktop/SlimeTest/P.shp");
        // IrrigationNetwork network = new IrrigationNetwork("C:/Users/ilias/Desktop/ParametrizedTests/H4.shp", "C:/Users/ilias/Desktop/ParametrizedTests/W4.shp", "C:/Users/ilias/Desktop/ParametrizedTests/P4.shp");
-        DirectedIrrigationNetwork network = new DirectedIrrigationNetwork("C:/Users/ilias/Desktop/ParametrizedTests/H1.shp", "C:/Users/ilias/Desktop/ParametrizedTests/W1.shp", "C:/Users/ilias/Desktop/ParametrizedTests/P1.shp");
+        DirectedIrrigationNetwork network = new DirectedIrrigationNetwork("C:/Users/ilias/Desktop/ParametrizedTests/HDMST.shp", "C:/Users/ilias/Desktop/ParametrizedTests/WDMST.shp", "C:/Users/ilias/Desktop/ParametrizedTests/PDMST.shp");
         DirectedGraph graph=null;
         try {
             graph =network.getBasicGraph();
@@ -100,24 +101,38 @@ public class Main {
         tree.calculate();
         Graph dijkstramst =tree.getGraph();
 
-
-
-        PhysarumPolycephalumMST slimeTree = new PhysarumPolycephalumMST(graph,source,sinkNodes,2,1.8,500) {
+/*
+        DirectedPhysarumPolycephalumMST slimeDMST = new DirectedPhysarumPolycephalumMST(graph,source,sinkNodes,2,1.8,5000) {
             @Override
             public double getEdgeCost(Edge e) {
                 SimpleFeature f = (SimpleFeature) e.getObject();
-                Geometry g= (Geometry) f.getDefaultGeometry();
+                Geometry g = (Geometry) f.getDefaultGeometry();
                 return g.getLength();
+
             }
         };
 
-        slimeTree.execute();
-        slimeTree.showConductivityMap();
-        slimeTree.showFlowDiagram();
+        slimeDMST.execute();
+        slimeDMST.showFlowDiagram();
+        slimeDMST.showConductivityMap();
 
-        Graph slimeTreeGraph=slimeTree.getGraph();
+        GraphUtils.visualizeGraph(slimeDMST.getGraph());
+*/
 
-      GraphUtils.visualizeGraph(slimeTreeGraph);
-        GraphUtils.visualizeGraph(dijkstramst);
+    PhysarumPolycephalumMST slimeMST = new PhysarumPolycephalumMST(graph,source,sinkNodes,2,1.8,500) {
+    @Override
+         public double getEdgeCost(Edge e) {
+            SimpleFeature f = (SimpleFeature) e.getObject();
+             Geometry g = (Geometry) f.getDefaultGeometry();
+        return g.getLength();
+     }
+    };
+
+        slimeMST.execute();
+        slimeMST.showConductivityMap();
+        slimeMST.showFlowDiagram();
+
+        GraphUtils.visualizeGraph(graph);
+
     }
 }

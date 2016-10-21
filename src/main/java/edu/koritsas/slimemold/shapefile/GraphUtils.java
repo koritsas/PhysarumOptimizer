@@ -11,6 +11,8 @@ import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.data.view.DefaultView;
+import org.geotools.feature.simple.SimpleFeatureTypeImpl;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
@@ -22,6 +24,7 @@ import org.geotools.styling.*;
 import org.geotools.styling.Font;
 import org.geotools.swing.JMapFrame;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 
 import java.awt.*;
 import java.io.File;
@@ -48,6 +51,8 @@ public class GraphUtils {
             System.out.println(geometry);
             edgeFeatureList.add(f);
         }
+
+
     SimpleFeatureCollection edgeFeatureCollection = new ListFeatureCollection(edgeFeatureList.get(0).getFeatureType(),edgeFeatureList);
 
         Style edgeStyle =SLD.createLineStyle(Color.green,0.5f,"SHAPE_Leng",null);
@@ -55,8 +60,12 @@ public class GraphUtils {
 
    List<SimpleFeature> nodeFeature =new ArrayList<>();
         for (Node n:nodes){
-            SimpleFeature feature = (SimpleFeature) n.getObject();
-            nodeFeature.add(feature);
+            try {
+                SimpleFeature feature = (SimpleFeature) n.getObject();
+                nodeFeature.add(feature);
+            }catch (ClassCastException e){
+                System.out.println("For the last time! It's not  feature, it's a point!!");
+            }
         }
       SimpleFeatureCollection nodeFeatureCollection =new ListFeatureCollection(nodeFeature.get(0).getFeatureType(),nodeFeature);
         Style nodeStyle =SLD.createPointStyle("Circle",Color.black,Color.gray,0f,5f);
