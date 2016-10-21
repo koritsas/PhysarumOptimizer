@@ -1,6 +1,6 @@
 import com.vividsolutions.jts.geom.Geometry;
-import edu.koritsas.slimemold.AbstractDirectedPhysarumPolycephalum;
-import edu.koritsas.slimemold.minimumtree.DijkstraMinimumTree;
+import edu.koritsas.slimemold.mstree.PhysarumPolycephalumDirectedMST;
+import edu.koritsas.slimemold.mstree.PhysarumPolycephalumMST;
 import edu.koritsas.slimemold.shapefile.DirectedIrrigationNetwork;
 import edu.koritsas.slimemold.shapefile.GraphUtils;
 import org.geotools.graph.structure.DirectedGraph;
@@ -39,50 +39,21 @@ public class Main {
 
         Random random = new Random();
         Node sink =sinkNodes.get(random.nextInt(sinkNodes.size()));
-/*
-        DirectedSlimeSP slimeMold = new DirectedSlimeSP(graph,source,sink,2,1.8,600);
-       // SlimeMold slimeMold = new SlimeMold(graph,sourceNodes.get(0),sinkNodes,2,1.8,5000);
-        slimeMold.execute();
 
-        slimeMold.showFlowDiagram();
-        slimeMold.showConductivityMap();
-
-        try {
-            GraphUtils.visualizeGraph(graph);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println(slimeMold.getSolutionCost());
-
-*/
-        DirectedDijkstraIterator.EdgeWeighter weighter = new DirectedDijkstraIterator.EdgeWeighter() {
+        PhysarumPolycephalumDirectedMST slimeMST = new PhysarumPolycephalumDirectedMST(graph,source,sinkNodes,2,1.8,3000) {
             @Override
-            public double getWeight(Edge e) {
+            public double getEdgeCost(Edge e) {
                 SimpleFeature f = (SimpleFeature) e.getObject();
-                Geometry geom = (Geometry) f.getDefaultGeometry();
-                return geom.getLength();
+                Geometry g = (Geometry) f.getDefaultGeometry();
+                return g.getLength();
             }
         };
-/*
-        DijkstraShortestPathFinder pf = new DijkstraShortestPathFinder(graph,source,weighter);
-        pf.calculate();
 
-        Path path=pf.getPath(sink);
+        slimeMST.execute();
+        slimeMST.showFlowDiagram();
+        slimeMST.showConductivityMap();
 
-        BasicGraph g =new BasicGraph(null,path.getEdges());
-
-        try {
-            GraphUtils.visualizeGraph(g);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println(pf.getCost(sink));
-*/
-        DijkstraMinimumTree tree = new DijkstraMinimumTree(graph,source,sinkNodes,null,weighter);
-        tree.calculate();
-        Graph dijkstramst =tree.getGraph();
+        GraphUtils.visualizeGraph(graph);
 
 
 

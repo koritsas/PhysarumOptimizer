@@ -1,4 +1,4 @@
-package edu.koritsas.slimemold;
+package edu.shortestpath.test;
 
 import org.apache.commons.math3.util.FastMath;
 import org.geotools.graph.structure.DirectedEdge;
@@ -13,7 +13,7 @@ import java.util.List;
  * Created by ilias on 21/10/2016.
  */
 public abstract class AbstractDirectedPhysarumPolycephalum extends AbstractPhysarumPolycephalum {
-    public AbstractDirectedPhysarumPolycephalum(DirectedGraph graph, Node sourceNode,Node sinkNode,double Io,double γ,int numberOfIterations){
+    public AbstractDirectedPhysarumPolycephalum(DirectedGraph graph, Node sourceNode, Node sinkNode, double Io, double γ, int numberOfIterations){
         super(graph,sourceNode,sinkNode,Io,γ,numberOfIterations);
         this.graph=graph;
 

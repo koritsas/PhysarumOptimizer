@@ -10,14 +10,9 @@ import org.geotools.graph.structure.Node;
  */
 
 public abstract class PhysarumPolycephalumSP extends AbstractPhysarumPolycephalum {
-    public PhysarumPolycephalumSP(Graph graph, Node sourceNode,Node sinkNode,double Io,double γ,int numberOfIterations){
-        this.graph=graph;
-        this.sourceNode=sourceNode;
-        this.sinkNode=sinkNode;
-        this.numberOfIterations=numberOfIterations;
-        this.γ=γ;
-        this.Io=Io;
-    }
+   public PhysarumPolycephalumSP(Graph graph,Node sourceNode,Node sinkNode,double Io,double γ,int numberOfIterations){
+       super(graph,sourceNode,sinkNode,Io,γ,numberOfIterations);
+   }
 
 
 
