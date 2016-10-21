@@ -1,6 +1,5 @@
 package edu.shortestpath.test;
 
-
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
@@ -10,7 +9,7 @@ import org.geotools.graph.structure.Node;
  */
 
 public abstract class PhysarumPolycephalumSP extends AbstractPhysarumPolycephalum {
-    public PhysarumPolycephalumSP(Graph graph, Node sourceNode, Node sinkNode, double Io, double γ, int numberOfIterations){
+    public PhysarumPolycephalumSP(Graph graph, Node sourceNode,Node sinkNode,double Io,double γ,int numberOfIterations){
         this.graph=graph;
         this.sourceNode=sourceNode;
         this.sinkNode=sinkNode;
@@ -18,6 +17,8 @@ public abstract class PhysarumPolycephalumSP extends AbstractPhysarumPolycephalu
         this.γ=γ;
         this.Io=Io;
     }
+
+
 
     @Override
     public double calculateTubeConductivity(Edge e) {

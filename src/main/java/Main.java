@@ -1,33 +1,16 @@
 import com.vividsolutions.jts.geom.Geometry;
-import edu.koritsas.slimemold.DirectedSlimeSP;
-import edu.koritsas.slimemold.SlimeMoldSP;
+import edu.koritsas.slimemold.AbstractDirectedPhysarumPolycephalum;
 import edu.koritsas.slimemold.minimumtree.DijkstraMinimumTree;
-import edu.koritsas.slimemold.minimumtree.DirectedPhysarumPolycephalumMST;
-import edu.koritsas.slimemold.minimumtree.PhysarumPolycephalumMST;
 import edu.koritsas.slimemold.shapefile.DirectedIrrigationNetwork;
 import edu.koritsas.slimemold.shapefile.GraphUtils;
-import edu.koritsas.slimemold.shapefile.IrrigationNetwork;
-import org.geotools.data.collection.ListFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.graph.path.DijkstraShortestPathFinder;
-import org.geotools.graph.path.Path;
 import org.geotools.graph.structure.DirectedGraph;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
-import org.geotools.graph.structure.basic.BasicGraph;
-import org.geotools.graph.traverse.standard.DijkstraIterator;
 import org.geotools.graph.traverse.standard.DirectedDijkstraIterator;
-import org.geotools.map.FeatureLayer;
-import org.geotools.map.MapContent;
-import org.geotools.styling.SLD;
-import org.geotools.styling.Style;
-import org.geotools.swing.JMapFrame;
 import org.opengis.feature.simple.SimpleFeature;
 
-import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -101,38 +84,7 @@ public class Main {
         tree.calculate();
         Graph dijkstramst =tree.getGraph();
 
-/*
-        DirectedPhysarumPolycephalumMST slimeDMST = new DirectedPhysarumPolycephalumMST(graph,source,sinkNodes,2,1.8,5000) {
-            @Override
-            public double getEdgeCost(Edge e) {
-                SimpleFeature f = (SimpleFeature) e.getObject();
-                Geometry g = (Geometry) f.getDefaultGeometry();
-                return g.getLength();
 
-            }
-        };
-
-        slimeDMST.execute();
-        slimeDMST.showFlowDiagram();
-        slimeDMST.showConductivityMap();
-
-        GraphUtils.visualizeGraph(slimeDMST.getGraph());
-*/
-
-    PhysarumPolycephalumMST slimeMST = new PhysarumPolycephalumMST(graph,source,sinkNodes,2,1.8,500) {
-    @Override
-         public double getEdgeCost(Edge e) {
-            SimpleFeature f = (SimpleFeature) e.getObject();
-             Geometry g = (Geometry) f.getDefaultGeometry();
-        return g.getLength();
-     }
-    };
-
-        slimeMST.execute();
-        slimeMST.showConductivityMap();
-        slimeMST.showFlowDiagram();
-
-        GraphUtils.visualizeGraph(graph);
 
     }
 }

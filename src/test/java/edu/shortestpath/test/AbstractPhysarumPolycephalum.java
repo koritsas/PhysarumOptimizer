@@ -177,7 +177,7 @@ public abstract class AbstractPhysarumPolycephalum {
      * Initializes the XYSeries of the diagrams
      * @param graph
      */
-    private void initializeMaps(Graph graph){
+    protected void initializeMaps(Graph graph){
         Collection<Edge> edges =graph.getEdges();
         fluxMap=new HashMap<Edge, Double>(graph.getEdges().size());
         conductivityMap=new HashMap<Edge,Double>(graph.getEdges().size());
@@ -248,7 +248,7 @@ public abstract class AbstractPhysarumPolycephalum {
      *
      * @param graph eliminates the edges of the graph that have conductivity near zero
      */
-    private void eliminateEdges(Graph graph){
+    protected void eliminateEdges(Graph graph){
 
         graph.getEdges().removeIf(o -> FastMath.abs(fluxMap.get(o))<10E-10);
 
