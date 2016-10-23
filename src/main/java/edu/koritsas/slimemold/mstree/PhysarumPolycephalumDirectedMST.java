@@ -55,7 +55,7 @@ public abstract class PhysarumPolycephalumDirectedMST extends AbstractDirectedPh
         //double fQ = Math.pow(Math.abs(Q), γ) / (1 + Math.pow(Math.abs(Q), γ));
          double fQ=Math.abs(Q);
 
-         double newD = fQ - 0.4 * D;
+         double newD = fQ - 0.2 * D;
 
 
 

@@ -40,7 +40,7 @@ public class Main {
         Random random = new Random();
         Node sink =sinkNodes.get(random.nextInt(sinkNodes.size()));
 
-        PhysarumPolycephalumDirectedMST slimeMST = new PhysarumPolycephalumDirectedMST(graph,source,sinkNodes,2,1.8,3000) {
+        PhysarumPolycephalumDirectedMST slimeMST = new PhysarumPolycephalumDirectedMST(graph,source,sinkNodes,1,1.8,50000) {
             @Override
             public double getEdgeCost(Edge e) {
                 SimpleFeature f = (SimpleFeature) e.getObject();
@@ -52,10 +52,11 @@ public class Main {
         slimeMST.execute();
         slimeMST.showFlowDiagram();
         slimeMST.showConductivityMap();
+        slimeMST.showPressureMap();
 
         GraphUtils.visualizeGraph(graph);
 
-
+        System.out.println(slimeMST.getSolutionCost());
 
     }
 }

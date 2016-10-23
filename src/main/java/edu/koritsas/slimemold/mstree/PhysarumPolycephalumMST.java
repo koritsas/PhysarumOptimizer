@@ -3,11 +3,13 @@ package edu.koritsas.slimemold.mstree;
 import edu.koritsas.slimemold.AbstractPhysarumPolycephalum;
 import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.RealVector;
+import org.apache.commons.math3.util.FastMath;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
 
 import java.util.List;
+import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
 
 /**
@@ -24,6 +26,7 @@ public abstract class PhysarumPolycephalumMST extends AbstractPhysarumPolycephal
     protected RealVector createConstantsVector() {
         List<Node> allNodes =getAllNodes(graph);
         double[] constants = new double[allNodes.size()];
+
         for (int i = 0; i < constants.length; i++) {
 
             Node n1 = allNodes.get(i);
@@ -54,14 +57,20 @@ public abstract class PhysarumPolycephalumMST extends AbstractPhysarumPolycephal
 
 
 
-        //double fQ = Math.pow(Math.abs(Q), γ) / (1 + Math.pow(Math.abs(Q), γ));
-        double fQ=Math.abs(Q);
+       // double fQ = Math.pow(Math.abs(Q), γ) / (1 + Math.pow(Math.abs(Q), γ));
+        double fQ= FastMath.abs(Q);
 
-        double newD = fQ - 0.4 * D;
+        double newD = fQ - 0.2 * D;
 
 
 
         return newD;
     }
+
+   /* @Override
+    protected List<Node> getAllButSink(Graph graph) {
+
+        return  getAllNodes(graph).stream().filter(o -> sinkNodesList.contains(o)).collect(Collectors.toList());
+    }*/
 
 }
