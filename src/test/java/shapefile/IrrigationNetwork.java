@@ -1,4 +1,4 @@
-package edu.shortestpath.test;
+package shapefile;
 
 import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.data.FileDataStore;
@@ -7,12 +7,10 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.graph.build.feature.FeatureGraphGenerator;
-import org.geotools.graph.build.line.BasicDirectedLineGraphBuilder;
-import org.geotools.graph.build.line.DirectedLineStringGraphGenerator;
-import org.geotools.graph.structure.DirectedGraph;
-import org.geotools.graph.structure.GraphVisitor;
-import org.geotools.graph.structure.Graphable;
-import org.geotools.graph.structure.Node;
+import org.geotools.graph.build.line.BasicLineGraphBuilder;
+import org.geotools.graph.build.line.LineStringGraphGenerator;
+import org.geotools.graph.structure.*;
+import org.geotools.graph.structure.basic.BasicGraph;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -21,9 +19,9 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Created by ilias on 13/10/2016.
+ * Created by ilias on 5/9/2016.
  */
-public class DirectedIrrigationNetwork {
+public class IrrigationNetwork {
     private  String hydrantShapefilePath;
     private  String waterSourceShapefilePath;
     private  String pipeShapefilePath;
@@ -33,8 +31,14 @@ public class DirectedIrrigationNetwork {
     private SimpleFeatureCollection waterSourceFeatureCollection;
     private SimpleFeatureCollection pipeFeatureCollection;
 
-    private DirectedGraph graph;
-    public DirectedIrrigationNetwork(String hydrantShapefilePath, String waterSourceShapefilePath, String pipeShapefilePath){
+    private BasicGraph basicGraph;
+
+    public DirectedGraph getDirectedGraph() {
+        return directedGraph;
+    }
+
+    private DirectedGraph directedGraph;
+    public IrrigationNetwork(String hydrantShapefilePath, String waterSourceShapefilePath, String pipeShapefilePath){
         this.hydrantShapefilePath=hydrantShapefilePath;
         this.pipeShapefilePath=pipeShapefilePath;
         this.waterSourceShapefilePath=waterSourceShapefilePath;
@@ -65,15 +69,11 @@ public class DirectedIrrigationNetwork {
         pipeDataStore.dispose();
 
 
-        //BasicLineGraphGenerator basicLineGraphGenerator = new BasicLineGraphGenerator();
-      /*  LineStringGraphGenerator basicLineGraphGenerator = new LineStringGraphGenerator();
+       //BasicLineGraphGenerator basicLineGraphGenerator = new BasicLineGraphGenerator();
+        LineStringGraphGenerator basicLineGraphGenerator = new LineStringGraphGenerator();
         FeatureGraphGenerator graphGenerator = new FeatureGraphGenerator(basicLineGraphGenerator);
         graphGenerator.setGraphBuilder(new BasicLineGraphBuilder());
-*/
 
-        DirectedLineStringGraphGenerator directedLineStringGraphGenerator = new DirectedLineStringGraphGenerator();
-        FeatureGraphGenerator graphGenerator = new FeatureGraphGenerator(directedLineStringGraphGenerator);
-        graphGenerator.setGraphBuilder(new BasicDirectedLineGraphBuilder());
 
 
         SimpleFeatureIterator pipeIt =pipeSimpleFeatureCollection.features();
@@ -89,7 +89,7 @@ public class DirectedIrrigationNetwork {
             SimpleFeature f =hit.next();
             Geometry geom =(Geometry) f.getDefaultGeometry();
 
-            directedLineStringGraphGenerator.getNode(geom.getCoordinate()).setObject(f);
+            basicLineGraphGenerator.getNode(geom.getCoordinate()).setObject(f);
 
 
         }
@@ -99,42 +99,42 @@ public class DirectedIrrigationNetwork {
             SimpleFeature f =wsit.next();
             Geometry geom =(Geometry) f.getDefaultGeometry();
 
-            directedLineStringGraphGenerator.getNode(geom.getCoordinate()).setObject(f);
+           basicLineGraphGenerator.getNode(geom.getCoordinate()).setObject(f);
 
 
         }
         wsit.close();
 
-        graph = (DirectedGraph) graphGenerator.getGraphBuilder().getGraph();
+        basicGraph = (BasicGraph) graphGenerator.getGraphBuilder().getGraph();
 
 
     }
     public List<Node> getWaterSource(){
-        GraphVisitor visitor =new GraphVisitor() {
-            public int visit(Graphable component) {
-                try {
-                    SimpleFeature f = (SimpleFeature) component.getObject();
-                    if (f.getType().equals(waterSourceType)) {
-                        return 1;
-                    } else {
-                        return -1;
-                    }
-                }catch (Exception e){
-                    return -1;
-                }
+    GraphVisitor visitor =new GraphVisitor() {
+        public int visit(Graphable component) {
+           try {
+               SimpleFeature f = (SimpleFeature) component.getObject();
+               if (f.getType().equals(waterSourceType)) {
+                   return 1;
+               } else {
+                   return -1;
+               }
+           }catch (Exception e){
+               return -1;
+           }
 
 
-            }
-        };
+        }
+    };
 
-        return graph.queryNodes(visitor);
-    }
+    return basicGraph.queryNodes(visitor);
+}
 
     public List<Node> getHydrants(){
         GraphVisitor visitor =new GraphVisitor() {
             public int visit(Graphable component) {
                 Node n = (Node) component;
-                try {
+               try {
                     SimpleFeature f = (SimpleFeature) component.getObject();
                     if (f.getType().equals(hydrantType)) {
                         return 1;
@@ -146,15 +146,16 @@ public class DirectedIrrigationNetwork {
                 }
             }
         };
-        return graph.queryNodes(visitor);
+        return basicGraph.queryNodes(visitor);
     }
 
 
 
-    public DirectedGraph getBasicGraph() throws IOException {
+    public Graph getBasicGraph() throws IOException {
         createNetworkFromShp();
 
-        return graph;
+
+        return basicGraph;
     }
 
 

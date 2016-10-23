@@ -25,26 +25,21 @@ public abstract class AbstractDirectedPhysarumPolycephalum extends AbstractPhysa
 
 
         double Q = fluxMap.get(e);
-        double newD;
+
 
         double L = getEdgeCost(e);
 
-        double p1 = pressureMap.get(edge.getInNode());
-        double p2 = pressureMap.get(edge.getOutNode());
-
-        double ps = pressureMap.get(sourceNode);
-        double pe = pressureMap.get(sinkNode);
 
 
 
-        newD = (0.5) * ((Q * (p1 - p2)) / (L * (ps - pe)) + D);
+      ;
 
 
 
         //double fQ = Math.pow(Math.abs(Q), γ) / (1 + Math.pow(Math.abs(Q), γ));
-        // double fQ=Math.abs(Q);
+        double fQ=Math.abs(Q);
 
-        // double newD = fQ - 0.4 * D;
+        double newD = fQ - 0.4 * D;
 
 
 

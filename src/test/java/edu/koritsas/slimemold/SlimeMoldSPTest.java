@@ -1,9 +1,7 @@
 package edu.koritsas.slimemold;
 
 import com.vividsolutions.jts.geom.Geometry;
-import edu.shortestpath.test.GraphUtils;
-import edu.shortestpath.test.IrrigationNetwork;
-import edu.shortestpath.test.SlimeSP;
+import edu.koritsas.slimemold.shortestpath.PhysarumPolycephalumSP;
 import org.geotools.graph.path.DijkstraShortestPathFinder;
 import org.geotools.graph.path.Path;
 import org.geotools.graph.structure.Edge;
@@ -11,7 +9,6 @@ import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
 import org.geotools.graph.structure.basic.BasicGraph;
 import org.geotools.graph.traverse.standard.DijkstraIterator;
-import org.geotools.resources.GraphicsUtilities;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -19,11 +16,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.opengis.feature.simple.SimpleFeature;
+import shapefile.IrrigationNetwork;
+
 
 import java.io.IOException;
 import java.util.*;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by ilias on 11/10/2016.
@@ -43,7 +40,7 @@ public class SlimeMoldSPTest {
     private final  double Io=2;
     private final double γ=1.8;
     private final int numberOfIterations=300;
-    private SlimeSP slime;
+    private PhysarumPolycephalumSP slime;
     private Graph graph;
     private DijkstraShortestPathFinder pf;
     private Node source;
@@ -86,7 +83,15 @@ public class SlimeMoldSPTest {
        source=network.getWaterSource().get(0);;
        sink=network.getHydrants().get(random.nextInt(network.getHydrants().size()));
 
-        slime=new SlimeSP(graph,source,sink,Io,γ,numberOfIterations);
+        slime = new PhysarumPolycephalumSP(graph,source,sink,Io,γ,numberOfIterations) {
+            @Override
+            public double getEdgeCost(Edge e) {
+                SimpleFeature f = (SimpleFeature) e.getObject();
+                Geometry geometry = (Geometry) f.getDefaultGeometry();
+                return geometry.getLength();
+            }
+        };
+
 
         DijkstraIterator.EdgeWeighter weighter = new DijkstraIterator.EdgeWeighter() {
             @Override

@@ -1,10 +1,8 @@
 package edu.koritsas.slimemold;
 
 import com.vividsolutions.jts.geom.Geometry;
-import edu.shortestpath.test.DirectedIrrigationNetwork;
-import edu.shortestpath.test.DirectedSlimeSP;
-import edu.shortestpath.test.IrrigationNetwork;
-import edu.shortestpath.test.SlimeSP;
+import edu.koritsas.slimemold.shapefile.DirectedIrrigationNetwork;
+import edu.koritsas.slimemold.shortestpath.DirecredPhysarumPolycephalumSP;
 import org.geotools.graph.path.DijkstraShortestPathFinder;
 import org.geotools.graph.path.Path;
 import org.geotools.graph.structure.DirectedGraph;
@@ -12,7 +10,6 @@ import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
 import org.geotools.graph.structure.basic.BasicGraph;
-import org.geotools.graph.traverse.standard.DijkstraIterator;
 import org.geotools.graph.traverse.standard.DirectedDijkstraIterator;
 import org.junit.After;
 import org.junit.Assert;
@@ -27,8 +24,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by ilias on 13/10/2016.
@@ -47,7 +42,7 @@ public class DirectedSlimeSPTest {
     private final  double Io=2;
     private final double γ=1.8;
     private final int numberOfIterations=30000;
-    private DirectedSlimeSP slime;
+    private AbstractDirectedPhysarumPolycephalum slime;
     private Graph graph;
     private DijkstraShortestPathFinder pf;
     private Node source;
@@ -89,8 +84,15 @@ public class DirectedSlimeSPTest {
         source=network.getWaterSource().get(0);;
         sink=network.getHydrants().get(random.nextInt(network.getHydrants().size()));
 
+        slime = new DirecredPhysarumPolycephalumSP(graph,source,sink,Io,γ,numberOfIterations) {
+            @Override
+            public double getEdgeCost(Edge e) {
+                SimpleFeature f = (SimpleFeature) e.getObject();
+                Geometry geometry = (Geometry) f.getDefaultGeometry();
+                return geometry.getLength();
+            }
+        };
 
-        slime=new DirectedSlimeSP(graph,source,sink,Io,γ,numberOfIterations);
 
         DirectedDijkstraIterator.EdgeWeighter weighter = new DirectedDijkstraIterator.EdgeWeighter() {
             @Override
