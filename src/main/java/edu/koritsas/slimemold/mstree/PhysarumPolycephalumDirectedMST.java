@@ -1,10 +1,12 @@
 package edu.koritsas.slimemold.mstree;
 
 import edu.koritsas.slimemold.AbstractDirectedPhysarumPolycephalum;
-import edu.koritsas.slimemold.AbstractPhysarumPolycephalum;
 import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.RealVector;
-import org.geotools.graph.structure.*;
+import org.geotools.graph.structure.DirectedEdge;
+import org.geotools.graph.structure.DirectedGraph;
+import org.geotools.graph.structure.Edge;
+import org.geotools.graph.structure.Node;
 
 import java.util.List;
 

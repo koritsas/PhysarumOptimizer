@@ -2,7 +2,9 @@ package edu.koritsas.slimemold;
 
 import org.apache.commons.math3.linear.*;
 import org.apache.commons.math3.util.FastMath;
-import org.geotools.graph.structure.*;
+import org.geotools.graph.structure.Edge;
+import org.geotools.graph.structure.Graph;
+import org.geotools.graph.structure.Node;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;

@@ -1,39 +1,21 @@
 package edu.koritsas.slimemold.shapefile;
 
 import com.vividsolutions.jts.geom.Geometry;
-import org.geotools.data.DefaultTransaction;
-import org.geotools.data.FileDataStore;
-import org.geotools.data.FileDataStoreFinder;
-import org.geotools.data.Transaction;
 import org.geotools.data.collection.ListFeatureCollection;
-import org.geotools.data.shapefile.ShapefileDataStore;
-import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.data.simple.SimpleFeatureStore;
-import org.geotools.data.view.DefaultView;
-import org.geotools.feature.simple.SimpleFeatureTypeImpl;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
 import org.geotools.map.FeatureLayer;
-import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.styling.*;
-import org.geotools.styling.Font;
+import org.geotools.styling.SLD;
+import org.geotools.styling.Style;
 import org.geotools.swing.JMapFrame;
 import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
 
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.io.Serializable;
-import java.net.MalformedURLException;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by ilias on 29/9/2016.

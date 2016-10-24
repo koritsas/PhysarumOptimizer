@@ -1,6 +1,7 @@
 package edu.koritsas.slimemold;
 
 import com.vividsolutions.jts.geom.Geometry;
+import edu.koritsas.slimemold.shapefile.IrrigationNetwork;
 import edu.koritsas.slimemold.shortestpath.PhysarumPolycephalumSP;
 import org.geotools.graph.path.DijkstraShortestPathFinder;
 import org.geotools.graph.path.Path;
@@ -16,11 +17,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.opengis.feature.simple.SimpleFeature;
-import shapefile.IrrigationNetwork;
-
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Created by ilias on 11/10/2016.
