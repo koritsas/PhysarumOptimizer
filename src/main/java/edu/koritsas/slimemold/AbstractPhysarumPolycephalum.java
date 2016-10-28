@@ -109,6 +109,7 @@ public abstract class AbstractPhysarumPolycephalum {
             // DecompositionSolver solver = new QRDecomposition(coefficients).getSolver();
 
             DecompositionSolver solver = new SingularValueDecomposition(coefficients).getSolver();
+
             RealVector solution = solver.solve(constants);
 
             redefinePressures(allButSinkNodes, solution);
@@ -299,6 +300,7 @@ public abstract class AbstractPhysarumPolycephalum {
         double w = getEdgeCost(e);
 
         double Q=(D/w)*(p1-p2);
+
 
         return Q;
     }

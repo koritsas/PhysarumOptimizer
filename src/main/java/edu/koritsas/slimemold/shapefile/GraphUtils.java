@@ -8,8 +8,8 @@ import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
-import org.geotools.styling.SLD;
-import org.geotools.styling.Style;
+import org.geotools.styling.*;
+import org.geotools.styling.Font;
 import org.geotools.swing.JMapFrame;
 import org.opengis.feature.simple.SimpleFeature;
 
@@ -50,7 +50,8 @@ public class GraphUtils {
             }
         }
       SimpleFeatureCollection nodeFeatureCollection =new ListFeatureCollection(nodeFeature.get(0).getFeatureType(),nodeFeature);
-        Style nodeStyle =SLD.createPointStyle("Circle",Color.black,Color.gray,0f,5f);
+        Style nodeStyle =SLD.createPointStyle("Circle",Color.black,Color.gray,0f,5f,"OBJECTID", null);
+
         FeatureLayer nodeLayer = new FeatureLayer(nodeFeatureCollection,nodeStyle);
 
         MapContent mapContent = new MapContent();
