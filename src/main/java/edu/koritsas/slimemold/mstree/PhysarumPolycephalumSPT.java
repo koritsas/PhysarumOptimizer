@@ -8,8 +8,6 @@ import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
 
 import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
 
 /**
  * Created by ilias on 21/10/2016.
@@ -17,7 +15,7 @@ import java.util.stream.Collectors;
 public abstract class PhysarumPolycephalumSPT extends AbstractPhysarumPolycephalum {
 
     public PhysarumPolycephalumSPT(Graph graph, Node sourceNode, List<Node> sinkNodes, double Io, double γ, int numberOfIterations) {
-        super(graph, sourceNode,null, Io, γ, numberOfIterations);
+        super(graph, sourceNode,null, numberOfIterations);
         this.sinkNodesList=sinkNodes;
     }
 

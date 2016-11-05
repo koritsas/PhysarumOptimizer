@@ -8,7 +8,7 @@ import org.geotools.graph.structure.Node;
  * Created by ilias on 12/10/2016.
  */
 public abstract class DirecredPhysarumPolycephalumSP extends AbstractDirectedPhysarumPolycephalum {
-    public DirecredPhysarumPolycephalumSP(DirectedGraph graph, Node sourceNode, Node sinkNode, double Io, double γ, int numberOfIterations) {
-        super(graph, sourceNode, sinkNode, Io, γ, numberOfIterations);
+    public DirecredPhysarumPolycephalumSP(DirectedGraph graph, Node sourceNode, Node sinkNode, int numberOfIterations) {
+        super(graph, sourceNode, sinkNode, numberOfIterations);
     }
 }

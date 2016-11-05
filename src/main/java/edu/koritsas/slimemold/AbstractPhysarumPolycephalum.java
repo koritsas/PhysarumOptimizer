@@ -25,7 +25,7 @@ public abstract class AbstractPhysarumPolycephalum {
     protected Node sourceNode;
     protected Node sinkNode;
     protected List<Node> sinkNodesList;
-    protected double Io;
+    protected final double Io=1;
     protected double γ;
     protected  int numberOfIterations;
     protected HashMap<Edge,Double> fluxMap ;
@@ -40,12 +40,10 @@ public abstract class AbstractPhysarumPolycephalum {
     protected HashMap<Edge, XYSeries> conductivitySeriesMap =new HashMap<Edge, XYSeries>();
     protected HashMap<Node, XYSeries> pressureSeriesMap =new HashMap<Node, XYSeries>();
 
-    public AbstractPhysarumPolycephalum(Graph graph,Node sourceNode,Node sinkNode,double Io,double γ,int numberOfIterations){
+    public AbstractPhysarumPolycephalum(Graph graph, Node sourceNode, Node sinkNode, int numberOfIterations){
         this.graph=graph;
         this.sourceNode=sourceNode;
         this.sinkNode=sinkNode;
-        this.Io=Io;
-        this.γ=γ;
         this.numberOfIterations=numberOfIterations;
 
     }

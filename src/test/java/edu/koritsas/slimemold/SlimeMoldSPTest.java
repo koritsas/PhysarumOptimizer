@@ -39,7 +39,7 @@ public class SlimeMoldSPTest {
 
     private IrrigationNetwork network;
 
-    private final  double Io=2;
+    private final  double Io=1;
     private final double γ=1.8;
     private final int numberOfIterations=300;
     private PhysarumPolycephalumSP slime;
@@ -85,7 +85,7 @@ public class SlimeMoldSPTest {
        source=network.getWaterSource().get(0);;
        sink=network.getHydrants().get(random.nextInt(network.getHydrants().size()));
 
-        slime = new PhysarumPolycephalumSP(graph,source,sink,Io,γ,numberOfIterations) {
+        slime = new PhysarumPolycephalumSP(graph,source,sink,numberOfIterations) {
             @Override
             public double getEdgeCost(Edge e) {
                 SimpleFeature f = (SimpleFeature) e.getObject();

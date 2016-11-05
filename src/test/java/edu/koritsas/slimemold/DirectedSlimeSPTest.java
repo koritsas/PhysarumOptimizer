@@ -84,7 +84,7 @@ public class DirectedSlimeSPTest {
         source=network.getWaterSource().get(0);;
         sink=network.getHydrants().get(random.nextInt(network.getHydrants().size()));
 
-        slime = new DirecredPhysarumPolycephalumSP(graph,source,sink,Io,γ,numberOfIterations) {
+        slime = new DirecredPhysarumPolycephalumSP(graph,source,sink,numberOfIterations) {
             @Override
             public double getEdgeCost(Edge e) {
                 SimpleFeature f = (SimpleFeature) e.getObject();

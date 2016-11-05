@@ -13,8 +13,8 @@ import java.util.List;
  * Created by ilias on 21/10/2016.
  */
 public abstract class AbstractDirectedPhysarumPolycephalum extends AbstractPhysarumPolycephalum {
-    public AbstractDirectedPhysarumPolycephalum(DirectedGraph graph, Node sourceNode,Node sinkNode,double Io,double γ,int numberOfIterations){
-        super(graph,sourceNode,sinkNode,Io,γ,numberOfIterations);
+    public AbstractDirectedPhysarumPolycephalum(DirectedGraph graph, Node sourceNode,Node sinkNode,int numberOfIterations){
+        super(graph,sourceNode,sinkNode, numberOfIterations);
         this.graph=graph;
 
     }

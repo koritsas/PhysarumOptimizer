@@ -14,8 +14,8 @@ import java.util.List;
  * Created by ilias on 21/10/2016.
  */
 public abstract class PhysarumPolycephalumDirectedSPT extends AbstractDirectedPhysarumPolycephalum {
-    public PhysarumPolycephalumDirectedSPT(DirectedGraph graph, Node sourceNode, List<Node> sinkNodes, double Io, double γ, int numberOfIterations) {
-        super(graph, sourceNode, null, Io, γ, numberOfIterations);
+    public PhysarumPolycephalumDirectedSPT(DirectedGraph graph, Node sourceNode, List<Node> sinkNodes, int numberOfIterations) {
+        super(graph, sourceNode, null, numberOfIterations);
         this.sinkNodesList=sinkNodes;
     }
     @Override
