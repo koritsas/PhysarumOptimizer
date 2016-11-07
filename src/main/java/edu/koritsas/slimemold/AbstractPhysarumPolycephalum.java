@@ -1,10 +1,17 @@
 package edu.koritsas.slimemold;
 
 import org.apache.commons.math3.linear.*;
+import org.apache.commons.math3.optim.ConvergenceChecker;
+import org.apache.commons.math3.optim.SimpleValueChecker;
 import org.apache.commons.math3.util.FastMath;
+import org.geotools.graph.build.GraphBuilder;
+import org.geotools.graph.build.basic.BasicDirectedGraphBuilder;
+import org.geotools.graph.build.basic.BasicGraphBuilder;
+import org.geotools.graph.structure.DirectedGraph;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
+import org.geotools.graph.structure.basic.BasicGraph;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -26,11 +33,16 @@ public abstract class AbstractPhysarumPolycephalum {
     protected Node sinkNode;
     protected List<Node> sinkNodesList;
     protected final double Io=1;
-    protected double γ;
+
     protected  int numberOfIterations;
-    protected HashMap<Edge,Double> fluxMap ;
+    protected HashMap<Edge,Double> currentFluxMap;
+    protected HashMap<Edge,Double> previousFluxMap;
     protected HashMap<Edge,Double> conductivityMap;
     protected HashMap<Node,Double> pressureMap;
+    protected boolean converged =false;
+
+    protected final double m_absoluteThreshold;
+    protected final double m_relativeThreshold;
 
     protected static final Logger logger = Logger.getLogger(AbstractPhysarumPolycephalum.class.getName());
 
@@ -40,13 +52,16 @@ public abstract class AbstractPhysarumPolycephalum {
     protected HashMap<Edge, XYSeries> conductivitySeriesMap =new HashMap<Edge, XYSeries>();
     protected HashMap<Node, XYSeries> pressureSeriesMap =new HashMap<Node, XYSeries>();
 
-    public AbstractPhysarumPolycephalum(Graph graph, Node sourceNode, Node sinkNode, int numberOfIterations){
+    public AbstractPhysarumPolycephalum(Graph graph, Node sourceNode, Node sinkNode,double absoluteThreshold,double relativeThreshold, int numberOfIterations){
         this.graph=graph;
         this.sourceNode=sourceNode;
         this.sinkNode=sinkNode;
         this.numberOfIterations=numberOfIterations;
+        this.m_absoluteThreshold  = absoluteThreshold;
+        this.m_relativeThreshold=relativeThreshold;
 
     }
+
 
 
 
@@ -71,7 +86,26 @@ public abstract class AbstractPhysarumPolycephalum {
      * @return the graph
      */
     public Graph getGraph() {
-        return graph;
+        GraphBuilder builder=null;
+       if (graph instanceof DirectedGraph){
+           builder = new BasicDirectedGraphBuilder();
+       }else if (graph instanceof BasicGraph){
+           builder=new BasicGraphBuilder();
+       }
+
+       List<Edge> edges = (List<Edge>) graph.getEdges().stream().filter(o -> currentFluxMap.get(o)>0.001).collect(Collectors.toList());
+       for (Edge e:edges){
+           builder.addEdge(e);
+           if (!builder.getGraph().getNodes().contains(e.getNodeA())){
+               builder.addNode(e.getNodeA());
+           }
+           if (!builder.getGraph().getNodes().contains(e.getNodeB())){
+               builder.addNode(e.getNodeB());
+           }
+
+       }
+
+        return builder.getGraph();
     }
 
 
@@ -85,18 +119,11 @@ public abstract class AbstractPhysarumPolycephalum {
 
         logger.info("Starting iterations...");
 
-        for (int i = 0; i <numberOfIterations ; i++) {
+        while (converged==false){
 
-            logger.info("Current iteration: "+i);
-            List<Node> allNodes = getAllNodes(graph);
-
-
-
-
-
+            logger.info("Current iteration: "+iteration);
 
             List<Node> allButSinkNodes = getAllButSink(graph);
-
 
             RealVector constants = createConstantsVector();
 
@@ -116,6 +143,9 @@ public abstract class AbstractPhysarumPolycephalum {
 
             redefineDiameters(graph);
 
+            converged =checkConvergenceCriterion(previousFluxMap,currentFluxMap,iteration,m_absoluteThreshold,m_relativeThreshold);
+
+            previousFluxMap=new HashMap<>(currentFluxMap);
 
             iteration++;
         }
@@ -123,7 +153,29 @@ public abstract class AbstractPhysarumPolycephalum {
         eliminateEdges(graph);
     }
 
+    protected boolean checkConvergenceCriterion(HashMap<Edge,Double> previousFluxMap,HashMap<Edge,Double> currentFluxMap, int currentIteration,double absoluteThreshold, double relativeThreshold){
 
+        ConvergenceChecker<HashMap<Edge,Double>> checker = new ConvergenceChecker<HashMap<Edge, Double>>() {
+            @Override
+            public boolean converged(int iteration, HashMap<Edge, Double> previous, HashMap<Edge, Double> current) {
+
+              boolean absolute=  previous.keySet().stream().allMatch(edge -> FastMath.abs(previous.get(edge)-current.get(edge))<absoluteThreshold);
+
+               boolean relative =  previous.keySet().stream().allMatch(edge -> FastMath.max(FastMath.abs(previous.get(edge)), FastMath.abs(current.get(edge)))*relativeThreshold>=FastMath.abs(previous.get(edge)-current.get(edge)));
+
+                boolean maxIterReached =currentIteration==numberOfIterations;
+
+                return absolute||relative||maxIterReached;
+            }
+        };
+
+
+
+
+            return checker.converged(iteration,previousFluxMap,currentFluxMap);
+
+
+    }
     /**
      *
      * @return the coefficients matrix A for the system Ax=B;
@@ -190,10 +242,10 @@ public abstract class AbstractPhysarumPolycephalum {
      */
     protected void initializeMaps(Graph graph){
         Collection<Edge> edges =graph.getEdges();
-        fluxMap=new HashMap<Edge, Double>(graph.getEdges().size());
+        currentFluxMap =new HashMap<Edge, Double>(graph.getEdges().size());
         conductivityMap=new HashMap<Edge,Double>(graph.getEdges().size());
         for (Edge e:edges){
-            fluxMap.putIfAbsent(e,0.0);
+            currentFluxMap.putIfAbsent(e,0.0);
             conductivityMap.putIfAbsent(e,1.0);
         }
 
@@ -204,6 +256,7 @@ public abstract class AbstractPhysarumPolycephalum {
 
         }
 
+        previousFluxMap=new HashMap<>(currentFluxMap);
 
 
 
@@ -238,7 +291,7 @@ public abstract class AbstractPhysarumPolycephalum {
         for(Edge e:edges){
             flowSeriesMap.putIfAbsent(e,new XYSeries(e.getID()+"("+e.getNodeA().getID()+","+e.getNodeB().getID()+")"));
             double Q =calculateTubeFlux(e);
-            fluxMap.put(e,Q);
+            currentFluxMap.put(e,Q);
             flowSeriesMap.get(e).add(iteration,Q);
         }
 
@@ -261,7 +314,7 @@ public abstract class AbstractPhysarumPolycephalum {
      */
     protected void eliminateEdges(Graph graph){
 
-        graph.getEdges().removeIf(o -> FastMath.abs(fluxMap.get(o))<10E-10);
+        graph.getEdges().removeIf(o -> FastMath.abs(currentFluxMap.get(o))<0.0001);
 
 
     }

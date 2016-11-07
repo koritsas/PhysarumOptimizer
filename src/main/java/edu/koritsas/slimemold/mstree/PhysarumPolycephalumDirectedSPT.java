@@ -3,10 +3,7 @@ package edu.koritsas.slimemold.mstree;
 import edu.koritsas.slimemold.AbstractDirectedPhysarumPolycephalum;
 import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.RealVector;
-import org.geotools.graph.structure.DirectedEdge;
-import org.geotools.graph.structure.DirectedGraph;
-import org.geotools.graph.structure.Edge;
-import org.geotools.graph.structure.Node;
+import org.geotools.graph.structure.*;
 
 import java.util.List;
 
@@ -14,10 +11,12 @@ import java.util.List;
  * Created by ilias on 21/10/2016.
  */
 public abstract class PhysarumPolycephalumDirectedSPT extends AbstractDirectedPhysarumPolycephalum {
-    public PhysarumPolycephalumDirectedSPT(DirectedGraph graph, Node sourceNode, List<Node> sinkNodes, int numberOfIterations) {
-        super(graph, sourceNode, null, numberOfIterations);
+
+    public PhysarumPolycephalumDirectedSPT(Graph graph, Node sourceNode, List<Node> sinkNodes, double absoluteThreshold, double relativeThreshold, int numberOfIterations) {
+        super(graph, sourceNode, null, absoluteThreshold, relativeThreshold, numberOfIterations);
         this.sinkNodesList=sinkNodes;
     }
+
     @Override
     protected RealVector createConstantsVector() {
         List<Node> allNodes =getAllNodes(graph);
@@ -49,7 +48,7 @@ public abstract class PhysarumPolycephalumDirectedSPT extends AbstractDirectedPh
         double D = conductivityMap.get(edge);
 
 
-        double Q = fluxMap.get(e);
+        double Q = currentFluxMap.get(e);
 
 
         double L = getEdgeCost(e);

@@ -10,17 +10,17 @@ import org.geotools.graph.structure.Node;
  */
 
 public abstract class PhysarumPolycephalumSP extends AbstractPhysarumPolycephalum {
-   public PhysarumPolycephalumSP(Graph graph,Node sourceNode,Node sinkNode,int numberOfIterations){
-       super(graph,sourceNode,sinkNode, numberOfIterations);
-   }
 
 
+    public PhysarumPolycephalumSP(Graph graph, Node sourceNode, Node sinkNode, double absoluteThreshold, double relativeThreshold, int numberOfIterations) {
+        super(graph, sourceNode, sinkNode, absoluteThreshold, relativeThreshold, numberOfIterations);
+    }
 
     @Override
     public double calculateTubeConductivity(Edge e) {
         double D = conductivityMap.get(e);
 
-        double Q = fluxMap.get(e);
+        double Q = currentFluxMap.get(e);
         double L=getEdgeCost(e);
 
         double p1 =pressureMap.get(e.getNodeA());

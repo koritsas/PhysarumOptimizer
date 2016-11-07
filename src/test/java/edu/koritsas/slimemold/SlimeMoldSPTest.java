@@ -47,7 +47,8 @@ public class SlimeMoldSPTest {
     private DijkstraShortestPathFinder pf;
     private Node source;
     private Node sink;
-
+    private double absoluteThreshold =1E-10;
+    private double relativeThreshold =1E-10;
     @After
     public void tearDown() throws Exception {
         network=null;
@@ -85,7 +86,7 @@ public class SlimeMoldSPTest {
        source=network.getWaterSource().get(0);;
        sink=network.getHydrants().get(random.nextInt(network.getHydrants().size()));
 
-        slime = new PhysarumPolycephalumSP(graph,source,sink,numberOfIterations) {
+        slime = new PhysarumPolycephalumSP(graph,source,sink,absoluteThreshold,relativeThreshold,numberOfIterations) {
             @Override
             public double getEdgeCost(Edge e) {
                 SimpleFeature f = (SimpleFeature) e.getObject();

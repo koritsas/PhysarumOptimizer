@@ -14,13 +14,13 @@ import java.util.List;
  */
 public abstract class PhysarumPolycephalumSPT extends AbstractPhysarumPolycephalum {
 
-    public PhysarumPolycephalumSPT(Graph graph, Node sourceNode, List<Node> sinkNodes, double Io, double γ, int numberOfIterations) {
-        super(graph, sourceNode,null, numberOfIterations);
+
+    public PhysarumPolycephalumSPT(Graph graph, Node sourceNode,List<Node> sinkNodes, double absoluteThreshold, double relativeThreshold, int numberOfIterations) {
+        super(graph, sourceNode, null, absoluteThreshold, relativeThreshold, numberOfIterations);
         this.sinkNodesList=sinkNodes;
     }
 
-
-      @Override
+    @Override
         protected RealVector createConstantsVector() {
             List<Node> allNodes =getAllNodes(graph);
             double[] constants = new double[allNodes.size()];
@@ -51,7 +51,7 @@ public abstract class PhysarumPolycephalumSPT extends AbstractPhysarumPolycephal
     public double calculateTubeConductivity(Edge e) {
         double D = conductivityMap.get(e);
 
-        double Q = fluxMap.get(e);
+        double Q = currentFluxMap.get(e);
         double L=getEdgeCost(e);
 
 

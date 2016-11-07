@@ -1,10 +1,7 @@
 package edu.koritsas.slimemold;
 
 import org.apache.commons.math3.util.FastMath;
-import org.geotools.graph.structure.DirectedEdge;
-import org.geotools.graph.structure.DirectedGraph;
-import org.geotools.graph.structure.Edge;
-import org.geotools.graph.structure.Node;
+import org.geotools.graph.structure.*;
 import org.geotools.graph.structure.basic.BasicDirectedNode;
 
 import java.util.List;
@@ -13,18 +10,19 @@ import java.util.List;
  * Created by ilias on 21/10/2016.
  */
 public abstract class AbstractDirectedPhysarumPolycephalum extends AbstractPhysarumPolycephalum {
-    public AbstractDirectedPhysarumPolycephalum(DirectedGraph graph, Node sourceNode,Node sinkNode,int numberOfIterations){
-        super(graph,sourceNode,sinkNode, numberOfIterations);
-        this.graph=graph;
 
+    public AbstractDirectedPhysarumPolycephalum(Graph graph, Node sourceNode, Node sinkNode, double absoluteThreshold, double relativeThreshold, int numberOfIterations) {
+        super(graph, sourceNode, sinkNode, absoluteThreshold, relativeThreshold, numberOfIterations);
+        this.graph=graph;
     }
+
     @Override
     public double calculateTubeConductivity(Edge e) {
         DirectedEdge edge= (DirectedEdge) e;
         double D = conductivityMap.get(edge);
 
 
-        double Q = fluxMap.get(e);
+        double Q = currentFluxMap.get(e);
 
 
         double L = getEdgeCost(e);
