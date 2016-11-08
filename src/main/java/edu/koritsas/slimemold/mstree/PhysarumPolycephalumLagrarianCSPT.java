@@ -67,16 +67,11 @@ public abstract class PhysarumPolycephalumLagrarianCSPT extends PhysarumPolyceph
         double fQ= FastMath.abs(Q);
         double ps=pressureMap.get(sourceNode);
 
-        double pe =sinkNodesList.stream().collect(Collectors.averagingDouble(new ToDoubleFunction<Node>() {
-            @Override
-            public double applyAsDouble(Node value) {
-                return pressureMap.get(value);
-            }
-        }));
-        //double newD = fQ - 0.1 * D;
-        //double newD=Q+D;
 
-        double newD =(0.5)*((Q*(p1-p2))/(L*(ps-pe))+D);
+        double newD = fQ - 0.25 * D;
+
+
+       // double newD =(0.5)*((Q*(p1-p2))/(L*(ps-0))+D);
 
         return newD;
     }

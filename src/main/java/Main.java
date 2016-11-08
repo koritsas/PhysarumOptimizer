@@ -53,9 +53,9 @@ public class Main {
         GraphUtils.visualizeGraph(graph);
 */
 
+/*
 
-
- PhysarumPolycephalumLangrarianCSP slimeLag = new PhysarumPolycephalumLangrarianCSP(graph,source,sinkNodes.get(0),0.00000001,0.000000001,50000,10,0.1) {
+ PhysarumPolycephalumLangrarianCSP slimeLag = new PhysarumPolycephalumLangrarianCSP(graph,source,sinkNodes.get(0),0.00000001,0.000000001,50000,10,0.0001) {
      @Override
      public boolean pathViolatesConstraints(Graph graph) {
         double cost=0;
@@ -92,9 +92,9 @@ public class Main {
     slimeLag.showFlowDiagram();
        slimeLag.showConductivityMap();
         GraphUtils.visualizeGraph(slimeLag.getGraph());
+*/
 
 
-/*
        PhysarumPolycephalumLagrarianCSPT slimeCSPT = new PhysarumPolycephalumLagrarianCSPT(graph,source,sinkNodes,0.00000001,0.000000001,50000,100,0.1) {
             @Override
             public boolean pathViolatesConstraints(Graph graph) {
@@ -133,6 +133,6 @@ public class Main {
         slimeCSPT.showFlowDiagram();
         GraphUtils.visualizeGraph(slimeCSPT.getGraph());
 
-*/
+
     }
 }

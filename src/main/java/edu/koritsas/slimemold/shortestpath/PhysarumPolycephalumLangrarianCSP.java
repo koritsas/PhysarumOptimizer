@@ -114,15 +114,8 @@ public abstract class PhysarumPolycephalumLangrarianCSP extends PhysarumPolyceph
             break;
         }
 
-        double C= (double) getGraph().getEdges().stream().collect(Collectors.summingDouble(new ToDoubleFunction<Edge>() {
-            @Override
-            public double applyAsDouble(Edge value) {
-                return getEdgeConstraintValue(value);
-            }
-        }));
-       if (C<100){
-           break;
-       }
+
+
         λ=λ+step;
         }
 
