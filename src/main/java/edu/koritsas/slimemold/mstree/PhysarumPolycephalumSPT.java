@@ -56,7 +56,7 @@ public abstract class PhysarumPolycephalumSPT extends AbstractPhysarumPolycephal
 
 
 
-      // double fQ = Math.pow(Math.abs(Q), γ) / (1 + Math.pow(Math.abs(Q), γ));
+      // double fQ = Math.pow(Math.abs(Q), 2) / (1 + Math.pow(Math.abs(Q),2));
         double fQ= FastMath.abs(Q);
 
         double newD = fQ - 0.1 * D;

@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.ToDoubleFunction;
+import java.util.stream.Collectors;
 
 /**
  * Created by ilias on 6/11/2016.
@@ -98,14 +100,32 @@ public abstract class PhysarumPolycephalumLangrarianCSP extends PhysarumPolyceph
 
             previousFluxMap = new HashMap<>(currentFluxMap);
             iteration++;
+            if (iteration==numberOfIterations){
+                break;
+            }
+
+        }
+        if (iteration==numberOfIterations){
+            break;
         }
         converged=false;
         boolean conv =pathViolatesConstraints(getGraph());
         if(conv==false){
             break;
         }
+
+        double C= (double) getGraph().getEdges().stream().collect(Collectors.summingDouble(new ToDoubleFunction<Edge>() {
+            @Override
+            public double applyAsDouble(Edge value) {
+                return getEdgeConstraintValue(value);
+            }
+        }));
+       if (C<100){
+           break;
+       }
         λ=λ+step;
         }
+
     }
     public abstract boolean pathViolatesConstraints(Graph graph);
 

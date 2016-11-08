@@ -150,7 +150,7 @@ public abstract class AbstractPhysarumPolycephalum {
             iteration++;
         }
 
-        eliminateEdges(graph);
+      //  eliminateEdges(graph);
     }
 
     protected boolean checkConvergenceCriterion(HashMap<Edge,Double> previousFluxMap,HashMap<Edge,Double> currentFluxMap, int currentIteration,double absoluteThreshold, double relativeThreshold){
@@ -303,7 +303,7 @@ public abstract class AbstractPhysarumPolycephalum {
      */
     public double getSolutionCost() {
 
-        Collection<Edge> edges = graph.getEdges();
+        Collection<Edge> edges = getGraph().getEdges();
         double cost = edges.stream().collect(Collectors.summingDouble(value -> getEdgeCost(value)));
         return  cost;
     }
