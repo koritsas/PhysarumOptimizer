@@ -1,5 +1,6 @@
 import com.vividsolutions.jts.geom.Geometry;
 
+import edu.koritsas.slimemold.TestSlime;
 import edu.koritsas.slimemold.mstree.PhysarumPolycephalumLagrarianCSPT;
 import edu.koritsas.slimemold.mstree.PhysarumPolycephalumMST;
 import edu.koritsas.slimemold.mstree.PhysarumPolycephalumSPT;
@@ -7,6 +8,7 @@ import edu.koritsas.slimemold.shapefile.GraphUtils;
 import edu.koritsas.slimemold.shapefile.IrrigationNetwork;
 import edu.koritsas.slimemold.shortestpath.PhysarumPolycephalumLangrarianCSP;
 import edu.koritsas.slimemold.shortestpath.PhysarumPolycephalumSP;
+import org.apache.commons.math3.util.FastMath;
 import org.geotools.graph.structure.*;
 import org.opengis.feature.simple.SimpleFeature;
 
@@ -50,12 +52,12 @@ public class Main {
         slimeSP.execute();
         slimeSP.showConductivityMap();
         slimeSP.showFlowDiagram();
-        GraphUtils.visualizeGraph(graph);
+        GraphUtils.visualizeGraph(slimeSP.getGraph());
+
 */
 
 /*
-
- PhysarumPolycephalumLangrarianCSP slimeLag = new PhysarumPolycephalumLangrarianCSP(graph,source,sinkNodes.get(0),0.00000001,0.000000001,50000,10,0.0001) {
+ PhysarumPolycephalumLangrarianCSP slimeLag = new PhysarumPolycephalumLangrarianCSP(graph,source,sinkNodes.get(0),0.00000000001,0.000000000001,50000,10,0.1) {
      @Override
      public boolean pathViolatesConstraints(Graph graph) {
         double cost=0;
@@ -67,6 +69,7 @@ public class Main {
          if (cost>100){
              violates=true;
          }
+
 
          return violates;
      }
@@ -92,10 +95,10 @@ public class Main {
     slimeLag.showFlowDiagram();
        slimeLag.showConductivityMap();
         GraphUtils.visualizeGraph(slimeLag.getGraph());
+
 */
 
-
-       PhysarumPolycephalumLagrarianCSPT slimeCSPT = new PhysarumPolycephalumLagrarianCSPT(graph,source,sinkNodes,0.00000001,0.000000001,50000,100,0.1) {
+       PhysarumPolycephalumLagrarianCSPT slimeCSPT = new PhysarumPolycephalumLagrarianCSPT(graph,source,sinkNodes,0.0001,0.0001,80000,100,0.1) {
             @Override
             public boolean pathViolatesConstraints(Graph graph) {
                 double cost=0;
@@ -133,6 +136,31 @@ public class Main {
         slimeCSPT.showFlowDiagram();
         GraphUtils.visualizeGraph(slimeCSPT.getGraph());
 
+/*
+        TestSlime slime = new TestSlime(graph,source,sinkNodes.get(0),0.000001,0.000001,5000) {
+            @Override
+            public double getEdgeConstraint(Edge edge) {
+                SimpleFeature f = (SimpleFeature) edge.getObject();
+                double C = (double) f.getAttribute("C");
 
+                return C;
+            }
+
+            @Override
+            public double getEdgeCost(Edge e) {
+                SimpleFeature f = (SimpleFeature) e.getObject();
+                Geometry g = (Geometry) f.getDefaultGeometry();
+                double L=g.getLength()+5000* FastMath.abs(30-getEdgeConstraint(e));
+
+                return g.getLength();
+            }
+        };
+
+
+        slime.execute();
+        slime.showConductivityMap();
+        slime.showFlowDiagram();
+        GraphUtils.visualizeGraph(slime.getGraph());
+*/
     }
 }

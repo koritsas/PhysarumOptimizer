@@ -29,7 +29,7 @@ public abstract class PhysarumPolycephalumSP extends AbstractPhysarumPolycephalu
         double ps=pressureMap.get(sourceNode);
         double pe =pressureMap.get(sinkNode);
 
-         double newD =(0.5)*((Q*(p1-p2))/(L*(ps-pe))+D);
+        double newD =(0.5)*((Q*(p1-p2))/(L*(ps-pe))+D);
 
         //double fQ = Math.pow(Math.abs(Q), γ) / (1 + Math.pow(Math.abs(Q), γ));
         //double fQ=Math.abs(Q);

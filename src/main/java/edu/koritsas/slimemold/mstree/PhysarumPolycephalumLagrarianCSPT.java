@@ -68,10 +68,12 @@ public abstract class PhysarumPolycephalumLagrarianCSPT extends PhysarumPolyceph
         double ps=pressureMap.get(sourceNode);
 
 
-        double newD = fQ - 0.25 * D;
+       // double newD = fQ - 0.25 * D;
 
 
-       // double newD =(0.5)*((Q*(p1-p2))/(L*(ps-0))+D);
+
+
+        double newD =(0.5)*((Q*(p1-p2))/(L*(ps-0))+D);
 
         return newD;
     }

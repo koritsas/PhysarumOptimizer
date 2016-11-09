@@ -120,6 +120,47 @@ public abstract class PhysarumPolycephalumLangrarianCSP extends PhysarumPolyceph
         }
 
     }
+
+    @Override
+    public double calculateTubeConductivity(Edge e) {
+        double D = conductivityMap.get(e);
+
+        double Q = currentFluxMap.get(e);
+        double L1=getEdgeCost(e);
+
+        double p1 =pressureMap.get(e.getNodeA());
+        double p2 =pressureMap.get(e.getNodeB());
+
+        double ps=pressureMap.get(sourceNode);
+        double pe =pressureMap.get(sinkNode);
+
+        double newD =(0.5)*((Q*(p1-p2))/(L.get(e)*(ps-pe))+D);
+
+        //double fQ = Math.pow(Math.abs(Q), γ) / (1 + Math.pow(Math.abs(Q), γ));
+        //double fQ=Math.abs(Q);
+
+        // double newD = fQ - 0.1 * D;
+
+
+
+        return newD;
+    }
+
+    @Override
+    protected double calculateTubeFlux(Edge e) {
+
+        double p1 =pressureMap.get(e.getNodeA());
+        double p2 =pressureMap.get(e.getNodeB());
+
+        double D =conductivityMap.get(e);
+        double w = getEdgeCost(e);
+
+        double Q=(D/L.get(e))*(p1-p2);
+
+
+        return Q;
+    }
+
     public abstract boolean pathViolatesConstraints(Graph graph);
 
     public abstract double getEdgeConstraintValue(Edge edge);
