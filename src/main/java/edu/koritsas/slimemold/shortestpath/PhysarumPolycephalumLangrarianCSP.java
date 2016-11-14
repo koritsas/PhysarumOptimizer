@@ -19,10 +19,10 @@ import java.util.stream.Collectors;
  * Created by ilias on 6/11/2016.
  */
 public abstract class PhysarumPolycephalumLangrarianCSP extends PhysarumPolycephalumSP {
-    private double λ=0;
-    private double step;
-    private double λmax;
-    private HashMap<Edge,Double> L;
+    protected double λ=0;
+    protected double step;
+    protected double λmax;
+    protected HashMap<Edge,Double> L;
 
     public PhysarumPolycephalumLangrarianCSP(Graph graph, Node sourceNode, Node sinkNode, double absoluteThreshold, double relativeThreshold, int numberOfIterations,double λmax,double step) {
         super(graph, sourceNode, sinkNode, absoluteThreshold, relativeThreshold, numberOfIterations);
@@ -108,10 +108,12 @@ public abstract class PhysarumPolycephalumLangrarianCSP extends PhysarumPolyceph
         if (iteration==numberOfIterations){
             break;
         }
+
         converged=false;
         boolean conv =pathViolatesConstraints(getGraph());
+
         if(conv==false){
-            break;
+           break;
         }
 
 

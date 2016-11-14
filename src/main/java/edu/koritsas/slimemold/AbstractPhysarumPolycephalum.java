@@ -29,6 +29,23 @@ import java.util.stream.Collectors;
  */
 public abstract class AbstractPhysarumPolycephalum {
     protected Graph graph;
+
+    public Node getSourceNode() {
+        return sourceNode;
+    }
+
+    public void setSourceNode(Node sourceNode) {
+        this.sourceNode = sourceNode;
+    }
+
+    public Node getSinkNode() {
+        return sinkNode;
+    }
+
+    public void setSinkNode(Node sinkNode) {
+        this.sinkNode = sinkNode;
+    }
+
     protected Node sourceNode;
     protected Node sinkNode;
     protected List<Node> sinkNodesList;
@@ -478,6 +495,7 @@ public abstract class AbstractPhysarumPolycephalum {
     }
 
     protected double calculateCoefficient(Node n1, Node n2){
+
         Edge e=n1.getEdge(n2);
         double coeff=0;
         if (e!=null){
