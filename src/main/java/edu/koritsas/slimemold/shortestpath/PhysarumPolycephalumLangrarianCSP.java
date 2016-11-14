@@ -4,14 +4,12 @@ import org.apache.commons.math3.linear.DecompositionSolver;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.linear.SingularValueDecomposition;
+import org.apache.commons.math3.util.FastMath;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
 
@@ -44,15 +42,41 @@ public abstract class PhysarumPolycephalumLangrarianCSP extends PhysarumPolyceph
     }
 
     @Override
-    protected double calculateCoefficient(Node n1, Node n2) {
-        Edge e=n1.getEdge(n2);
-        double coeff=0;
-        if (e!=null){
-            double D =conductivityMap.get(e);
-            double w = L.get(e);
-            coeff=-D/w;
+    public double calculateSelfCoefficient(Node n) {
+        double selfC = 0;
+        List<Edge> edges = n.getEdges();
+
+
+       /* Iterator<Node> it =n.getRelated();
+
+        while(it.hasNext()){
+            selfC = selfC + FastMath.abs(calculateCoefficient(n,it.next()));
+        }
+*/
+        for (Edge edge:edges){
+            double D =conductivityMap.get(edge);
+            double w = L.get(edge);
+            selfC=selfC+ FastMath.abs(-D/w);
         }
 
+        return selfC;
+    }
+
+    @Override
+    protected double calculateCoefficient(Node n1, Node n2) {
+        List<Edge> edges = n1.getEdges(n2);
+        double coeff=0;
+
+        if (edges!=null){
+            Iterator<Edge> edgeIterator =edges.iterator();
+            while (edgeIterator.hasNext()){
+                Edge edge=edgeIterator.next();
+                double D =conductivityMap.get(edge);
+                double w = L.get(edge);
+                coeff=coeff-D/w;
+            }
+
+        }
         return coeff;
     }
 

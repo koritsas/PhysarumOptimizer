@@ -10,8 +10,10 @@ import org.geotools.graph.structure.*;
 import org.opengis.feature.simple.SimpleFeature;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
 
@@ -22,7 +24,7 @@ public class Main {
     public static void main(String[] args) {
 
        // IrrigationNetwork network = new IrrigationNetwork("C:/Users/ilias/Desktop/SlimeTest/H.shp","C:/Users/ilias/Desktop/SlimeTest/WS.shp","C:/Users/ilias/Desktop/SlimeTest/P.shp");
-        IrrigationNetwork network = new IrrigationNetwork("C:/Users/ilias/Desktop/ParametrizedTests/Hbenchmark1.shp", "C:/Users/ilias/Desktop/ParametrizedTests/Wbenchmark1.shp", "C:/Users/ilias/Desktop/ParametrizedTests/Pbenchmark1.shp");
+        IrrigationNetwork network = new IrrigationNetwork("C:/Users/ilias/Desktop/ParametrizedTests/Hbenchmark11.shp", "C:/Users/ilias/Desktop/ParametrizedTests/Wbenchmark11.shp", "C:/Users/ilias/Desktop/ParametrizedTests/Pbenchmark11.shp");
         //DirectedIrrigationNetwork network = new DirectedIrrigationNetwork("C:/Users/ilias/Desktop/ParametrizedTests/HDMST.shp", "C:/Users/ilias/Desktop/ParametrizedTests/WDMST.shp", "C:/Users/ilias/Desktop/ParametrizedTests/PDMST.shp");
        Graph graph=null;
         try {
@@ -31,14 +33,27 @@ public class Main {
             e.printStackTrace();
         }
 
+   /*     graph.getEdges().removeIf(new Predicate() {
+            @Override
+            public boolean test(Object o) {
+                Edge e= (Edge) o;
+                SimpleFeature f = (SimpleFeature) e.getObject();
+                double v = (double) f.getAttribute("V");
+                if (v>2){
+                    return true;
+                }else {
+                    return false;
+                }
+            }
+        });*/
 
         List<Node> sourceNodes =network.getWaterSource();
         List<Node> sinkNodes = network.getHydrants();
         //sinkNodes=sinkNodes.subList(7,8);
 
         Node source =sourceNodes.get(0);
-/*
-        PhysarumPolycephalumLangrarianCSP slime = new PhysarumPolycephalumLangrarianCSP(graph,source,sinkNodes.get(3),1E-4,1E-4,50000,100,1) {
+
+        PhysarumPolycephalumLangrarianCSP slime = new PhysarumPolycephalumLangrarianCSP(graph,source,sinkNodes.get(0),1E-12,1E-12,50000,100,0.1) {
             @Override
             public boolean pathViolatesConstraints(Graph graph) {
                 Node source=getSourceNode();
@@ -89,25 +104,10 @@ public class Main {
         slime.execute();
         slime.showConductivityMap();
         slime.showFlowDiagram();
-        GraphUtils.visualizeGraph(graph);
-*/
+        GraphUtils.visualizeGraph(slime.getGraph());
 
-        PhysarumPolycephalumSP slimeSp= new PhysarumPolycephalumSP(graph,source,sinkNodes.get(3),1E-20,1E-20,50000) {
-            @Override
-            public double getEdgeCost(Edge e) {
-                SimpleFeature f = (SimpleFeature) e.getObject();
-                Geometry g = (Geometry) f.getDefaultGeometry();
-                double L=g.getLength();
-                double cm = (double) f.getAttribute("Cost");
-                double cost=L*cm;
-                return cost;
-            }
-        };
+        System.out.println(slime.pathViolatesConstraints(slime.getGraph()));
 
-        slimeSp.execute();
-        slimeSp.showFlowDiagram();
-        slimeSp.showConductivityMap();
-        GraphUtils.visualizeGraph(graph);
-
+        System.out.println(slime.getSolutionCost());
     }
 }
