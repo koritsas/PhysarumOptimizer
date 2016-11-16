@@ -83,7 +83,6 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="MarchOfTheFireAnts_main" exported="" />
     <orderEntry type="module" module-name="PhysarumOptimizer_main" />
   </component>
   <component name="TestModuleProperties" production-module="PhysarumOptimizer_main" />

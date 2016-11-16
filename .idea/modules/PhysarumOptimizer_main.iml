@@ -93,6 +93,5 @@
     <orderEntry type="library" name="Gradle: org.geotools:gt-graph:15.1" level="project" />
     <orderEntry type="library" name="Gradle: com.googlecode.efficient-java-matrix-library:core:0.26" level="project" />
     <orderEntry type="library" name="Gradle: org.geotools:gt-main:15.1" level="project" />
-    <orderEntry type="module" module-name="MarchOfTheFireAnts_main" />
   </component>
 </module>
