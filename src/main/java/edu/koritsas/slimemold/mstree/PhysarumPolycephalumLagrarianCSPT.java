@@ -56,24 +56,10 @@ public abstract class PhysarumPolycephalumLagrarianCSPT extends PhysarumPolyceph
         double D = conductivityMap.get(e);
 
         double Q = currentFluxMap.get(e);
-        double L=getEdgeCost(e);
 
-
-
-        double p1 =pressureMap.get(e.getNodeA());
-        double p2 =pressureMap.get(e.getNodeB());
-
-         //double fQ = Math.pow(Math.abs(Q), 1.8) / (1 + Math.pow(Math.abs(Q), 1.8));
         double fQ= FastMath.abs(Q);
-        double ps=pressureMap.get(sourceNode);
+        double newD = fQ - 0.25 * D;
 
-
-       // double newD = fQ - 0.25 * D;
-
-
-
-
-        double newD =(0.5)*((Q*(p1-p2))/(L*(ps-0))+D);
 
         return newD;
     }

@@ -61,13 +61,13 @@ public class DirectedSlimeSPTest {
 
     @Parameterized.Parameters
     public static Collection graphs() throws IOException {
-        DirectedIrrigationNetwork network1 = new DirectedIrrigationNetwork("C:/Users/ilias/Desktop/ParametrizedTests/H1.shp", "C:/Users/ilias/Desktop/ParametrizedTests/W1.shp", "C:/Users/ilias/Desktop/ParametrizedTests/P1.shp");
+        DirectedIrrigationNetwork network1 = new DirectedIrrigationNetwork("ParametrizedTests/H1.shp", "ParametrizedTests/W1.shp", "ParametrizedTests/P1.shp");
 
-        DirectedIrrigationNetwork network2 = new DirectedIrrigationNetwork("C:/Users/ilias/Desktop/ParametrizedTests/H2.shp", "C:/Users/ilias/Desktop/ParametrizedTests/W2.shp", "C:/Users/ilias/Desktop/ParametrizedTests/P2.shp");
+        DirectedIrrigationNetwork network2 = new DirectedIrrigationNetwork("ParametrizedTests/H2.shp", "ParametrizedTests/W2.shp", "ParametrizedTests/P2.shp");
 
-        DirectedIrrigationNetwork network3 = new DirectedIrrigationNetwork("C:/Users/ilias/Desktop/ParametrizedTests/H3.shp", "C:/Users/ilias/Desktop/ParametrizedTests/W3.shp", "C:/Users/ilias/Desktop/ParametrizedTests/P3.shp");
+        DirectedIrrigationNetwork network3 = new DirectedIrrigationNetwork("ParametrizedTests/H3.shp", "ParametrizedTests/W3.shp", "ParametrizedTests/P3.shp");
 
-        DirectedIrrigationNetwork network4 = new DirectedIrrigationNetwork("C:/Users/ilias/Desktop/ParametrizedTests/H4.shp", "C:/Users/ilias/Desktop/ParametrizedTests/W4.shp", "C:/Users/ilias/Desktop/ParametrizedTests/P4.shp");
+        DirectedIrrigationNetwork network4 = new DirectedIrrigationNetwork("ParametrizedTests/H4.shp", "ParametrizedTests/W4.shp", "ParametrizedTests/P4.shp");
         ////Graph g1 = network1.getGraph();
         // Graph g2 = network2.getGraph();
         // Graph g3 = network3.getGraph();
