@@ -10,8 +10,6 @@ import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
 
 import java.util.*;
-import java.util.function.ToDoubleFunction;
-import java.util.stream.Collectors;
 
 /**
  * Created by ilias on 6/11/2016.
@@ -82,7 +80,7 @@ public abstract class PhysarumPolycephalumLangrarianCSP extends PhysarumPolyceph
 
     @Override
     public void execute() {
-
+        double startingTime=System.currentTimeMillis();
         initializeMaps(graph);
         logger.info("Starting iterations...");
     while (λ<λmax) {
@@ -144,7 +142,9 @@ public abstract class PhysarumPolycephalumLangrarianCSP extends PhysarumPolyceph
 
         λ=λ+step;
         }
+        double endingTime=System.currentTimeMillis();
 
+        logger.info("Execution Time: "+ ((endingTime-startingTime))/1000);
     }
 
     @Override

@@ -2,7 +2,6 @@ package edu.koritsas.slimemold;
 
 import org.apache.commons.math3.linear.*;
 import org.apache.commons.math3.optim.ConvergenceChecker;
-import org.apache.commons.math3.optim.SimpleValueChecker;
 import org.apache.commons.math3.util.FastMath;
 import org.geotools.graph.build.GraphBuilder;
 import org.geotools.graph.build.basic.BasicDirectedGraphBuilder;
@@ -132,6 +131,8 @@ public abstract class AbstractPhysarumPolycephalum {
      */
     public void execute() {
 
+        double startingTime=System.currentTimeMillis();
+
         initializeMaps(graph);
 
         logger.info("Starting iterations...");
@@ -166,7 +167,9 @@ public abstract class AbstractPhysarumPolycephalum {
 
             iteration++;
         }
+        double endingTime=System.currentTimeMillis();
 
+        logger.info("Execution Time: "+ (startingTime-endingTime));
       //  eliminateEdges(graph);
     }
 

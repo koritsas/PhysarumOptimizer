@@ -1,19 +1,14 @@
 import com.vividsolutions.jts.geom.Geometry;
-
-import edu.koritsas.slimemold.TestSlime;
-import edu.koritsas.slimemold.mstree.PhysarumPolycephalumLagrarianCSPT;
 import edu.koritsas.slimemold.shapefile.GraphUtils;
 import edu.koritsas.slimemold.shapefile.IrrigationNetwork;
 import edu.koritsas.slimemold.shortestpath.PhysarumPolycephalumLangrarianCSP;
-import edu.koritsas.slimemold.shortestpath.PhysarumPolycephalumSP;
-import org.geotools.graph.structure.*;
+import org.geotools.graph.structure.Edge;
+import org.geotools.graph.structure.Graph;
+import org.geotools.graph.structure.Node;
 import org.opengis.feature.simple.SimpleFeature;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
 
@@ -53,7 +48,7 @@ public class Main {
 
         Node source =sourceNodes.get(0);
 
-        PhysarumPolycephalumLangrarianCSP slime = new PhysarumPolycephalumLangrarianCSP(graph,source,sinkNodes.get(0),1E-12,1E-12,50000,100,0.1) {
+        PhysarumPolycephalumLangrarianCSP slime = new PhysarumPolycephalumLangrarianCSP(graph,source,sinkNodes.get(0),1E-4,1E-4,5000,100,0.1) {
             @Override
             public boolean pathViolatesConstraints(Graph graph) {
                 Node source=getSourceNode();

@@ -8,8 +8,8 @@ import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
-import org.geotools.styling.*;
-import org.geotools.styling.Font;
+import org.geotools.styling.SLD;
+import org.geotools.styling.Style;
 import org.geotools.swing.JMapFrame;
 import org.opengis.feature.simple.SimpleFeature;
 
@@ -37,7 +37,7 @@ public class GraphUtils {
 
     SimpleFeatureCollection edgeFeatureCollection = new ListFeatureCollection(edgeFeatureList.get(0).getFeatureType(),edgeFeatureList);
 
-        Style edgeStyle =SLD.createLineStyle(Color.green,0.5f,"SHAPE_Leng",null);
+        Style edgeStyle =SLD.createLineStyle(Color.green,0.5f,"Diameter",null);
         FeatureLayer edgeLayer = new FeatureLayer(edgeFeatureCollection,edgeStyle);
 
    List<SimpleFeature> nodeFeature =new ArrayList<>();
