@@ -9,8 +9,6 @@ import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
 
 import java.util.List;
-import java.util.function.ToDoubleFunction;
-import java.util.stream.Collectors;
 
 /**
  * Created by ilias on 7/11/2016.

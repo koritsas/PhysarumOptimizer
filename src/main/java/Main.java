@@ -1,12 +1,12 @@
 import com.vividsolutions.jts.geom.Geometry;
-
 import edu.koritsas.slimemold.mstree.PhysarumPolycephalumLagrarianCSPT;
 import edu.koritsas.slimemold.shapefile.GraphUtils;
 import edu.koritsas.slimemold.shapefile.IrrigationNetwork;
-import edu.koritsas.slimemold.shortestpath.PhysarumPolycephalumLangrarianCSP;
 import org.geotools.graph.path.DijkstraShortestPathFinder;
 import org.geotools.graph.path.Path;
-import org.geotools.graph.structure.*;
+import org.geotools.graph.structure.Edge;
+import org.geotools.graph.structure.Graph;
+import org.geotools.graph.structure.Node;
 import org.geotools.graph.traverse.standard.DijkstraIterator;
 import org.opengis.feature.simple.SimpleFeature;
 
@@ -108,7 +108,7 @@ public class Main {
 
         System.out.println(slime.getSolutionCost());
       */
-        PhysarumPolycephalumLagrarianCSPT slimeTree = new PhysarumPolycephalumLagrarianCSPT(graph,source,sinkNodes,1E-12,1E-12,25000,10000,1) {
+        PhysarumPolycephalumLagrarianCSPT slimeTree = new PhysarumPolycephalumLagrarianCSPT(graph,source,sinkNodes,1E-12,1E-12,25000,100,0.1) {
             @Override
             public boolean pathViolatesConstraints(Graph graph) {
 
