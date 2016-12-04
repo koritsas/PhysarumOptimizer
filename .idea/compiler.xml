@@ -19,8 +19,6 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="1.8">
-      <module name="MarchOfTheFireAnts_main" target="1.8" />
-      <module name="MarchOfTheFireAnts_test" target="1.8" />
       <module name="PhysarumOptimizer_main" target="1.8" />
       <module name="PhysarumOptimizer_test" target="1.8" />
     </bytecodeTargetLevel>
