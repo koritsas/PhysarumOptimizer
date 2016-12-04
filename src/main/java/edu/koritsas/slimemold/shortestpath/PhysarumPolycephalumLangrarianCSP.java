@@ -147,6 +147,10 @@ public abstract class PhysarumPolycephalumLangrarianCSP extends PhysarumPolyceph
         logger.info("Execution Time: "+ ((endingTime-startingTime))/1000);
     }
 
+    public HashMap<Edge, Double> getL() {
+        return L;
+    }
+
     @Override
     public double calculateTubeConductivity(Edge e) {
         double D = conductivityMap.get(e);
