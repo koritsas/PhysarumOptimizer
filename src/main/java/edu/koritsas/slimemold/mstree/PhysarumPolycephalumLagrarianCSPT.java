@@ -58,7 +58,7 @@ public abstract class PhysarumPolycephalumLagrarianCSPT extends PhysarumPolyceph
         double Q = currentFluxMap.get(e);
 
         double fQ= FastMath.abs(Q);
-        double newD = fQ - 0.25 * D;
+        double newD = fQ - 0.4 * D;
 
 
         return newD;

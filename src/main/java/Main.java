@@ -11,6 +11,7 @@ import org.geotools.graph.traverse.standard.DijkstraIterator;
 import org.opengis.feature.simple.SimpleFeature;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
@@ -34,13 +35,15 @@ public class Main {
 
         List<Node> sourceNodes =network.getWaterSource();
         List<Node> sinkNodes = network.getHydrants();
-       // List<Node> ends=network.getNetworkEnds();
-        //ends.size();
-        ///sinkNodes=sinkNodes.subList(7,8);
+
+
+
 
         Node source =sourceNodes.get(0);
-     /*
-        PhysarumPolycephalumLangrarianCSP slime = new PhysarumPolycephalumLangrarianCSP(graph,source,sinkNodes.get(0),1E-12,1E-12,50000,100,0.1) {
+        Node sink =sinkNodes.get(0);
+
+   /*
+        PhysarumPolycephalumLangrarianCSP slime = new PhysarumPolycephalumLangrarianCSP(graph,source,sinkNodes.get(0),1E-12,1E-12,50000,10000,0.1) {
             @Override
             public boolean pathViolatesConstraints(Graph graph) {
                 Node source=getSourceNode();
@@ -96,8 +99,10 @@ public class Main {
         System.out.println(slime.pathViolatesConstraints(slime.getGraph()));
 
         System.out.println(slime.getSolutionCost());
-      */
-        PhysarumPolycephalumLagrarianCSPT slimeTree = new PhysarumPolycephalumLagrarianCSPT(graph,source,sinkNodes,1E-12,1E-12,25000,10000,0.1) {
+
+    */
+
+        PhysarumPolycephalumLagrarianCSPT slimeTree = new PhysarumPolycephalumLagrarianCSPT(graph,source,sinkNodes,1E-3,1E-3,700000,10000,1) {
             @Override
             public boolean pathViolatesConstraints(Graph graph) {
 
@@ -129,7 +134,7 @@ public class Main {
                     Path path = pf.getPath(n);
                     List<Edge> edges = path.getEdges();
 
-                    double dh = (double) graph.getEdges().stream().collect(Collectors.summingDouble(new ToDoubleFunction<Edge>() {
+                    double dh = (double) path.getEdges().stream().collect(Collectors.summingDouble(new ToDoubleFunction<Edge>() {
                         @Override
                         public double applyAsDouble(Edge edge) {
 
@@ -138,7 +143,7 @@ public class Main {
                         }
                     }));
 
-
+                    System.out.println(dh);
 
                     SimpleFeature sinkf = (SimpleFeature) n.getObject();
                     double He= (double) sinkf.getAttribute("hdemand");
@@ -179,5 +184,6 @@ public class Main {
         System.out.println(slimeTree.pathViolatesConstraints(slimeTree.getGraph()));
 
         System.out.println(slimeTree.getSolutionCost());
+
     }
 }

@@ -21,6 +21,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.ApplicationFrame;
 
 import java.util.*;
+import java.util.function.ToDoubleFunction;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -49,7 +50,7 @@ public abstract class AbstractPhysarumPolycephalum {
     protected Node sourceNode;
     protected Node sinkNode;
     protected List<Node> sinkNodesList;
-    protected final double Io=1;
+    protected final double Io=100;
 
     protected  int numberOfIterations;
     protected HashMap<Edge,Double> currentFluxMap;
@@ -110,17 +111,18 @@ public abstract class AbstractPhysarumPolycephalum {
            builder=new BasicGraphBuilder();
        }
 
-       List<Edge> edges = (List<Edge>) graph.getEdges().stream().filter(o -> FastMath.abs(currentFluxMap.get(o))>0.001).collect(Collectors.toList());
+       List<Edge> edges = (List<Edge>) graph.getEdges().stream().filter(o -> FastMath.abs(currentFluxMap.get(o))>=0.000000001).collect(Collectors.toList());
        for (Edge e:edges){
            builder.addEdge(e);
            if (!builder.getGraph().getNodes().contains(e.getNodeA())){
                builder.addNode(e.getNodeA());
            }
            if (!builder.getGraph().getNodes().contains(e.getNodeB())){
-               builder.addNode(e.getNodeB());
+              builder.addNode(e.getNodeB());
            }
 
        }
+
 
         return builder.getGraph();
     }
@@ -311,6 +313,13 @@ public abstract class AbstractPhysarumPolycephalum {
             currentFluxMap.put(e,Q);
             flowSeriesMap.get(e).add(iteration,Q);
         }
+       double sum=currentFluxMap.values().stream().collect(Collectors.summingDouble(new ToDoubleFunction<Double>() {
+           @Override
+           public double applyAsDouble(Double value) {
+               return value;
+           }
+       }));
+
 
     }
 

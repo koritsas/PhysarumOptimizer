@@ -1,5 +1,6 @@
 package edu.koritsas.slimemold.shortestpath;
 
+import edu.koritsas.slimemold.shapefile.GraphUtils;
 import org.apache.commons.math3.linear.DecompositionSolver;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
@@ -129,12 +130,20 @@ public abstract class PhysarumPolycephalumLangrarianCSP extends PhysarumPolyceph
             }
 
         }
+
+
         if (iteration==numberOfIterations){
             break;
         }
+         Graph newGraph=getGraph();
+
+
 
         converged=false;
-        boolean conv =pathViolatesConstraints(getGraph());
+        List<Edge> edges1 =new ArrayList<>(newGraph.getEdges());
+
+
+        boolean conv =pathViolatesConstraints(newGraph);
 
         if(conv==false){
            break;
@@ -142,10 +151,13 @@ public abstract class PhysarumPolycephalumLangrarianCSP extends PhysarumPolyceph
 
 
 
+
         λ=λ+step;
         }
 
     }
+
+
 
     public HashMap<Edge, Double> getL() {
         return L;
