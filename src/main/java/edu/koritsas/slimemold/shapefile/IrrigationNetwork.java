@@ -159,24 +159,7 @@ public class IrrigationNetwork {
 
         return basicGraph;
     }
-    public List<Node> getNetworkEnds(){
-        List<Node> hydrants =getHydrants();
-        List<Node> ends = new ArrayList<>();
 
-        for (Node node:hydrants){
-            Iterator<Node> iterator=node.getRelated();
-            int k=0;
-            while (iterator.hasNext()){
-                   k++;
-            }
-            if (k==1){
-                ends.add(node);
-            }
-        }
-
-        return ends;
-
-    }
 
 
 }

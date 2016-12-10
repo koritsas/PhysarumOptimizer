@@ -31,24 +31,12 @@ public class Main {
             e.printStackTrace();
         }
 
-   /*     graph.getEdges().removeIf(new Predicate() {
-            @Override
-            public boolean test(Object o) {
-                Edge e= (Edge) o;
-                SimpleFeature f = (SimpleFeature) e.getObject();
-                double v = (double) f.getAttribute("V");
-                if (v>2){
-                    return true;
-                }else {
-                    return false;
-                }
-            }
-        });*/
 
         List<Node> sourceNodes =network.getWaterSource();
         List<Node> sinkNodes = network.getHydrants();
-
-        //sinkNodes=sinkNodes.subList(7,8);
+       // List<Node> ends=network.getNetworkEnds();
+        //ends.size();
+        ///sinkNodes=sinkNodes.subList(7,8);
 
         Node source =sourceNodes.get(0);
      /*
