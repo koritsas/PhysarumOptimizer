@@ -16,6 +16,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -156,6 +158,24 @@ public class IrrigationNetwork {
 
 
         return basicGraph;
+    }
+    public List<Node> getNetworkEnds(){
+        List<Node> hydrants =getHydrants();
+        List<Node> ends = new ArrayList<>();
+
+        for (Node node:hydrants){
+            Iterator<Node> iterator=node.getRelated();
+            int k=0;
+            while (iterator.hasNext()){
+                   k++;
+            }
+            if (k==1){
+                ends.add(node);
+            }
+        }
+
+        return ends;
+
     }
 
 

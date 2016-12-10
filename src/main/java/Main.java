@@ -47,6 +47,7 @@ public class Main {
 
         List<Node> sourceNodes =network.getWaterSource();
         List<Node> sinkNodes = network.getHydrants();
+
         //sinkNodes=sinkNodes.subList(7,8);
 
         Node source =sourceNodes.get(0);
@@ -108,7 +109,7 @@ public class Main {
 
         System.out.println(slime.getSolutionCost());
       */
-        PhysarumPolycephalumLagrarianCSPT slimeTree = new PhysarumPolycephalumLagrarianCSPT(graph,source,sinkNodes,1E-12,1E-12,25000,10000,1) {
+        PhysarumPolycephalumLagrarianCSPT slimeTree = new PhysarumPolycephalumLagrarianCSPT(graph,source,sinkNodes,1E-12,1E-12,25000,10000,0.1) {
             @Override
             public boolean pathViolatesConstraints(Graph graph) {
 
