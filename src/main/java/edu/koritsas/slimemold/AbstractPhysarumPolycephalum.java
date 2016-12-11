@@ -194,6 +194,8 @@ public abstract class AbstractPhysarumPolycephalum {
 
                 boolean maxIterReached =currentIteration==numberOfIterations;
 
+                current.values().stream().collect(Collectors.maxBy((o1, o2) -> 1));
+
                 return absolute||relative||maxIterReached;
             }
         };

@@ -4,6 +4,7 @@ import edu.koritsas.slimemold.mstree.PhysarumPolycephalumLagrarianCSPT;
 import edu.koritsas.slimemold.shapefile.GraphUtils;
 import edu.koritsas.slimemold.shapefile.IrrigationNetwork;
 import edu.koritsas.slimemold.shortestpath.PhysarumPolycephalumLangrarianCSP;
+import org.apache.commons.math3.util.FastMath;
 import org.geotools.graph.build.basic.BasicGraphGenerator;
 import org.geotools.graph.path.DijkstraShortestPathFinder;
 import org.geotools.graph.path.Path;
@@ -108,7 +109,7 @@ public class Main {
 
     */
 
-        PhysarumPolycephalumLagrarianCSPT slimeTree = new PhysarumPolycephalumLagrarianCSPT(graph,source,sinkNodes,1E-3,1E-3,700000,10000,0.01) {
+        PhysarumPolycephalumLagrarianCSPT slimeTree = new PhysarumPolycephalumLagrarianCSPT(graph,source,sinkNodes,1E-12,1E-12,700000,10000,0.1) {
             @Override
             public boolean pathViolatesConstraints(Graph graph) {
 
@@ -137,7 +138,8 @@ public class Main {
 
                 List<Edge> edgeList = new ArrayList<>(graph.getEdges());
 
-                for (Node n:sinkNodes){
+               List<Node> hydr= network.getHydrants();
+                for (Node n:hydr){
                     Path path = pf.getPath(n);
 
                     List<Edge> actual = new ArrayList<>();
@@ -159,12 +161,15 @@ public class Main {
                         }
                     }));
 
-                    System.out.println(dh);
+
 
                     SimpleFeature sinkf = (SimpleFeature) n.getObject();
                     double He= (double) sinkf.getAttribute("hdemand");
 
-                    if ((Ho-He)<dh){
+                    double DH= Ho-He;
+                    System.out.println("Διαθέσιμο: "+DH+"Πραγματικό: "+dh);
+
+                    if ((DH)<dh){
                         violates=true;
                     }
                 }
@@ -176,7 +181,15 @@ public class Main {
             @Override
             public double getEdgeConstraintValue(Edge edge) {
                 SimpleFeature f = (SimpleFeature) edge.getObject();
-                double dh = (double) f.getAttribute("Dh");
+                //double dh = (double) f.getAttribute("Dh");
+
+                double D= (double) f.getAttribute("Diameter");
+                double Q= (double) f.getAttribute("Q");
+                Geometry g = (Geometry) f.getDefaultGeometry();
+                  double L=g.getLength();
+
+                double dh= 0.00090940294*FastMath.pow(Q,1.78571428571)*L/FastMath.pow(D,4.78571428571);
+
                 return dh;
             }
 
