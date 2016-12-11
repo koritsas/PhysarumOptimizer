@@ -169,8 +169,9 @@ public class Main {
                     double DH= Ho-He;
                     System.out.println("Διαθέσιμο: "+DH+"Πραγματικό: "+dh);
 
-                    if ((DH)<dh){
+                    if ((DH-dh)<0){
                         violates=true;
+
                     }
                 }
 
@@ -181,14 +182,14 @@ public class Main {
             @Override
             public double getEdgeConstraintValue(Edge edge) {
                 SimpleFeature f = (SimpleFeature) edge.getObject();
-                //double dh = (double) f.getAttribute("Dh");
+                double dh = (double) f.getAttribute("Dh");
 
                 double D= (double) f.getAttribute("Diameter");
                 double Q= (double) f.getAttribute("Q");
                 Geometry g = (Geometry) f.getDefaultGeometry();
                   double L=g.getLength();
 
-                double dh= 0.00090940294*FastMath.pow(Q,1.78571428571)*L/FastMath.pow(D,4.78571428571);
+                //double dh= 0.00090940294*FastMath.pow(Q,1.78571428571)*L/FastMath.pow(D,4.78571428571);
 
                 return dh;
             }
