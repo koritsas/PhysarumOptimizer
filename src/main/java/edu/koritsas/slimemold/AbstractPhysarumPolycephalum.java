@@ -11,7 +11,9 @@ import org.geotools.graph.structure.DirectedGraph;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
+import org.geotools.graph.structure.basic.BasicEdge;
 import org.geotools.graph.structure.basic.BasicGraph;
+import org.geotools.graph.structure.basic.BasicNode;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -122,6 +124,14 @@ public abstract class AbstractPhysarumPolycephalum {
            }
 
        }
+
+
+
+
+        for (Edge e:edges){
+          builder.addEdge(e);
+        }
+
 
 
         return builder.getGraph();

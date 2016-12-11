@@ -108,7 +108,7 @@ public class Main {
 
     */
 
-        PhysarumPolycephalumLagrarianCSPT slimeTree = new PhysarumPolycephalumLagrarianCSPT(graph,source,sinkNodes,1E-3,1E-3,700000,10000,1) {
+        PhysarumPolycephalumLagrarianCSPT slimeTree = new PhysarumPolycephalumLagrarianCSPT(graph,source,sinkNodes,1E-3,1E-3,700000,10000,0.01) {
             @Override
             public boolean pathViolatesConstraints(Graph graph) {
 
@@ -135,11 +135,22 @@ public class Main {
 
                 boolean violates =false;
 
+                List<Edge> edgeList = new ArrayList<>(graph.getEdges());
+
                 for (Node n:sinkNodes){
                     Path path = pf.getPath(n);
+
+                    List<Edge> actual = new ArrayList<>();
                     List<Edge> edges = path.getEdges();
 
-                    double dh = (double) path.getEdges().stream().collect(Collectors.summingDouble(new ToDoubleFunction<Edge>() {
+                    for (Edge e:edgeList){
+                        if (path.contains(e.getNodeA())&&path.contains(e.getNodeB())){
+                            actual.add(e);
+                        }
+                    }
+
+
+                    double dh = actual.stream().collect(Collectors.summingDouble(new ToDoubleFunction<Edge>() {
                         @Override
                         public double applyAsDouble(Edge edge) {
 
