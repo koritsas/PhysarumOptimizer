@@ -4,9 +4,15 @@ import edu.koritsas.slimemold.mstree.PhysarumPolycephalumLagrarianCSPT;
 import edu.koritsas.slimemold.shapefile.GraphUtils;
 import edu.koritsas.slimemold.shapefile.IrrigationNetwork;
 import edu.koritsas.slimemold.shortestpath.PhysarumPolycephalumLangrarianCSP;
+import org.geotools.graph.build.basic.BasicGraphGenerator;
 import org.geotools.graph.path.DijkstraShortestPathFinder;
 import org.geotools.graph.path.Path;
 import org.geotools.graph.structure.*;
+import org.geotools.graph.traverse.GraphTraversal;
+import org.geotools.graph.traverse.GraphWalker;
+import org.geotools.graph.traverse.basic.BasicGraphTraversal;
+import org.geotools.graph.traverse.basic.SimpleGraphWalker;
+import org.geotools.graph.traverse.standard.DepthFirstIterator;
 import org.geotools.graph.traverse.standard.DijkstraIterator;
 import org.opengis.feature.simple.SimpleFeature;
 
@@ -112,7 +118,6 @@ public class Main {
                         return getEdgeConstraintValue(e);
                     }
                 };
-
 
 
                 DijkstraShortestPathFinder pf = new DijkstraShortestPathFinder(graph,sourceNode,weigter);
