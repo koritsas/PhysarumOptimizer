@@ -109,7 +109,7 @@ public class Main {
 
     */
 
-        PhysarumPolycephalumLagrarianCSPT slimeTree = new PhysarumPolycephalumLagrarianCSPT(graph,source,sinkNodes,1E-12,1E-12,700000,10000,0.1) {
+        PhysarumPolycephalumLagrarianCSPT slimeTree = new PhysarumPolycephalumLagrarianCSPT(graph,source,sinkNodes,1E-12,1E-12,700000,10000,1) {
             @Override
             public boolean pathViolatesConstraints(Graph graph) {
 
@@ -171,7 +171,7 @@ public class Main {
 
                     if ((DH-dh)<0){
                         violates=true;
-
+                        break;
                     }
                 }
 
