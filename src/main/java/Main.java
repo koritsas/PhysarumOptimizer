@@ -30,7 +30,8 @@ public class Main {
     public static void main(String[] args) {
 
        // IrrigationNetwork network = new IrrigationNetwork("C:/Users/ilias/Desktop/SlimeTest/H.shp","C:/Users/ilias/Desktop/SlimeTest/WS.shp","C:/Users/ilias/Desktop/SlimeTest/P.shp");
-        IrrigationNetwork network = new IrrigationNetwork("ParametrizedTests/Hbenchmark2.shp", "ParametrizedTests/Wbenchmark2.shp", "ParametrizedTests/Pbenchmark2.shp");
+        //IrrigationNetwork network = new IrrigationNetwork("ParametrizedTests/HCSPT.shp", "ParametrizedTests/WCSPT.shp", "ParametrizedTests/PCSPT.shp");
+        IrrigationNetwork network = new IrrigationNetwork("ParametrizedTests/Hbenchmark22.shp", "ParametrizedTests/Wbenchmark22.shp", "ParametrizedTests/Pbenchmark22.shp");
         //DirectedIrrigationNetwork network = new DirectedIrrigationNetwork("C:/Users/ilias/Desktop/ParametrizedTests/HDMST.shp", "C:/Users/ilias/Desktop/ParametrizedTests/WDMST.shp", "C:/Users/ilias/Desktop/ParametrizedTests/PDMST.shp");
        Graph graph=null;
         try {
@@ -49,7 +50,42 @@ public class Main {
         Node source =sourceNodes.get(0);
         Node sink =sinkNodes.get(0);
 
-   /*
+
+        /*
+        PhysarumPolycephalumLagrarianCSPT sl = new PhysarumPolycephalumLagrarianCSPT(graph,source,sinkNodes,1E-12,1E-12,50000,100,0.1) {
+            @Override
+            public boolean pathViolatesConstraints(Graph graph) {
+                boolean violates=false;
+                List<Edge> list = new ArrayList<>(graph.getEdges());
+                for (Edge e:list){
+                    if (getEdgeConstraintValue(e)>120){
+                        violates=true;
+                        break;
+                    }
+                }
+                return violates;
+            }
+
+            @Override
+            public double getEdgeConstraintValue(Edge edge) {
+                SimpleFeature f = (SimpleFeature) edge.getObject();
+                double C = (double) f.getAttribute("C");
+                return C;
+            }
+
+            @Override
+            public double getEdgeCost(Edge e) {
+                SimpleFeature f = (SimpleFeature) e.getObject();
+                Geometry g = (Geometry) f.getDefaultGeometry();
+                return g.getLength();
+            }
+        };
+        sl.execute();
+        sl.showConductivityMap();
+        sl.showFlowDiagram();
+        GraphUtils.visualizeGraph(sl.getGraph());
+      */
+       /*
         PhysarumPolycephalumLangrarianCSP slime = new PhysarumPolycephalumLangrarianCSP(graph,source,sinkNodes.get(0),1E-12,1E-12,50000,10000,0.1) {
             @Override
             public boolean pathViolatesConstraints(Graph graph) {
@@ -106,10 +142,10 @@ public class Main {
         System.out.println(slime.pathViolatesConstraints(slime.getGraph()));
 
         System.out.println(slime.getSolutionCost());
+       */
 
-    */
 
-        PhysarumPolycephalumLagrarianCSPT slimeTree = new PhysarumPolycephalumLagrarianCSPT(graph,source,sinkNodes,1E-12,1E-12,700000,10000,1) {
+        PhysarumPolycephalumLagrarianCSPT slimeTree = new PhysarumPolycephalumLagrarianCSPT(graph,source,sinkNodes,1E-10,1E-10,20000,10000,1) {
             @Override
             public boolean pathViolatesConstraints(Graph graph) {
 
@@ -167,9 +203,10 @@ public class Main {
                     double He= (double) sinkf.getAttribute("hdemand");
 
                     double DH= Ho-He;
-                    System.out.println("Διαθέσιμο: "+DH+"Πραγματικό: "+dh);
+                    System.out.println("Διαθέσιμο: "+DH+"Πραγματικό: "+dh+" Διαφορά: "+(DH-dh));
 
                     if ((DH-dh)<0){
+
                         violates=true;
                         break;
                     }
@@ -182,14 +219,14 @@ public class Main {
             @Override
             public double getEdgeConstraintValue(Edge edge) {
                 SimpleFeature f = (SimpleFeature) edge.getObject();
-                double dh = (double) f.getAttribute("Dh");
+                //double dh = (double) f.getAttribute("Dh");
 
                 double D= (double) f.getAttribute("Diameter");
                 double Q= (double) f.getAttribute("Q");
                 Geometry g = (Geometry) f.getDefaultGeometry();
                   double L=g.getLength();
 
-                //double dh= 0.00090940294*FastMath.pow(Q,1.78571428571)*L/FastMath.pow(D,4.78571428571);
+                double dh= 0.00090940294*FastMath.pow(Q,1.78571428571)*L/FastMath.pow(D,4.78571428571);
 
                 return dh;
             }
@@ -214,6 +251,5 @@ public class Main {
         System.out.println(slimeTree.pathViolatesConstraints(slimeTree.getGraph()));
 
         System.out.println(slimeTree.getSolutionCost());
-
     }
 }

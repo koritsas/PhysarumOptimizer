@@ -8,6 +8,7 @@ import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
@@ -48,6 +49,54 @@ public abstract class PhysarumPolycephalumLagrarianCSPT extends PhysarumPolyceph
         return new ArrayRealVector(constants);
 
 
+    }
+    @Override
+    protected double calculateCoefficient(Node n1, Node n2){
+
+        //Edge e=n1.getEdge(n2);
+
+
+       /* if (e!=null){
+            double D =conductivityMap.get(e);
+            double w = getEdgeCost(e);
+            coeff=-D/w;
+        }
+*/
+        List<Edge> edges = n1.getEdges(n2);
+        double coeff=0;
+
+        if (edges!=null){
+            Iterator<Edge> edgeIterator =edges.iterator();
+            while (edgeIterator.hasNext()){
+                Edge edge=edgeIterator.next();
+                double D =conductivityMap.get(edge);
+                double w = L.get(edge);
+                coeff=coeff-D/w;
+            }
+
+        }
+        return coeff;
+    }
+
+    @Override
+    public double calculateSelfCoefficient(Node n) {
+        double selfC = 0;
+        List<Edge> edges = n.getEdges();
+
+
+       /* Iterator<Node> it =n.getRelated();
+
+        while(it.hasNext()){
+            selfC = selfC + FastMath.abs(calculateCoefficient(n,it.next()));
+        }
+*/
+        for (Edge edge:edges){
+            double D =conductivityMap.get(edge);
+            double w = L.get(edge) ;
+            selfC=selfC+FastMath.abs(-D/w);
+        }
+
+        return selfC;
     }
 
 

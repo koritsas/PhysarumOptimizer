@@ -86,8 +86,8 @@ public abstract class PhysarumPolycephalumLangrarianCSP extends PhysarumPolyceph
 
         initializeMaps(graph);
         logger.info("Starting iterations...");
-    while (λ<λmax) {
-        // for (int i = 0; i <numberOfIterations ; i++) {
+   while (λ<λmax) {
+         //for (int i = 0; i <200 ; i++) {
 
         List<Edge> edges = new ArrayList<>(graph.getEdges());
         edges.stream().forEach(edge -> L.put(edge, L.get(edge) + λ * getEdgeConstraintValue(edge)));
@@ -119,6 +119,7 @@ public abstract class PhysarumPolycephalumLangrarianCSP extends PhysarumPolyceph
             redefineFlows(graph);
 
             redefineDiameters(graph);
+
 
             converged = checkConvergenceCriterion(previousFluxMap, currentFluxMap, iteration, m_absoluteThreshold, m_relativeThreshold);
 
