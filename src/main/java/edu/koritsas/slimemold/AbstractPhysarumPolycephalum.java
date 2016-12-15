@@ -113,7 +113,7 @@ public abstract class AbstractPhysarumPolycephalum {
            builder=new BasicGraphBuilder();
        }
 
-       List<Edge> edges = (List<Edge>) graph.getEdges().stream().filter(o -> FastMath.abs(currentFluxMap.get(o))>=0.000000001).collect(Collectors.toList());
+       List<Edge> edges = (List<Edge>) graph.getEdges().stream().filter(o -> FastMath.abs(currentFluxMap.get(o))>=0.0000001).collect(Collectors.toList());
        for (Edge e:edges){
            builder.addEdge(e);
            if (!builder.getGraph().getNodes().contains(e.getNodeA())){
@@ -276,14 +276,14 @@ public abstract class AbstractPhysarumPolycephalum {
         currentFluxMap =new HashMap<Edge, Double>(graph.getEdges().size());
         conductivityMap=new HashMap<Edge,Double>(graph.getEdges().size());
         for (Edge e:edges){
-            currentFluxMap.putIfAbsent(e,0.0);
-            conductivityMap.putIfAbsent(e,1.0);
+            currentFluxMap.put(e,0.0);
+            conductivityMap.put(e,1.0);
         }
 
         Collection<Node> nodes =graph.getNodes();
         pressureMap=new HashMap<Node,Double>(nodes.size());
         for (Node n:nodes){
-            pressureMap.putIfAbsent(n,0.0);
+            pressureMap.put(n,0.0);
 
         }
 

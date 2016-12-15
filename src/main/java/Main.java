@@ -1,6 +1,7 @@
 import com.vividsolutions.jts.geom.Geometry;
 
 import edu.koritsas.slimemold.mstree.PhysarumPolycephalumLagrarianCSPT;
+import edu.koritsas.slimemold.mstree.PhysarumPolycephalumSPT;
 import edu.koritsas.slimemold.shapefile.GraphUtils;
 import edu.koritsas.slimemold.shapefile.IrrigationNetwork;
 import edu.koritsas.slimemold.shortestpath.PhysarumPolycephalumLangrarianCSP;
@@ -145,7 +146,7 @@ public class Main {
        */
 
 
-        PhysarumPolycephalumLagrarianCSPT slimeTree = new PhysarumPolycephalumLagrarianCSPT(graph,source,sinkNodes,1E-10,1E-10,20000,10000,1) {
+        PhysarumPolycephalumLagrarianCSPT slimeTree = new PhysarumPolycephalumLagrarianCSPT(graph,source,sinkNodes,1E-3,1E-3,200000,10000,0.00000001) {
             @Override
             public boolean pathViolatesConstraints(Graph graph) {
 
@@ -179,7 +180,7 @@ public class Main {
                     Path path = pf.getPath(n);
 
                     List<Edge> actual = new ArrayList<>();
-                    List<Edge> edges = path.getEdges();
+
 
                     for (Edge e:edgeList){
                         if (path.contains(e.getNodeA())&&path.contains(e.getNodeB())){
@@ -206,7 +207,6 @@ public class Main {
                     System.out.println("Διαθέσιμο: "+DH+"Πραγματικό: "+dh+" Διαφορά: "+(DH-dh));
 
                     if ((DH-dh)<0){
-
                         violates=true;
                         break;
                     }
@@ -235,10 +235,13 @@ public class Main {
             public double getEdgeCost(Edge e) {
                 SimpleFeature f = (SimpleFeature) e.getObject();
                 Geometry g = (Geometry) f.getDefaultGeometry();
-                double L=g.getLength();
+               /* double L=g.getLength();
                 double cm = (double) f.getAttribute("Cost");
                 double cost=L*cm;
-                return cost;
+                return cost; */
+
+               double dh = (double) f.getAttribute("Dh");
+                  return 1/dh;
             }
         };
 
@@ -251,5 +254,6 @@ public class Main {
         System.out.println(slimeTree.pathViolatesConstraints(slimeTree.getGraph()));
 
         System.out.println(slimeTree.getSolutionCost());
+
     }
 }

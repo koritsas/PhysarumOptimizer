@@ -143,7 +143,6 @@ public abstract class PhysarumPolycephalumLangrarianCSP extends PhysarumPolyceph
         converged=false;
         List<Edge> edges1 =new ArrayList<>(newGraph.getEdges());
 
-
         boolean conv =pathViolatesConstraints(newGraph);
 
         if(conv==false){
