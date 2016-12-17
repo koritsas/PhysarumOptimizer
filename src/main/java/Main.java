@@ -146,7 +146,7 @@ public class Main {
        */
 
 
-        PhysarumPolycephalumLagrarianCSPT slimeTree = new PhysarumPolycephalumLagrarianCSPT(graph,source,sinkNodes,1E-3,1E-3,200000,10000,0.00000001) {
+        PhysarumPolycephalumLagrarianCSPT slimeTree = new PhysarumPolycephalumLagrarianCSPT(graph,source,sinkNodes,1E-3,1E-3,200000,10000,1) {
             @Override
             public boolean pathViolatesConstraints(Graph graph) {
 
@@ -235,13 +235,13 @@ public class Main {
             public double getEdgeCost(Edge e) {
                 SimpleFeature f = (SimpleFeature) e.getObject();
                 Geometry g = (Geometry) f.getDefaultGeometry();
-               /* double L=g.getLength();
+                double L=g.getLength();
                 double cm = (double) f.getAttribute("Cost");
                 double cost=L*cm;
-                return cost; */
+                return cost;
 
-               double dh = (double) f.getAttribute("Dh");
-                  return 1/dh;
+               //double dh = (double) f.getAttribute("Dh");
+                 // return 1/dh;
             }
         };
 
