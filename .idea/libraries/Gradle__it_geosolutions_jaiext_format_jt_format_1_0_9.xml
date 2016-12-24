@@ -1,6 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: it.geosolutions.jaiext.format:jt-format:1.0.9">
-    <CLASSES />
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/Could not resolve it.geosolutions.jaiext.format:jt-format:1.0.9." />
+    </CLASSES>
     <JAVADOC />
     <SOURCES />
   </library>

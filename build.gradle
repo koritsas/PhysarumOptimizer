@@ -8,13 +8,12 @@ apply plugin: 'java'
 repositories {
     maven {
         url 'http://download.osgeo.org/webdav/geotools/'
-
-
     }
     maven {
         url 'https://repo.gradle.org/gradle/plugins-releases'
 
     }
+
     maven{
         url 'https://github.com/geosolutions-it/jai-ext'
     }
