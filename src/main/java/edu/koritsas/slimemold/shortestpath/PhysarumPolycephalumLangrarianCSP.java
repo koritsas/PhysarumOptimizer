@@ -16,10 +16,11 @@ import java.util.*;
  * Created by ilias on 6/11/2016.
  */
 public abstract class PhysarumPolycephalumLangrarianCSP extends PhysarumPolycephalumSP {
-    protected double λ=0;
+    protected int k=0;
     protected double step;
     protected double λmax;
     protected HashMap<Edge,Double> L;
+    protected double λmap[]=new double[graph.getEdges().size()];
 
     public PhysarumPolycephalumLangrarianCSP(Graph graph, Node sourceNode, Node sinkNode, double absoluteThreshold, double relativeThreshold, int numberOfIterations,double λmax,double step) {
         super(graph, sourceNode, sinkNode, absoluteThreshold, relativeThreshold, numberOfIterations);
@@ -36,7 +37,7 @@ public abstract class PhysarumPolycephalumLangrarianCSP extends PhysarumPolyceph
 
         for (Edge e:edges){
             L.putIfAbsent(e,getEdgeCost(e));
-
+            //λmap.putIfAbsent(e,0.0);
         }
     }
 
@@ -84,11 +85,11 @@ public abstract class PhysarumPolycephalumLangrarianCSP extends PhysarumPolyceph
         double startingTime=System.currentTimeMillis();
         initializeMaps(graph);
         logger.info("Starting iterations...");
-   while (λ<λmax) {
+   while (true) {
          //for (int i = 0; i <200 ; i++) {
 
         List<Edge> edges = new ArrayList<>(graph.getEdges());
-        edges.stream().forEach(edge -> L.put(edge, L.get(edge) + λ * getEdgeConstraintValue(edge)));
+        edges.stream().forEach(edge -> L.put(edge, L.get(edge) + λmap[edges.indexOf(edge)] * getEdgeConstraintValue(edge)));
         while (!converged) {
 
 
@@ -146,11 +147,12 @@ public abstract class PhysarumPolycephalumLangrarianCSP extends PhysarumPolyceph
         if(conv==false){
            break;
         }
+        if (k==edges.size()){
+            k=0;
+        }
 
-
-
-
-        λ=λ+step;
+        λmap[k]=(λmap[k]+step);
+       k++;
         }
         double endingTime=System.currentTimeMillis();
 
