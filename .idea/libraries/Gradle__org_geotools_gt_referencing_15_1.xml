@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.geotools:gt-referencing:15.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.geotools/gt-referencing/15.1/425080f5df9835c9021ed8cc0b049643c286e13a/gt-referencing-15.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.geotools/gt-referencing/15.1/cc98dbc42994b2c0c97940b3c2c4708c3acc9853/gt-referencing-15.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

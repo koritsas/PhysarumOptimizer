@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.geotools:gt-swing:15.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.geotools/gt-swing/15.1/b141a08d212da418675350f59889109707dc50b0/gt-swing-15.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.geotools/gt-swing/15.1/1defcb3ff8c6c688fe8cf406dc5dfe0ed680456e/gt-swing-15.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
