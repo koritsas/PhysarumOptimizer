@@ -1,6 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: it.geosolutions.imageio-ext:imageio-ext-tiff:1.1.15">
-    <CLASSES />
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/Could not resolve it.geosolutions.imageio-ext:imageio-ext-tiff:1.1.15." />
+    </CLASSES>
     <JAVADOC />
     <SOURCES />
   </library>
