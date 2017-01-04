@@ -121,7 +121,7 @@ public class Main {
        */
 
 
-        PhysarumPolycephalumLagrarianCSPT slimeTree = new PhysarumPolycephalumLagrarianCSPT(graph,source,sinkNodes,1E-10,1E-10,200000,10000,1) {
+        PhysarumPolycephalumLagrarianCSPT slimeTree = new PhysarumPolycephalumLagrarianCSPT(graph,source,sinkNodes,1E-10,1E-10,200000,10000,10) {
             @Override
             public boolean pathViolatesConstraints(Graph graph) {
 
@@ -230,11 +230,13 @@ public class Main {
         slimeTree.showConductivityMap();
         slimeTree.showFlowDiagram();
 
+
         GraphUtils.visualizeGraph(slimeTree.getGraph());
 
         System.out.println(slimeTree.pathViolatesConstraints(slimeTree.getGraph()));
 
         System.out.println(slimeTree.getSolutionCost());
+
 
     }
 }
