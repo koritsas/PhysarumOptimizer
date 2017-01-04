@@ -54,6 +54,11 @@ public abstract class AbstractPhysarumPolycephalum {
     protected final double Io=100;
 
     protected  int numberOfIterations;
+
+    public HashMap<Edge, Double> getCurrentFluxMap() {
+        return currentFluxMap;
+    }
+
     protected HashMap<Edge,Double> currentFluxMap;
     protected HashMap<Edge,Double> previousFluxMap;
     protected HashMap<Edge,Double> conductivityMap;
