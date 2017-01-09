@@ -35,7 +35,7 @@ public abstract class PhysarumPolycephalumLangrarianCSP extends PhysarumPolyceph
         L=new HashMap<>(graph.getEdges().size());
 
         for (Edge e:edges){
-            L.putIfAbsent(e,getEdgeCost(e));
+            L.put(e,getEdgeCost(e));
 
         }
     }

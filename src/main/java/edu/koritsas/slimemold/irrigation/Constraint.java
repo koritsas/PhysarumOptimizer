@@ -64,9 +64,12 @@ public class Constraint {
 
        public boolean containsEdge(Edge edge){
         boolean contains =false;
+        if (mPath.contains(edge.getNodeA())&&mPath.contains(edge.getNodeB())){
+            contains=true;
+        }
 
 
-        return mPath.getEdges().contains(edge);
+        return contains;
        }
 
 

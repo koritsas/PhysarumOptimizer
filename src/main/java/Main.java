@@ -4,6 +4,7 @@ import edu.koritsas.slimemold.irrigation.IrrigationPhysarumPolycephalum;
 import edu.koritsas.slimemold.mstree.PhysarumPolycephalumLagrarianCSPT;
 import edu.koritsas.slimemold.shapefile.GraphUtils;
 import edu.koritsas.slimemold.shapefile.IrrigationNetwork;
+import edu.koritsas.slimemold.shortestpath.PhysarumPolycephalumLangrarianCSP;
 import org.apache.commons.math3.util.FastMath;
 import org.geotools.graph.path.DijkstraShortestPathFinder;
 import org.geotools.graph.path.Path;
@@ -44,8 +45,8 @@ public class Main {
         Node source =sourceNodes.get(0);
         Node sink =sinkNodes.get(0);
 
-    /*
-         PhysarumPolycephalumLangrarianCSP slime = new PhysarumPolycephalumLangrarianCSP(graph,source,sink,1E-5,1E-5,200000,1000,0.1) {
+
+         PhysarumPolycephalumLagrarianCSPT slime = new PhysarumPolycephalumLagrarianCSPT(graph,source,sinkNodes,1E-10,1E-10,200000,1000,1) {
              @Override
              public boolean pathViolatesConstraints(Graph graph) {
 
@@ -110,11 +111,12 @@ public class Main {
            slime.execute();
         slime.showConductivityMap();
         slime.showFlowDiagram();
+        slime.pathViolatesConstraints(slime.getGraph());
         GraphUtils.visualizeGraph(slime.getGraph());
-       */
 
 
-        IrrigationPhysarumPolycephalum slimeTree = new IrrigationPhysarumPolycephalum(graph,source,sinkNodes,1E-10,1E-10,20000,10000,10) {
+    /*
+        IrrigationPhysarumPolycephalum slimeTree = new IrrigationPhysarumPolycephalum(graph,source,sinkNodes,1E-10,1E-10,300,10000,10) {
             @Override
             public boolean pathViolatesConstraints(Graph graph) {
 
@@ -228,6 +230,6 @@ public class Main {
         System.out.println(slimeTree.pathViolatesConstraints(slimeTree.getGraph()));
 
         System.out.println(slimeTree.getSolutionCost());
-
+     */
     }
 }
