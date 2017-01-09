@@ -9,13 +9,16 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.graph.build.feature.FeatureGraphGenerator;
 import org.geotools.graph.build.line.BasicLineGraphBuilder;
 import org.geotools.graph.build.line.LineStringGraphGenerator;
+import org.geotools.graph.path.DijkstraShortestPathFinder;
 import org.geotools.graph.structure.*;
 import org.geotools.graph.structure.basic.BasicGraph;
+import org.geotools.graph.traverse.standard.DijkstraIterator;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -160,7 +163,30 @@ public class IrrigationNetwork {
 
         return basicGraph;
     }
+    public List<org.geotools.graph.path.Path> getBranches() throws IOException {
+           Node source =getWaterSource().get(0);
+        DijkstraIterator.EdgeWeighter weigter = new DijkstraIterator.EdgeWeighter() {
+            @Override
+            public double getWeight(Edge e) {
+                return 0;
+            }
+        };
 
+        DijkstraShortestPathFinder pf = new DijkstraShortestPathFinder(getBasicGraph(),source,weigter);
+        pf.calculate();
+
+        List<Node> ends = getHydrants();
+        List<org.geotools.graph.path.Path> branches = new ArrayList<>();
+
+        for (Node n:ends){
+          org.geotools.graph.path.Path path =pf.getPath(n);
+          branches.add(path);
+        }
+
+         return  branches;
+
+
+    }
 
 
 }
