@@ -46,7 +46,7 @@ public class Main {
         Node sink =sinkNodes.get(0);
 
 
-         PhysarumPolycephalumLagrarianCSPT slime = new PhysarumPolycephalumLagrarianCSPT(graph,source,sinkNodes,1E-10,1E-10,200000,1000,1) {
+         PhysarumPolycephalumLagrarianCSPT slime = new PhysarumPolycephalumLagrarianCSPT(graph,source,sinkNodes,1E-6,1E-6,200000,1000,0.1) {
              @Override
              public boolean pathViolatesConstraints(Graph graph) {
 
@@ -115,7 +115,7 @@ public class Main {
         GraphUtils.visualizeGraph(slime.getGraph());
 
 
-    /*
+       /*
         IrrigationPhysarumPolycephalum slimeTree = new IrrigationPhysarumPolycephalum(graph,source,sinkNodes,1E-10,1E-10,300,10000,10) {
             @Override
             public boolean pathViolatesConstraints(Graph graph) {
@@ -230,6 +230,6 @@ public class Main {
         System.out.println(slimeTree.pathViolatesConstraints(slimeTree.getGraph()));
 
         System.out.println(slimeTree.getSolutionCost());
-     */
+        */
     }
 }

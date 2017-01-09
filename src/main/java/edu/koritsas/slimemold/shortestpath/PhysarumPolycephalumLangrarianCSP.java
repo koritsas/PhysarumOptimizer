@@ -149,7 +149,7 @@ public abstract class PhysarumPolycephalumLangrarianCSP extends PhysarumPolyceph
 
 
 
-
+        //initializeMaps(graph);
         λ=λ+step;
         }
         double endingTime=System.currentTimeMillis();
