@@ -20,6 +20,7 @@ import org.opengis.feature.simple.SimpleFeature;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
@@ -237,6 +238,8 @@ public class Main {
 
         System.out.println(slimeTree.getSolutionCost());
 
+      HashMap<Edge,Double> sdf=slimeTree.getCurrentFluxMap();
+        System.out.println("fdsaf");
 
     }
 }
