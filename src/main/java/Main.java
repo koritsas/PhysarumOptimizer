@@ -114,7 +114,7 @@ public class Main {
        */
 
 
-        IrrigationPhysarumPolycephalum slimeTree = new IrrigationPhysarumPolycephalum(graph,source,sinkNodes,1E-10,1E-10,200000,10000,10) {
+        IrrigationPhysarumPolycephalum slimeTree = new IrrigationPhysarumPolycephalum(graph,source,sinkNodes,1E-10,1E-10,20000,10000,10) {
             @Override
             public boolean pathViolatesConstraints(Graph graph) {
 
@@ -223,7 +223,7 @@ public class Main {
         slimeTree.showConductivityMap();
         slimeTree.showFlowDiagram();
 
-        GraphUtils.visualizeGraph(slimeTree.getGraph());
+      //  GraphUtils.visualizeGraph(slimeTree.getGraph());
 
         System.out.println(slimeTree.pathViolatesConstraints(slimeTree.getGraph()));
 

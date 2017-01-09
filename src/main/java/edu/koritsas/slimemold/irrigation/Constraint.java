@@ -23,8 +23,8 @@ public class Constraint {
     public boolean isViolated(Graph graph){
         List<Edge> edgeList = new ArrayList<>(graph.getEdges());
 
-       Node start =mPath.getFirst();
-       Node end =mPath.getLast();
+       Node start =mPath.getLast();
+       Node end =mPath.getFirst();
 
             List<Edge> actual = new ArrayList<>();
 
@@ -49,7 +49,7 @@ public class Constraint {
             SimpleFeature sinkf = (SimpleFeature) end.getObject();
             SimpleFeature sourcef = (SimpleFeature) start.getObject();
             double He= (double) sinkf.getAttribute("hdemand");
-        double Ho= (double) sinkf.getAttribute("hdemand");
+        double Ho= (double) sourcef.getAttribute("hdemand");
 
             double DH= Ho-He;
             //System.out.println("Διαθέσιμο: "+DH+"Πραγματικό: "+dh+" Διαφορά: "+(DH-dh));
@@ -63,8 +63,10 @@ public class Constraint {
         }
 
        public boolean containsEdge(Edge edge){
+        boolean contains =false;
 
-        return mPath.contains(edge);
+
+        return mPath.getEdges().contains(edge);
        }
 
 

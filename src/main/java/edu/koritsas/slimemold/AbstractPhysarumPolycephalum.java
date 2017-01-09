@@ -51,7 +51,7 @@ public abstract class AbstractPhysarumPolycephalum {
     protected Node sourceNode;
     protected Node sinkNode;
     protected List<Node> sinkNodesList;
-    protected final double Io=100;
+    protected final double Io=1000000;
 
     protected  int numberOfIterations;
     protected HashMap<Edge,Double> currentFluxMap;
