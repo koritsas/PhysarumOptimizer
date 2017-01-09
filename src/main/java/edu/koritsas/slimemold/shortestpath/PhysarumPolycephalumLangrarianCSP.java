@@ -20,7 +20,7 @@ public abstract class PhysarumPolycephalumLangrarianCSP extends PhysarumPolyceph
     protected double step;
     protected double λmax;
     protected HashMap<Edge,Double> L;
-
+    protected HashMap<Edge,Double> weights;
     public PhysarumPolycephalumLangrarianCSP(Graph graph, Node sourceNode, Node sinkNode, double absoluteThreshold, double relativeThreshold, int numberOfIterations,double λmax,double step) {
         super(graph, sourceNode, sinkNode, absoluteThreshold, relativeThreshold, numberOfIterations);
         this.λmax=λmax;
@@ -33,10 +33,10 @@ public abstract class PhysarumPolycephalumLangrarianCSP extends PhysarumPolyceph
         super.initializeMaps(graph);
         Collection<Edge> edges =graph.getEdges();
         L=new HashMap<>(graph.getEdges().size());
-
+         weights=new HashMap<>(graph.getEdges().size());
         for (Edge e:edges){
             L.put(e,getEdgeCost(e));
-
+            weights.put(e,getEdgeCost(e));
         }
     }
 
@@ -88,7 +88,7 @@ public abstract class PhysarumPolycephalumLangrarianCSP extends PhysarumPolyceph
          //for (int i = 0; i <200 ; i++) {
 
         List<Edge> edges = new ArrayList<>(graph.getEdges());
-        edges.stream().forEach(edge -> L.put(edge, L.get(edge) + λ * getEdgeConstraintValue(edge)));
+        edges.stream().forEach(edge -> L.put(edge, weights.get(edge) + λ * getEdgeConstraintValue(edge)));
         while (!converged) {
 
 
