@@ -32,7 +32,7 @@ public class Main {
 
        // IrrigationNetwork network = new IrrigationNetwork("C:/Users/ilias/Desktop/SlimeTest/H.shp","C:/Users/ilias/Desktop/SlimeTest/WS.shp","C:/Users/ilias/Desktop/SlimeTest/P.shp");
         //IrrigationNetwork network = new IrrigationNetwork("ParametrizedTests/HCSPT.shp", "ParametrizedTests/WCSPT.shp", "ParametrizedTests/PCSPT.shp");
-        IrrigationNetwork network = new IrrigationNetwork("ParametrizedTests/Hbenchmark2.shp", "ParametrizedTests/Wbenchmark2.shp", "ParametrizedTests/Pbenchmark2.shp");
+        IrrigationNetwork network = new IrrigationNetwork("ParametrizedTests/Hbenchmark11.shp", "ParametrizedTests/Wbenchmark11.shp", "ParametrizedTests/Pbenchmark11.shp");
         //DirectedIrrigationNetwork network = new DirectedIrrigationNetwork("C:/Users/ilias/Desktop/ParametrizedTests/HDMST.shp", "C:/Users/ilias/Desktop/ParametrizedTests/WDMST.shp", "C:/Users/ilias/Desktop/ParametrizedTests/PDMST.shp");
        Graph graph=null;
         try {
@@ -121,7 +121,7 @@ public class Main {
        */
 
 
-        PhysarumPolycephalumLagrarianCSPT slimeTree = new PhysarumPolycephalumLagrarianCSPT(graph,source,sinkNodes,1E-10,1E-10,200000,10000,10) {
+        PhysarumPolycephalumLagrarianCSPT slimeTree = new PhysarumPolycephalumLagrarianCSPT(graph,source,sinkNodes,1E-10,1E-10,200000,10000,1) {
             @Override
             public boolean pathViolatesConstraints(Graph graph) {
 
