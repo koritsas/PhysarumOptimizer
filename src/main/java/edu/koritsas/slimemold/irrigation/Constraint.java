@@ -71,7 +71,17 @@ public class Constraint {
 
         return contains;
        }
+   public double getValue(){
+       Node start =mPath.getLast();
+       Node end =mPath.getFirst();
+       SimpleFeature sinkf = (SimpleFeature) end.getObject();
+       SimpleFeature sourcef = (SimpleFeature) start.getObject();
+       double He= (double) sinkf.getAttribute("hdemand");
+       double Ho= (double) sourcef.getAttribute("hdemand");
 
+       double DH= Ho-He;
+       return DH;
+   }
 
 
 

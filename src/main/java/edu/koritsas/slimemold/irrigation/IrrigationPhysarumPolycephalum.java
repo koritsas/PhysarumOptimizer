@@ -126,7 +126,7 @@ public abstract class IrrigationPhysarumPolycephalum extends PhysarumPolycephalu
         double Q = currentFluxMap.get(e);
 
         double fQ= FastMath.abs(Q);
-        double newD = fQ - 0.8 * D;
+        double newD = fQ - 0.4 * D;
 
 
         return newD;
@@ -145,9 +145,11 @@ public abstract class IrrigationPhysarumPolycephalum extends PhysarumPolycephalu
             edges.stream().forEach(edge -> L.put(edge, L.get(edge) + λ * getEdgeConstraintValue(edge)));
             for (Edge e:edges){
                 Iterator<Constraint> it=constraintHashMap.keySet().iterator();
+
                 while (it.hasNext()){
                     Constraint c=it.next();
                     if(c.containsEdge(e)){
+
                         L.put(e,L.get(e)+constraintHashMap.get(c)*getEdgeConstraintValue(e));
                     }
                 }
