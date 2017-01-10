@@ -33,7 +33,7 @@ public class Main {
 
        // IrrigationNetwork network = new IrrigationNetwork("C:/Users/ilias/Desktop/SlimeTest/H.shp","C:/Users/ilias/Desktop/SlimeTest/WS.shp","C:/Users/ilias/Desktop/SlimeTest/P.shp");
         //IrrigationNetwork network = new IrrigationNetwork("ParametrizedTests/HCSPT.shp", "ParametrizedTests/WCSPT.shp", "ParametrizedTests/PCSPT.shp");
-        IrrigationNetwork network = new IrrigationNetwork("ParametrizedTests/Hbenchmark22.shp", "ParametrizedTests/Wbenchmark22.shp", "ParametrizedTests/Pbenchmark22.shp");
+        IrrigationNetwork network = new IrrigationNetwork("ParametrizedTests/Hbenchmark11.shp", "ParametrizedTests/Wbenchmark11.shp", "ParametrizedTests/Pbenchmark11.shp");
         //DirectedIrrigationNetwork network = new DirectedIrrigationNetwork("C:/Users/ilias/Desktop/ParametrizedTests/HDMST.shp", "C:/Users/ilias/Desktop/ParametrizedTests/WDMST.shp", "C:/Users/ilias/Desktop/ParametrizedTests/PDMST.shp");
        Graph graph=null;
         try {
