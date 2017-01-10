@@ -11,6 +11,7 @@ import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by ilias on 6/11/2016.
@@ -43,8 +44,8 @@ public abstract class PhysarumPolycephalumLangrarianCSP extends PhysarumPolyceph
     @Override
     public double calculateSelfCoefficient(Node n) {
         double selfC = 0;
-        List<Edge> edges = n.getEdges();
-
+        List<Edge> edges1 = n.getEdges();
+         List<Edge> edges =edges1.stream().distinct().collect(Collectors.toList());
 
        /* Iterator<Node> it =n.getRelated();
 
@@ -63,7 +64,8 @@ public abstract class PhysarumPolycephalumLangrarianCSP extends PhysarumPolyceph
 
     @Override
     protected double calculateCoefficient(Node n1, Node n2) {
-        List<Edge> edges = n1.getEdges(n2);
+        List<Edge> edges1 = n1.getEdges(n2);
+        List<Edge> edges =edges1.stream().distinct().collect(Collectors.toList());
         double coeff=0;
 
         if (edges!=null){
