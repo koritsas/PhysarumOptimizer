@@ -56,7 +56,7 @@ public class Constraint {
             //System.out.println("Διαθέσιμο: "+DH+"Πραγματικό: "+dh+" Διαφορά: "+(DH-dh));
 
              boolean violated=false;
-            if (DH-dh>0){
+            if (DH-dh<0){
                 violated=true;
 
             }
