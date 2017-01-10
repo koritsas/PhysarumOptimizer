@@ -160,7 +160,7 @@ public abstract class IrrigationPhysarumPolycephalum extends PhysarumPolycephalu
             }
 
 
-        initializeMaps(graph);
+       // initializeMaps(graph);
         }
         double endingTime=System.currentTimeMillis();
 

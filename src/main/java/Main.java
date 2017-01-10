@@ -118,7 +118,7 @@ public class Main {
      */
 
 
-        IrrigationPhysarumPolycephalum slimeTree = new IrrigationPhysarumPolycephalum(graph,source,sinkNodes,1E-6,1E-6,300000,10000,10) {
+        IrrigationPhysarumPolycephalum slimeTree = new IrrigationPhysarumPolycephalum(graph,source,sinkNodes,1E-6,1E-6,300000,10000,0.01) {
             @Override
             public boolean pathViolatesConstraints(Graph graph) {
 
@@ -191,14 +191,14 @@ public class Main {
             @Override
             public double getEdgeConstraintValue(Edge edge) {
                 SimpleFeature f = (SimpleFeature) edge.getObject();
-                //double dh = (double) f.getAttribute("Dh");
+                double dh = (double) f.getAttribute("Dh");
 
                 double D= (double) f.getAttribute("Diameter");
                 double Q= (double) f.getAttribute("Q");
                 Geometry g = (Geometry) f.getDefaultGeometry();
                   double L=g.getLength();
 
-                double dh= 0.00090940294*FastMath.pow(Q,1.78571428571)*L/FastMath.pow(D,4.78571428571);
+               // double dh= 0.00090940294*FastMath.pow(Q,1.78571428571)*L/FastMath.pow(D,4.78571428571);
 
                 return dh;
             }
@@ -227,7 +227,7 @@ public class Main {
         slimeTree.showConductivityMap();
         slimeTree.showFlowDiagram();
 
-      //  GraphUtils.visualizeGraph(slimeTree.getGraph());
+      GraphUtils.visualizeGraph(slimeTree.getGraph());
 
         System.out.println(slimeTree.pathViolatesConstraints(slimeTree.getGraph()));
 
