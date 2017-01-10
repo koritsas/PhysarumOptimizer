@@ -1,5 +1,6 @@
 package edu.koritsas.slimemold.irrigation;
 
+import org.apache.commons.math3.util.FastMath;
 import org.geotools.graph.path.Path;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
@@ -55,10 +56,11 @@ public class Constraint {
             //System.out.println("Διαθέσιμο: "+DH+"Πραγματικό: "+dh+" Διαφορά: "+(DH-dh));
 
              boolean violated=false;
-            if ((DH-dh)<0){
+            if (DH-dh<0){
                 violated=true;
 
             }
+        System.out.println("Διαθέσιμο: "+DH+"Πραγματικό: "+dh+" Διαφορά: "+(DH-dh));
         return violated;
         }
 

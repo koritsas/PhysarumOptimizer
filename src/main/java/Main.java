@@ -118,7 +118,7 @@ public class Main {
      */
 
 
-        IrrigationPhysarumPolycephalum slimeTree = new IrrigationPhysarumPolycephalum(graph,source,sinkNodes,1E-6,1E-6,300000,10000,0.01) {
+        IrrigationPhysarumPolycephalum slimeTree = new IrrigationPhysarumPolycephalum(graph,source,sinkNodes,1E-10,1E-10,300000,10000,1) {
             @Override
             public boolean pathViolatesConstraints(Graph graph) {
 
@@ -176,9 +176,9 @@ public class Main {
                     double He= (double) sinkf.getAttribute("hdemand");
 
                     double DH= Ho-He;
-                    System.out.println("Διαθέσιμο: "+DH+"Πραγματικό: "+dh+" Διαφορά: "+(DH-dh));
+                    //System.out.println("Διαθέσιμο: "+DH+"Πραγματικό: "+dh+" Διαφορά: "+(DH-dh));
 
-                    if ((DH-dh)<0){
+                    if (DH-dh<0){
                         violates=true;
                         break;
                     }
@@ -205,14 +205,14 @@ public class Main {
 
             @Override
             public double getEdgeCost(Edge e) {
-                SimpleFeature f = (SimpleFeature) e.getObject();
+               SimpleFeature f = (SimpleFeature) e.getObject();
                 Geometry g = (Geometry) f.getDefaultGeometry();
                 double L=g.getLength();
                 double cm = (double) f.getAttribute("Cost");
                 double cost=L*cm;
                 return cost;
 
-                //double Q= (double) f.getAttribute("Q");
+               // double Q= (double) f.getAttribute("Q");
                 //double D = (double) f.getAttribute("Diameter");
 
                 //double φ=FastMath.pow((FastMath.PI*D*D)/(4*9.77683),1/1.32559)*L*FastMath.pow(Q,0.4386);
