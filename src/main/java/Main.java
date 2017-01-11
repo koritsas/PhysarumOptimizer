@@ -26,7 +26,7 @@ public class Main {
 
        // IrrigationNetwork network = new IrrigationNetwork("C:/Users/ilias/Desktop/SlimeTest/H.shp","C:/Users/ilias/Desktop/SlimeTest/WS.shp","C:/Users/ilias/Desktop/SlimeTest/P.shp");
         //IrrigationNetwork network = new IrrigationNetwork("ParametrizedTests/HCSPT.shp", "ParametrizedTests/WCSPT.shp", "ParametrizedTests/PCSPT.shp");
-        IrrigationNetwork network = new IrrigationNetwork("ParametrizedTests/Hbenchmark22.shp", "ParametrizedTests/Wbenchmark22.shp", "ParametrizedTests/Pbenchmark22.shp");
+        IrrigationNetwork network = new IrrigationNetwork("ParametrizedTests/Hbenchmark2.shp", "ParametrizedTests/Wbenchmark2.shp", "ParametrizedTests/Pbenchmark2.shp");
         //DirectedIrrigationNetwork network = new DirectedIrrigationNetwork("C:/Users/ilias/Desktop/ParametrizedTests/HDMST.shp", "C:/Users/ilias/Desktop/ParametrizedTests/WDMST.shp", "C:/Users/ilias/Desktop/ParametrizedTests/PDMST.shp");
        Graph graph=null;
         try {
@@ -118,7 +118,7 @@ public class Main {
      */
 
 
-        IrrigationPhysarumPolycephalum slimeTree = new IrrigationPhysarumPolycephalum(graph,source,sinkNodes,1E-10,1E-10,300000,10000,0.1) {
+        IrrigationPhysarumPolycephalum slimeTree = new IrrigationPhysarumPolycephalum(graph,source,sinkNodes,1E-10,1E-10,300000,10000,1) {
             @Override
             public boolean pathViolatesConstraints(Graph graph) {
 
@@ -192,14 +192,14 @@ public class Main {
             @Override
             public double getEdgeConstraintValue(Edge edge) {
                 SimpleFeature f = (SimpleFeature) edge.getObject();
-               // double dh = (double) f.getAttribute("Dh");
+                double dh = (double) f.getAttribute("Dh");
 
                 double D= (double) f.getAttribute("Diameter");
                 double Q= (double) f.getAttribute("Q");
                 Geometry g = (Geometry) f.getDefaultGeometry();
                   double L=g.getLength();
 
-                double dh= 0.00090940294*FastMath.pow(Q,1.78571428571)*L/FastMath.pow(D,4.78571428571);
+               // double dh= 0.00090940294*FastMath.pow(Q,1.78571428571)*L/FastMath.pow(D,4.78571428571);
 
                 return dh;
             }
