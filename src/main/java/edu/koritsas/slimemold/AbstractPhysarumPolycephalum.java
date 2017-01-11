@@ -117,7 +117,8 @@ public abstract class AbstractPhysarumPolycephalum {
            builder=new BasicGraphBuilder();
        }
 
-       List<Edge> edges = (List<Edge>) graph.getEdges().stream().filter(o -> FastMath.abs(currentFluxMap.get(o))>=0.0000001).collect(Collectors.toList());
+       List<Edge> edges1 = (List<Edge>) graph.getEdges().stream().filter(o -> FastMath.abs(currentFluxMap.get(o))>=0.0000001).collect(Collectors.toList());
+       List<Edge> edges =edges1.stream().distinct().collect(Collectors.toList());
        for (Edge e:edges){
            builder.addEdge(e);
            if (!builder.getGraph().getNodes().contains(e.getNodeA())){

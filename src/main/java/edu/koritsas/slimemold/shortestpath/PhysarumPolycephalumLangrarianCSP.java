@@ -11,17 +11,17 @@ import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by ilias on 6/11/2016.
  */
 public abstract class PhysarumPolycephalumLangrarianCSP extends PhysarumPolycephalumSP {
-    protected int k=0;
+    protected double λ=0;
     protected double step;
     protected double λmax;
     protected HashMap<Edge,Double> L;
-    protected double λ=0;
-
+    protected HashMap<Edge,Double> weights;
     public PhysarumPolycephalumLangrarianCSP(Graph graph, Node sourceNode, Node sinkNode, double absoluteThreshold, double relativeThreshold, int numberOfIterations,double λmax,double step) {
         super(graph, sourceNode, sinkNode, absoluteThreshold, relativeThreshold, numberOfIterations);
         this.λmax=λmax;
@@ -34,18 +34,18 @@ public abstract class PhysarumPolycephalumLangrarianCSP extends PhysarumPolyceph
         super.initializeMaps(graph);
         Collection<Edge> edges =graph.getEdges();
         L=new HashMap<>(graph.getEdges().size());
-
+         weights=new HashMap<>(graph.getEdges().size());
         for (Edge e:edges){
-            L.putIfAbsent(e,getEdgeCost(e));
-            //λmap.putIfAbsent(e,0.0);
+            L.put(e,getEdgeCost(e));
+            weights.put(e,getEdgeCost(e));
         }
     }
 
     @Override
     public double calculateSelfCoefficient(Node n) {
         double selfC = 0;
-        List<Edge> edges = n.getEdges();
-
+        List<Edge> edges1 = n.getEdges();
+         List<Edge> edges =edges1.stream().distinct().collect(Collectors.toList());
 
        /* Iterator<Node> it =n.getRelated();
 
@@ -64,7 +64,8 @@ public abstract class PhysarumPolycephalumLangrarianCSP extends PhysarumPolyceph
 
     @Override
     protected double calculateCoefficient(Node n1, Node n2) {
-        List<Edge> edges = n1.getEdges(n2);
+        List<Edge> edges1 = n1.getEdges(n2);
+        List<Edge> edges =edges1.stream().distinct().collect(Collectors.toList());
         double coeff=0;
 
         if (edges!=null){
@@ -85,11 +86,11 @@ public abstract class PhysarumPolycephalumLangrarianCSP extends PhysarumPolyceph
         double startingTime=System.currentTimeMillis();
         initializeMaps(graph);
         logger.info("Starting iterations...");
-   while (true) {
+   while (λ<λmax) {
          //for (int i = 0; i <200 ; i++) {
 
         List<Edge> edges = new ArrayList<>(graph.getEdges());
-        edges.stream().forEach(edge -> L.put(edge, L.get(edge) + λ * getEdgeConstraintValue(edge)));
+        edges.stream().forEach(edge -> L.put(edge, weights.get(edge) + λ * getEdgeConstraintValue(edge)));
         while (!converged) {
 
 
@@ -149,7 +150,9 @@ public abstract class PhysarumPolycephalumLangrarianCSP extends PhysarumPolyceph
         }
 
 
-       λ=λ+step;
+
+        //initializeMaps(graph);
+        λ=λ+step;
         }
         double endingTime=System.currentTimeMillis();
 

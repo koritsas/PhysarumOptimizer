@@ -23,6 +23,7 @@ public abstract class PhysarumPolycephalumLagrarianCSPT extends PhysarumPolyceph
 
 
 
+
     @Override
     protected RealVector createConstantsVector() {
         List<Node> allNodes =getAllNodes(graph);
