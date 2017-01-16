@@ -30,7 +30,7 @@ public class GraphUtils {
         for (Edge e:edges){
             SimpleFeature f = (SimpleFeature) e.getObject();
             Geometry geometry = (Geometry) f.getDefaultGeometry();
-            System.out.println(geometry);
+           // System.out.println(geometry);
             edgeFeatureList.add(f);
         }
 
@@ -59,7 +59,7 @@ public class GraphUtils {
        mapContent.addLayer(nodeLayer);
 
         JMapFrame mapFrame=new JMapFrame();
-        mapFrame.showMap(mapContent);
+        JMapFrame.showMap(mapContent);
 
 
 

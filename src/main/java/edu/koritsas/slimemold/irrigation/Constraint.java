@@ -1,5 +1,6 @@
 package edu.koritsas.slimemold.irrigation;
 
+import com.vividsolutions.jts.geom.Geometry;
 import org.apache.commons.math3.util.FastMath;
 import org.geotools.graph.path.Path;
 import org.geotools.graph.structure.Edge;
@@ -41,7 +42,13 @@ public class Constraint {
                 @Override
                 public double applyAsDouble(Edge edge) {
                        SimpleFeature f = (SimpleFeature) edge.getObject();
-                       double dh=(double)f.getAttribute("Dh");
+                      double dh=(double)f.getAttribute("Dh");
+                    double D= (double) f.getAttribute("Diameter");
+                    double Q= (double) f.getAttribute("Q");
+                    Geometry g = (Geometry) f.getDefaultGeometry();
+                    double L=g.getLength();
+                    //double dh= 0.00090940294*FastMath.pow(Q,1.78571428571)*L/FastMath.pow(D,4.78571428571);
+
                     return dh;
                 }
             }));
@@ -56,11 +63,11 @@ public class Constraint {
             //System.out.println("Διαθέσιμο: "+DH+"Πραγματικό: "+dh+" Διαφορά: "+(DH-dh));
 
              boolean violated=false;
-            if (DH-dh<0){
+            if (DH-dh<-7.8){
                 violated=true;
 
             }
-        System.out.println("Διαθέσιμο: "+DH+"Πραγματικό: "+dh+" Διαφορά: "+(DH-dh));
+        //System.out.println("Διαθέσιμο: "+DH+"Πραγματικό: "+dh+" Διαφορά: "+(DH-dh));
         return violated;
         }
 

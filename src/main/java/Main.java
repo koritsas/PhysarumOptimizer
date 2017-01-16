@@ -178,10 +178,11 @@ public class Main {
                     double DH= Ho-He;
                     //System.out.println("Διαθέσιμο: "+DH+"Πραγματικό: "+dh+" Διαφορά: "+(DH-dh));
 
-                    if (DH-dh<0){
+                    if (DH-dh<-8){
                         violates=true;
                         break;
                     }
+                    System.out.println("Διαθέσιμο: "+DH+"Πραγματικό: "+dh+" Διαφορά: "+(DH-dh));
                 }
 
 
@@ -232,6 +233,7 @@ public class Main {
         System.out.println(slimeTree.pathViolatesConstraints(slimeTree.getGraph()));
 
         System.out.println(slimeTree.getSolutionCost());
+        System.out.println();
 
     }
 }
