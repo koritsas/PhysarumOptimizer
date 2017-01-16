@@ -39,7 +39,8 @@ public abstract class IrrigationPhysarumPolycephalum extends PhysarumPolycephalu
         pf.calculate();
 
         for (Node n:sinkNodesList){
-         constraintHashMap.putIfAbsent(new Constraint(pf.getPath(n)),λ);
+            Path path =pf.getPath(n);
+         constraintHashMap.putIfAbsent(new Constraint(path),λ);
 
         }
 
