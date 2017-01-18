@@ -450,7 +450,7 @@ public abstract class AbstractPhysarumPolycephalum {
             it.remove();
         }
 
-        JFreeChart flowChart =ChartFactory.createXYLineChart("Time-Conductivity", "Time", "D", dataset, PlotOrientation.VERTICAL,true,false,false);
+        JFreeChart flowChart =ChartFactory.createXYLineChart("Time-Conductivity", "Time", "D", dataset, PlotOrientation.VERTICAL,false,false,false);
         ChartPanel chartPanel = new ChartPanel( flowChart);
         chartPanel.setPreferredSize( new java.awt.Dimension( 560 , 367 ) );
         ApplicationFrame frame = new ApplicationFrame("dsafdsafda");
@@ -471,7 +471,7 @@ public abstract class AbstractPhysarumPolycephalum {
             dataset.addSeries((XYSeries) pair.getValue());
             it.remove();
         }
-        JFreeChart flowChart =ChartFactory.createXYLineChart("Time-Flow", "Time", "Q", dataset,PlotOrientation.VERTICAL,true,true,true);
+        JFreeChart flowChart =ChartFactory.createXYLineChart("Time-Flow", "Time", "Q", dataset,PlotOrientation.VERTICAL,false,true,true);
 
         ChartPanel chartPanel = new ChartPanel( flowChart);
         chartPanel.setPreferredSize( new java.awt.Dimension( 560 , 367 ) );
